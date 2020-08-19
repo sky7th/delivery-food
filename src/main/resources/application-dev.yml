@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: dev
+    include:
+      - console-logging
+      - file-logging
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/delivery_food?serverTimezone=Asia/Seoul&createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8&useSSL=true
+    username: xoghk
+    password: dlxoghk
+    platform: mysql
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      show_sql: true
+      format_sql: true
+
+logging:
+  level:
+    root: INFO
+    delivery-food: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  file:
+    path: C://logs/spring-boot-log/delivery-food
