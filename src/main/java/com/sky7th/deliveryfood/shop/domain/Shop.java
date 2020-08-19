@@ -2,13 +2,17 @@ package com.sky7th.deliveryfood.shop.domain;
 
 import com.sky7th.deliveryfood.common.domain.BaseTimeEntity;
 import com.sky7th.deliveryfood.generic.money.domain.Money;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "SHOPS")

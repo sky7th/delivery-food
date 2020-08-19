@@ -1,15 +1,23 @@
 package com.sky7th.deliveryfood.shop.domain;
 
-import com.sky7th.deliveryfood.common.domain.BaseTimeEntity;
-import com.sky7th.deliveryfood.generic.money.domain.Money;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Entity
 @Table(name = "MENU_GROUPS")
@@ -47,7 +55,7 @@ public class MenuGroup {
 
   @OneToMany(cascade = CascadeType.DETACH)
   @JoinColumn(name = "MENU_GROUP_ID")
-  private List<Menu> menus = new ArrayList<>();
+  private Set<Menu> menus = new LinkedHashSet<>();
 
   public static MenuGroup representative(Long shopId, String description, Menu... menus) {
     return new MenuGroup(shopId, FIRST_OPTION_GROUP_NAME, description, true, Menu.FIRST_PRIORITY,

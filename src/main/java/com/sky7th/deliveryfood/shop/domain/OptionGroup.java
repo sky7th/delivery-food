@@ -1,15 +1,25 @@
 package com.sky7th.deliveryfood.shop.domain;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import lombok.NoArgsConstructor;
-
-import static java.util.stream.Collectors.toList;
 
 @Entity
 @Table(name = "OPTION_GROUPS")
@@ -44,7 +54,7 @@ public class OptionGroup {
 
   @OneToMany(cascade = CascadeType.DETACH)
   @JoinColumn(name = "OPTION_GROUP_ID")
-  private List<Option> options = new ArrayList<>();
+  private Set<Option> options = new LinkedHashSet<>();
 
   public static OptionGroup basic(Option... options) {
     return new OptionGroup(FIRST_OPTION_GROUP_NAME, true, false, Menu.FIRST_PRIORITY, options);
