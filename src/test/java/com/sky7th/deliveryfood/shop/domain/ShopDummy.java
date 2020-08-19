@@ -23,15 +23,13 @@ public class ShopDummy {
 
   public static ShopBuilder aShop() {
     return Shop.builder()
-        .id(1L)
-        .name("황금족발")
+        .name("shop 1")
         .status(ShopStatus.ACTIVE)
         .minOrderAmount(Money.wons(20000));
   }
 
   public static MenuBuilder aMenu() {
     return Menu.builder()
-        .id(1L)
         .name("menu 1")
         .description("menu 1 description")
         .basic(OptionGroup.basic(
