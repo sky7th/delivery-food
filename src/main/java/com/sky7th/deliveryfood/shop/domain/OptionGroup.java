@@ -22,7 +22,7 @@ public class OptionGroup {
   public static final String FIRST_OPTION_GROUP_NAME = "기본";
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "OPTION_GROUP_ID")
   private Long id;
 
@@ -39,9 +39,10 @@ public class OptionGroup {
   private Integer priority;
 
   @Column(name = "STATUS")
+  @Enumerated(EnumType.STRING)
   private OptionGroupStatus status;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.DETACH)
   @JoinColumn(name = "OPTION_GROUP_ID")
   private List<Option> options = new ArrayList<>();
 

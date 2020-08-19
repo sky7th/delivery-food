@@ -15,7 +15,7 @@ import java.util.List;
 @Table(name = "MENUS")
 @NoArgsConstructor
 @Getter
-public class Menu extends BaseTimeEntity {
+public class Menu {
 
   public enum MenuStatus {ACTIVE, INACTIVE, DELETED, OUT_OF_STOCK}
 
@@ -40,9 +40,10 @@ public class Menu extends BaseTimeEntity {
   private Integer priority;
 
   @Column(name = "STATUS")
+  @Enumerated(EnumType.STRING)
   private MenuStatus status;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.DETACH)
   @JoinColumn(name = "MENU_ID")
   private List<OptionGroup> optionGroups = new ArrayList<>();
 

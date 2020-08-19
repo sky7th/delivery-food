@@ -13,7 +13,7 @@ import java.util.Objects;
 @Table(name = "OPTIONS")
 @NoArgsConstructor
 @Getter
-public class Option extends BaseTimeEntity {
+public class Option {
 
   public enum OptionStatus {ACTIVE, INACTIVE, DELETED}
 

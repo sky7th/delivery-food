@@ -42,19 +42,20 @@ public class MenuGroup {
   private Integer priority;
 
   @Column(name = "STATUS")
+  @Enumerated(EnumType.STRING)
   private MenuGroupStatus status;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.DETACH)
   @JoinColumn(name = "MENU_GROUP_ID")
   private List<Menu> menus = new ArrayList<>();
 
-  public static MenuGroup representative(Long shopId, String description, Menu... groups) {
+  public static MenuGroup representative(Long shopId, String description, Menu... menus) {
     return new MenuGroup(shopId, FIRST_OPTION_GROUP_NAME, description, true, Menu.FIRST_PRIORITY,
-        groups);
+        menus);
   }
 
-  public static MenuGroup additive(Long shopId, String name, String description, Menu... groups) {
-    return new MenuGroup(shopId, name, description, false, Menu.LAST_PRIORITY, groups);
+  public static MenuGroup additive(Long shopId, String name, String description, Menu... menus) {
+    return new MenuGroup(shopId, name, description, false, Menu.LAST_PRIORITY, menus);
   }
 
   private MenuGroup(Long shopId, String name, String description, boolean representative,

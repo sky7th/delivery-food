@@ -19,7 +19,7 @@ public class Shop extends BaseTimeEntity {
   public enum ShopStatus {ACTIVE, INACTIVE, DELETED, NON_DELIVERABLE}
 
   @Id
-  @GeneratedValue(strategy = IDENTITY)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "SHOP_ID")
   private Long id;
 
@@ -27,6 +27,7 @@ public class Shop extends BaseTimeEntity {
   private String name;
 
   @Column(name = "STATUS")
+  @Enumerated(EnumType.STRING)
   private ShopStatus status;
 
   @Column(name = "OPERATING_TIME")
