@@ -17,11 +17,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "MENU_GROUPS")
-@NoArgsConstructor
 @Getter
 public class MenuGroup {
 
@@ -53,7 +51,7 @@ public class MenuGroup {
   @Enumerated(EnumType.STRING)
   private MenuGroupStatus status;
 
-  @OneToMany(cascade = CascadeType.DETACH)
+  @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "MENU_GROUP_ID")
   private Set<Menu> menus = new LinkedHashSet<>();
 
@@ -71,6 +69,9 @@ public class MenuGroup {
     this(null, shopId, name, description, representative, priority, MenuGroupStatus.INACTIVE,
         Arrays.asList(groups));
     this.priority = representative ? 0 : Menu.LAST_PRIORITY;
+  }
+
+  private MenuGroup() {
   }
 
   @Builder

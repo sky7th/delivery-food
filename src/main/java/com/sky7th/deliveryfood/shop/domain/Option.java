@@ -10,11 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "OPTIONS")
-@NoArgsConstructor
 @Getter
 public class Option {
 
@@ -42,6 +40,9 @@ public class Option {
     this.price = price;
   }
 
+  private Option() {
+  }
+
   @Override
   public boolean equals(Object object) {
     if (object == null) {
@@ -61,7 +62,7 @@ public class Option {
     return Objects.hash(name, price);
   }
 
-  public boolean isSatisfiedBy(Option option) {
-    return Objects.equals(name, option.getName()) && Objects.equals(price, option.getPrice());
+  public boolean isSatisfiedBy(OptionValidation cartOption) {
+    return Objects.equals(name, cartOption.getName()) && Objects.equals(price, cartOption.getPrice());
   }
 }
