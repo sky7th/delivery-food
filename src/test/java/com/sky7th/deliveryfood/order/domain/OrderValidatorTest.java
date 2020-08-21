@@ -51,8 +51,8 @@ class OrderValidatorTest {
 
   @Test
   void 주문_검증_시에_메뉴_이름이_변경되었으면_exception_발생() {
-    Menu menu = aMenu().name("menu 1").build();
-    Order order = anOrder().items(asList(anOrderMenuItem().name("menu 2").build()))
+    Menu menu = aMenu().id(1L).name("menu 1").build();
+    Order order = anOrder().items(asList(anOrderMenuItem().menuId(1L).name("menu 2").build()))
         .build();
 
     assertThrows(IllegalArgumentException.class, () -> {
@@ -62,10 +62,10 @@ class OrderValidatorTest {
 
   @Test
   void 주문_검증_시에_옵션_그룹_이름이_변경되었으면_exception_발생() {
-    Menu menu = aMenu().basic(anOptionGroup().name("option group 1").build())
+    Menu menu = aMenu().id(1L).basic(anOptionGroup().name("option group 1").build())
         .build();
     Order order = anOrder().items(asList(
-            anOrderMenuItem().groups(asList(
+            anOrderMenuItem().menuId(1L).orderOptionGroups(asList(
                 anOrderOptionGroup().name("option group 2").build()
             )).build()))
         .build();
@@ -77,14 +77,14 @@ class OrderValidatorTest {
 
   @Test
   void 주문_검증_시에_옵션_이름이_변경되었으면_exception_발생() {
-    Menu menu = aMenu()
+    Menu menu = aMenu().id(1L)
         .basic(anOptionGroup().options(asList(
                 anOption().name("option 1").build()
             )).build())
         .build();
     Order order = anOrder()
         .items(asList(
-            anOrderMenuItem().groups(asList(
+            anOrderMenuItem().menuId(1L).orderOptionGroups(asList(
                     anOrderOptionGroup().options(asList(
                             anOrderOption().name("option 2").build()
                     )).build()
@@ -98,14 +98,14 @@ class OrderValidatorTest {
 
   @Test
   void 주문_검증_시에_옵션_가격이_변경되었으면_exception_발생() {
-    Menu menu = aMenu()
+    Menu menu = aMenu().id(1L)
         .basic(anOptionGroup().options(asList(
             anOption().price(Money.wons(30000)).build()
         )).build())
         .build();
     Order order = anOrder()
         .items(asList(
-            anOrderMenuItem().groups(asList(
+            anOrderMenuItem().menuId(1L).orderOptionGroups(asList(
                 anOrderOptionGroup().options(asList(
                     anOrderOption().price(Money.wons(40000)).build()
                 )).build()

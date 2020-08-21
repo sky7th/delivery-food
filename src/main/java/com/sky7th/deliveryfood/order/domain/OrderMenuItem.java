@@ -40,30 +40,30 @@ public class OrderMenuItem {
 
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "ORDER_MENU_ITEM_ID")
-  private Set<OrderOptionGroup> groups = new LinkedHashSet<>();
+  private Set<OrderOptionGroup> orderOptionGroups = new LinkedHashSet<>();
 
-  public OrderMenuItem(Long menuId, String name, int count, List<OrderOptionGroup> groups) {
-    this(null, menuId, name, count, groups);
+  public OrderMenuItem(Long menuId, String name, int count, List<OrderOptionGroup> orderOptionGroups) {
+    this(null, menuId, name, count, orderOptionGroups);
   }
 
   @Builder
   public OrderMenuItem(Long id, Long menuId, String name, int count,
-      List<OrderOptionGroup> groups) {
+      List<OrderOptionGroup> orderOptionGroups) {
     this.id = id;
     this.menuId = menuId;
     this.name = name;
     this.count = count;
-    this.groups.addAll(groups);
+    this.orderOptionGroups.addAll(orderOptionGroups);
   }
 
   private OrderMenuItem() {
   }
 
   public Money calculatePrice() {
-    return Money.sum(groups, OrderOptionGroup::calculatePrice).multiply(count);
+    return Money.sum(orderOptionGroups, OrderOptionGroup::calculatePrice).multiply(count);
   }
 
   private List<OptionGroupValidation> convertToOptionGroupValidations() {
-    return groups.stream().map(OrderOptionGroup::convertToOptionGroupValidation).collect(toList());
+    return orderOptionGroups.stream().map(OrderOptionGroup::convertToOptionGroupValidation).collect(toList());
   }
 }

@@ -25,10 +25,9 @@ public class OrderDummy {
 
   public static OrderMenuItemBuilder anOrderMenuItem() {
     return OrderMenuItem.builder()
-        .menuId(aMenu().build().getId())
         .name("menu")
         .count(1)
-        .groups(Arrays.asList(
+        .orderOptionGroups(Arrays.asList(
             anOrderOptionGroup()
                 .name(OptionGroup.FIRST_OPTION_GROUP_NAME)
                 .options(Arrays
