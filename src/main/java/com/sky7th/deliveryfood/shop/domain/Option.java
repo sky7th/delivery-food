@@ -62,7 +62,7 @@ public class Option {
     return Objects.hash(name, price);
   }
 
-  public boolean isSatisfiedBy(OptionValidation cartOption) {
-    return Objects.equals(name, cartOption.getName()) && Objects.equals(price, cartOption.getPrice());
+  public boolean isSatisfiedBy(OptionValidation optionValidation) {
+    return Objects.equals(name, optionValidation.getName()) && Objects.equals(price, optionValidation.getPrice());
   }
 }

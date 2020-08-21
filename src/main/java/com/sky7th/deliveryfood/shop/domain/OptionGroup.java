@@ -87,18 +87,18 @@ public class OptionGroup {
     return name;
   }
 
-  public boolean isSatisfiedBy(OptionGroupValidation cartOptionGroup) {
-    if (!name.equals(cartOptionGroup.getName())) {
+  public boolean isSatisfiedBy(OptionGroupValidation optionGroupValidation) {
+    if (!name.equals(optionGroupValidation.getName())) {
       return false;
     }
 
-    List<OptionValidation> satisfiedCartOptions = satisfied(cartOptionGroup.getCartOptions());
-    if (satisfiedCartOptions.isEmpty() || (satisfiedCartOptions.size() != cartOptionGroup.getCartOptions()
+    List<OptionValidation> satisfiedOptionValidations = satisfied(optionGroupValidation.getOptionValidations());
+    if (satisfiedOptionValidations.isEmpty() || (satisfiedOptionValidations.size() != optionGroupValidation.getOptionValidations()
         .size())) {
       return false;
     }
 
-    if (!selectable && satisfiedCartOptions.size() > 1) {
+    if (!selectable && satisfiedOptionValidations.size() > 1) {
       throw new IllegalArgumentException(
           String.format("다중 선택이 불가능한 메뉴 옵션 그룹입니다. (메뉴 옵션 그룹명: %s", this.name));
     }
@@ -106,10 +106,10 @@ public class OptionGroup {
     return true;
   }
 
-  private List<OptionValidation> satisfied(List<OptionValidation> cartOptions) {
+  private List<OptionValidation> satisfied(List<OptionValidation> optionValidations) {
     return this.options
         .stream()
-        .flatMap(option -> cartOptions.stream().filter(option::isSatisfiedBy))
+        .flatMap(option -> optionValidations.stream().filter(option::isSatisfiedBy))
         .collect(toList());
   }
 }
