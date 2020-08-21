@@ -56,7 +56,7 @@ public class OrderValidator {
       throw new IllegalArgumentException("메뉴가 변경됐습니다.");
     }
 
-    for (OrderOptionGroup group : item.getGroups()) {
+    for (OrderOptionGroup group : item.getOrderOptionGroups()) {
       validateOrderOptionGroup(group, menu);
     }
   }
