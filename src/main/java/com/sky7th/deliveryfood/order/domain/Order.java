@@ -5,8 +5,9 @@ import static java.util.stream.Collectors.toList;
 import com.sky7th.deliveryfood.common.domain.BaseTimeEntity;
 import com.sky7th.deliveryfood.generic.money.domain.Money;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,7 +49,7 @@ public class Order extends BaseTimeEntity {
 
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "ORDER_ID")
-  private List<OrderMenuItem> orderMenuItems = new ArrayList<>();
+  private Set<OrderMenuItem> orderMenuItems = new LinkedHashSet<>();
 
   public Order(Long userId, Long shopId, List<OrderMenuItem> items) {
     this(null, userId, shopId, items, LocalDateTime.now(), OrderStatus.BEFORE_PAYMENT);

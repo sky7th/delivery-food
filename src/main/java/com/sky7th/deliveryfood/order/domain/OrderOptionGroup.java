@@ -4,7 +4,9 @@ import static java.util.stream.Collectors.toList;
 
 import com.sky7th.deliveryfood.generic.money.domain.Money;
 import com.sky7th.deliveryfood.shop.domain.OptionGroupValidation;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -32,7 +34,7 @@ public class OrderOptionGroup {
 
   @ElementCollection
   @CollectionTable(name = "ORDER_OPTIONS", joinColumns = @JoinColumn(name = "ORDER_OPTION_GROUP_ID"))
-  private List<OrderOption> orderOptions;
+  private Set<OrderOption> orderOptions = new LinkedHashSet<>();
 
   public OrderOptionGroup(String name, List<OrderOption> options) {
     this(null, name, options);
@@ -45,7 +47,7 @@ public class OrderOptionGroup {
   public OrderOptionGroup(Long id, String name, List<OrderOption> options) {
     this.id = id;
     this.name = name;
-    this.orderOptions = options;
+    this.orderOptions.addAll(options);
   }
 
   public Money calculatePrice() {
