@@ -2,17 +2,17 @@ package com.sky7th.deliveryfood.shop.domain;
 
 import java.util.List;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class OptionGroupValidation {
 
   private String name;
-  private List<Option> options;
+  private List<OptionValidation> optionValidations;
 
   @Builder
-  public OptionGroupValidation(String name, List<Option> options) {
+  public OptionGroupValidation(String name, List<OptionValidation> optionValidations) {
     this.name = name;
-    this.options = options;
+    this.optionValidations = optionValidations;
   }
 }

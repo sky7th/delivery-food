@@ -19,11 +19,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "OPTION_GROUPS")
-@NoArgsConstructor
 @Getter
 public class OptionGroup {
 
@@ -52,7 +50,7 @@ public class OptionGroup {
   @Enumerated(EnumType.STRING)
   private OptionGroupStatus status;
 
-  @OneToMany(cascade = CascadeType.DETACH)
+  @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "OPTION_GROUP_ID")
   private Set<Option> options = new LinkedHashSet<>();
 
@@ -82,22 +80,25 @@ public class OptionGroup {
     this.options.addAll(options);
   }
 
+  private OptionGroup() {
+  }
+
   public String getName() {
     return name;
   }
 
-  public boolean isSatisfiedBy(OptionGroupValidation cartOptionGroup) {
-    if (!name.equals(cartOptionGroup.getName())) {
+  public boolean isSatisfiedBy(OptionGroupValidation optionGroupValidation) {
+    if (!name.equals(optionGroupValidation.getName())) {
       return false;
     }
 
-    List<Option> satisfiedOptions = satisfied(cartOptionGroup.getOptions());
-    if (satisfiedOptions.isEmpty() || (satisfiedOptions.size() != cartOptionGroup.getOptions()
+    List<OptionValidation> satisfiedOptionValidations = satisfied(optionGroupValidation.getOptionValidations());
+    if (satisfiedOptionValidations.isEmpty() || (satisfiedOptionValidations.size() != optionGroupValidation.getOptionValidations()
         .size())) {
       return false;
     }
 
-    if (!selectable && satisfiedOptions.size() > 1) {
+    if (!selectable && satisfiedOptionValidations.size() > 1) {
       throw new IllegalArgumentException(
           String.format("다중 선택이 불가능한 메뉴 옵션 그룹입니다. (메뉴 옵션 그룹명: %s", this.name));
     }
@@ -105,10 +106,10 @@ public class OptionGroup {
     return true;
   }
 
-  private List<Option> satisfied(List<Option> cartOptions) {
+  private List<OptionValidation> satisfied(List<OptionValidation> optionValidations) {
     return this.options
         .stream()
-        .flatMap(option -> cartOptions.stream().filter(option::isSatisfiedBy))
+        .flatMap(option -> optionValidations.stream().filter(option::isSatisfiedBy))
         .collect(toList());
   }
 }

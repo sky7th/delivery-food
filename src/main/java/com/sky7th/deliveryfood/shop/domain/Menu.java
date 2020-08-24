@@ -17,11 +17,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "MENUS")
-@NoArgsConstructor
 @Getter
 public class Menu {
 
@@ -51,7 +49,7 @@ public class Menu {
   @Enumerated(EnumType.STRING)
   private MenuStatus status;
 
-  @OneToMany(cascade = CascadeType.DETACH)
+  @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "MENU_ID")
   private Set<OptionGroup> optionGroups = new LinkedHashSet<>();
 
@@ -59,6 +57,9 @@ public class Menu {
       OptionGroup... groups) {
     this(null, name, description, imageUrl, Menu.LAST_PRIORITY, MenuStatus.INACTIVE, basic,
         Arrays.asList(groups));
+  }
+
+  private Menu() {
   }
 
   @Builder
@@ -81,24 +82,4 @@ public class Menu {
         .findFirst()
         .orElseThrow(IllegalStateException::new);
   }
-
-  public void validateOrder(String menuName, List<OptionGroupValidation> optionGroups) {
-    if (!this.name.equals(menuName)) {
-      throw new IllegalArgumentException("메뉴가 변경되었습니다.");
-    }
-
-    if (!isSatisfiedBy(optionGroups)) {
-      throw new IllegalArgumentException("메뉴 내의 선택 내용이 변경되었습니다.");
-    }
-  }
-
-  private boolean isSatisfiedBy(List<OptionGroupValidation> cartOptionGroups) {
-    return cartOptionGroups.stream().allMatch(this::isSatisfiedBy);
-  }
-
-  private boolean isSatisfiedBy(OptionGroupValidation cartOptionGroup) {
-    return optionGroups.stream()
-        .anyMatch(optionGroup -> optionGroup.isSatisfiedBy(cartOptionGroup));
-  }
-
 }
