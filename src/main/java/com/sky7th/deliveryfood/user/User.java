@@ -35,6 +35,7 @@ public abstract class User extends BaseTimeEntity {
   private UserRole role;
 
   public User(User user) {
+    this.id = user.id;
     this.email = user.getEmail();
     this.password = user.getPassword();
     this.emailVerified = user.getEmailVerified();
@@ -42,6 +43,21 @@ public abstract class User extends BaseTimeEntity {
     this.role = user.getRole();
   }
 
+  public User(String email, String password) {
+    this.email = email;
+    this.password = password;
+    this.emailVerified = false;
+    this.active = true;
+  }
+
   public User() {
+  }
+
+  public void emailVerify() {
+    this.emailVerified = true;
+  }
+
+  public void inactice() {
+    this.active = false;
   }
 }
