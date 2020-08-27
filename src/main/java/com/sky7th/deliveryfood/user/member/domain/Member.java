@@ -14,10 +14,15 @@ import lombok.Getter;
 })
 public class Member extends User {
 
-  @Column(name = "USERNAME", nullable = false, unique = true)
+  @Column(name = "USERNAME", nullable = false)
   private String username;
 
   public Member() {
     super();
+  }
+
+  public Member(String email, String password, String username) {
+    super(email, password);
+    this.username = username;
   }
 }
