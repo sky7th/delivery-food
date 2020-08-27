@@ -1,4 +1,4 @@
-package com.sky7th.deliveryfood.user.member;
+package com.sky7th.deliveryfood.user.member.domain;
 
 import com.sky7th.deliveryfood.user.User;
 import javax.persistence.Column;

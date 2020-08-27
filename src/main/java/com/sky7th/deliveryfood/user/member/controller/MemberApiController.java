@@ -1,9 +1,11 @@
 package com.sky7th.deliveryfood.user.member.controller;
 
+import com.sky7th.deliveryfood.security.JwtTokenProvider;
 import com.sky7th.deliveryfood.security.service.AuthService;
 import com.sky7th.deliveryfood.security.token.MemberUsernamePasswordAuthenticationToken;
 import com.sky7th.deliveryfood.user.CustomUserDetails;
 import com.sky7th.deliveryfood.user.LoginRequestDto;
+import com.sky7th.deliveryfood.user.LoginResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,7 @@ public class MemberApiController {
   private static final Logger logger = LoggerFactory.getLogger(MemberApiController.class);
 
   private final AuthService authService;
+  private final JwtTokenProvider jwtTokenProvider;
 
   @PostMapping("/login")
   public ResponseEntity authenticateUser(LoginRequestDto loginRequestDto) {
@@ -30,8 +33,10 @@ public class MemberApiController {
 
     logger.info("Logged in User: {}", customUserDetails.getUsername());
 
-    String jwtToken = authService.generateToken(customUserDetails);
+    String jwtAccessToken = jwtTokenProvider.generateAccessToken(customUserDetails);
+    String jwtRefreshToken = jwtTokenProvider.generateRefreshToken(customUserDetails);
+    long expiryDuration = jwtTokenProvider.getExpiryDuration();
 
-    return ResponseEntity.ok(jwtToken);
+    return ResponseEntity.ok(new LoginResponseDto(jwtAccessToken, jwtRefreshToken, expiryDuration));
   }
 }

@@ -1,7 +1,7 @@
 package com.sky7th.deliveryfood.user.member.service;
 
-import com.sky7th.deliveryfood.user.member.Member;
-import com.sky7th.deliveryfood.user.member.MemberRepository;
+import com.sky7th.deliveryfood.user.member.domain.Member;
+import com.sky7th.deliveryfood.user.member.domain.MemberRepository;
 import com.sky7th.deliveryfood.user.member.service.exception.NotFoundMemberException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
