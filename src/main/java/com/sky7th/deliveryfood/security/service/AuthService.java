@@ -18,7 +18,8 @@ public class AuthService {
   private final AuthenticationManager authenticationManager;
   private final JwtTokenProvider jwtTokenProvider;
 
-  public CustomUserDetails authenticateUser(UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) {
+  public CustomUserDetails authenticateUser(
+      UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) {
     Authentication authentication = Optional
         .ofNullable(authenticationManager.authenticate(usernamePasswordAuthenticationToken))
         .orElseThrow(UserLoginException::new);

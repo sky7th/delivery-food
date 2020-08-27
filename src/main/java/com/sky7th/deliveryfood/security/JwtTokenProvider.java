@@ -14,57 +14,36 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${app.jwt.secret}")
-    private String jwtSecret;
+  @Value("${app.jwt.secret}")
+  private String jwtSecret;
 
-    @Value("${app.jwt.accessTokenExpiration}")
-    private long jwtAccessTokenExpirationInMs;
+  @Value("${app.jwt.accessTokenExpiration}")
+  private long jwtAccessTokenExpirationInMs;
 
-    @Value("${app.jwt.refreshTokenExpiration}")
-    private long jwtRefreshTokenExpirationInMs;
+  @Value("${app.jwt.refreshTokenExpiration}")
+  private long jwtRefreshTokenExpirationInMs;
 
-    public String generateAccessToken(CustomUserDetails customUserDetails) {
-        Claims claims = Jwts.claims().setId(Long.toString(customUserDetails.getId()));
-        claims.put("role", customUserDetails.getRole().getRoleName());
-        Instant expiryDate = Instant.now().plusMillis(jwtAccessTokenExpirationInMs);
+  public String generateAccessToken(CustomUserDetails customUserDetails) {
+    Claims claims = Jwts.claims().setId(Long.toString(customUserDetails.getId()));
+    claims.put("role", customUserDetails.getRole().getRoleName());
+    Instant expiryDate = Instant.now().plusMillis(jwtAccessTokenExpirationInMs);
 
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(Date.from(Instant.now()))
-                .setExpiration(Date.from(expiryDate))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact();
-    }
+    return Jwts.builder()
+        .setClaims(claims)
+        .setIssuedAt(Date.from(Instant.now()))
+        .setExpiration(Date.from(expiryDate))
+        .signWith(SignatureAlgorithm.HS512, jwtSecret)
+        .compact();
+  }
 
-    public String generateRefreshToken(UserContext userContext) {
-        Claims claims = Jwts.claims().setId(Long.toString(userContext.getId()));
-        Instant expiryDate = Instant.now().plusMillis(jwtRefreshTokenExpirationInMs);
+  public UserContext getUserContextFromJwt(String token) {
+    Claims claims = Jwts.parser()
+        .setSigningKey(jwtSecret)
+        .parseClaimsJws(token)
+        .getBody();
 
-        return Jwts.builder()
-            .setClaims(claims)
-            .setIssuedAt(Date.from(Instant.now()))
-            .setExpiration(Date.from(expiryDate))
-            .signWith(SignatureAlgorithm.HS512, jwtSecret)
-            .compact();
-    }
+    UserRole role = UserRole.valueOf((String) claims.get("role"));
 
-    public UserContext getUserContextFromJwt(String token) {
-        Claims claims = Jwts.parser()
-            .setSigningKey(jwtSecret)
-            .parseClaimsJws(token)
-            .getBody();
-
-        UserRole role = UserRole.valueOf((String) claims.get("role"));
-
-        return new UserContext(Long.parseLong(claims.getId()), role);
-    }
-
-    public Date getTokenExpiryFromJWT(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret)
-                .parseClaimsJws(token)
-                .getBody();
-
-        return claims.getExpiration();
-    }
+    return new UserContext(Long.parseLong(claims.getId()), role);
+  }
 }
