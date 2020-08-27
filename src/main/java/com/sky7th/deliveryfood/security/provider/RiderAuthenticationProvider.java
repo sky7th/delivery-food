@@ -3,7 +3,7 @@ package com.sky7th.deliveryfood.security.provider;
 import com.sky7th.deliveryfood.security.token.RiderUsernamePasswordAuthenticationToken;
 import com.sky7th.deliveryfood.user.CustomUserDetails;
 import com.sky7th.deliveryfood.user.UserRole;
-import com.sky7th.deliveryfood.user.rider.Rider;
+import com.sky7th.deliveryfood.user.rider.domain.Rider;
 import com.sky7th.deliveryfood.user.rider.service.RiderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

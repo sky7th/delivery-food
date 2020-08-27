@@ -1,9 +1,5 @@
-package com.sky7th.deliveryfood.security.service;
+package com.sky7th.deliveryfood.user;
 
-import com.sky7th.deliveryfood.user.CustomUserDetails;
-import com.sky7th.deliveryfood.user.User;
-import com.sky7th.deliveryfood.user.UserContext;
-import com.sky7th.deliveryfood.user.UserRole;
 import com.sky7th.deliveryfood.user.member.service.MemberService;
 import com.sky7th.deliveryfood.user.owner.service.OwnerService;
 import com.sky7th.deliveryfood.user.rider.service.RiderService;

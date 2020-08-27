@@ -1,10 +1,10 @@
 package com.sky7th.deliveryfood.security.provider;
 
+import com.sky7th.deliveryfood.security.exception.EmailNotVerifiedException;
 import com.sky7th.deliveryfood.user.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -34,7 +34,7 @@ public abstract class AbstractAuthenticationProvider implements AuthenticationPr
       throw new LockedException(email);
 
     } else if (!userDetails.isEnabled()) {
-      throw new DisabledException(email);
+      throw new EmailNotVerifiedException(email);
     }
 
     userDetails.setPassword(null);

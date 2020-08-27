@@ -36,6 +36,18 @@ public class JwtTokenProvider {
         .compact();
   }
 
+  public String generateRefreshToken(CustomUserDetails customUserDetails) {
+    Claims claims = Jwts.claims().setId(Long.toString(customUserDetails.getId()));
+    Instant expiryDate = Instant.now().plusMillis(jwtRefreshTokenExpirationInMs);
+
+    return Jwts.builder()
+        .setClaims(claims)
+        .setIssuedAt(Date.from(Instant.now()))
+        .setExpiration(Date.from(expiryDate))
+        .signWith(SignatureAlgorithm.HS512, jwtSecret)
+        .compact();
+  }
+
   public UserContext getUserContextFromJwt(String token) {
     Claims claims = Jwts.parser()
         .setSigningKey(jwtSecret)
@@ -45,5 +57,9 @@ public class JwtTokenProvider {
     UserRole role = UserRole.valueOf((String) claims.get("role"));
 
     return new UserContext(Long.parseLong(claims.getId()), role);
+  }
+
+  public long getExpiryDuration() {
+    return jwtAccessTokenExpirationInMs;
   }
 }
