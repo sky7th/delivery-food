@@ -1,4 +1,4 @@
-package com.sky7th.deliveryfood.user.owner;
+package com.sky7th.deliveryfood.user.owner.domain;
 
 import com.sky7th.deliveryfood.user.User;
 import javax.persistence.Column;
@@ -17,7 +17,12 @@ public class Owner extends User {
   @Column(name = "USERNAME", nullable = false, unique = true)
   private String username;
 
-  private Owner() {
+  public Owner() {
     super();
+  }
+
+  public Owner(String email, String password, String username) {
+    super(email, password);
+    this.username = username;
   }
 }
