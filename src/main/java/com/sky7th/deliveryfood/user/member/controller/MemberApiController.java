@@ -1,6 +1,5 @@
 package com.sky7th.deliveryfood.user.member.controller;
 
-import com.sky7th.deliveryfood.security.JwtTokenProvider;
 import com.sky7th.deliveryfood.security.service.AuthService;
 import com.sky7th.deliveryfood.security.token.MemberUsernamePasswordAuthenticationToken;
 import com.sky7th.deliveryfood.user.CustomUserDetails;
@@ -27,7 +26,6 @@ public class MemberApiController {
   private static final Logger logger = LoggerFactory.getLogger(MemberApiController.class);
 
   private final AuthService authService;
-  private final JwtTokenProvider jwtTokenProvider;
   private final MemberService memberService;
 
   @PostMapping("/login")
@@ -39,11 +37,7 @@ public class MemberApiController {
 
     logger.info("Logged in User: {}", customUserDetails.getUsername());
 
-    String jwtAccessToken = jwtTokenProvider.generateAccessToken(customUserDetails);
-    String jwtRefreshToken = jwtTokenProvider.generateRefreshToken();
-    long expiryDuration = jwtTokenProvider.getExpiryDuration();
-
-    return ResponseEntity.ok(new LoginResponseDto(jwtAccessToken, jwtRefreshToken, expiryDuration));
+    return ResponseEntity.ok(authService.createJwtToken(customUserDetails));
   }
 
   @PostMapping("/register")
@@ -54,14 +48,10 @@ public class MemberApiController {
   }
 
   @PostMapping("/refresh")
-  public ResponseEntity<LoginResponseDto> refreshJwtToken(@RequestBody TokenRefreshRequestDto tokenRefreshRequestDto,
-      UserContext userContext) {
+  public ResponseEntity<LoginResponseDto> refreshJwtToken(
+      @RequestBody TokenRefreshRequestDto tokenRefreshRequestDto, UserContext userContext) {
     logger.info("Refresh Token Request: {}", tokenRefreshRequestDto.getRefreshToken());
 
-    String jwtAccessToken = authService.refreshJwtToken(tokenRefreshRequestDto, userContext);
-    long expiryDuration = jwtTokenProvider.getExpiryDuration();
-
-    return ResponseEntity
-        .ok(new LoginResponseDto(jwtAccessToken, tokenRefreshRequestDto.getRefreshToken(), expiryDuration));
+    return ResponseEntity.ok(authService.refreshJwtToken(tokenRefreshRequestDto, userContext));
   }
 }

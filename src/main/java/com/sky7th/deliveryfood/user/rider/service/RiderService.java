@@ -4,6 +4,7 @@ import com.sky7th.deliveryfood.security.exception.UserAlreadyInUseException;
 import com.sky7th.deliveryfood.user.RegisterRequestDto;
 import com.sky7th.deliveryfood.user.rider.domain.Rider;
 import com.sky7th.deliveryfood.user.rider.domain.RiderRepository;
+import com.sky7th.deliveryfood.user.rider.dto.RiderResponseDto;
 import com.sky7th.deliveryfood.user.rider.service.exception.NotFoundRiderException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,7 +25,7 @@ public class RiderService {
     return riderRepository.findByEmail(email).orElseThrow(NotFoundRiderException::new);
   }
 
-  public Rider save(RegisterRequestDto registerRequestDto) {
+  public RiderResponseDto save(RegisterRequestDto registerRequestDto) {
     if (riderRepository.existsByEmail(registerRequestDto.getEmail())) {
       throw new UserAlreadyInUseException();
     }
@@ -34,6 +35,6 @@ public class RiderService {
         bCryptPasswordEncoder.encode(registerRequestDto.getPassword()),
         registerRequestDto.getUsername());
 
-    return riderRepository.save(rider);
+    return RiderResponseDto.of(riderRepository.save(rider));
   }
 }

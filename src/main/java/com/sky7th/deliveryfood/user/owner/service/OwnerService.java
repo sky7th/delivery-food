@@ -4,6 +4,7 @@ import com.sky7th.deliveryfood.security.exception.UserAlreadyInUseException;
 import com.sky7th.deliveryfood.user.RegisterRequestDto;
 import com.sky7th.deliveryfood.user.owner.domain.Owner;
 import com.sky7th.deliveryfood.user.owner.domain.OwnerRepository;
+import com.sky7th.deliveryfood.user.owner.dto.OwnerResponseDto;
 import com.sky7th.deliveryfood.user.owner.service.exception.NotFoundOwnerException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,7 +25,7 @@ public class OwnerService {
     return ownerRepository.findByEmail(email).orElseThrow(NotFoundOwnerException::new);
   }
 
-  public Owner save(RegisterRequestDto registerRequestDto) {
+  public OwnerResponseDto save(RegisterRequestDto registerRequestDto) {
     if (ownerRepository.existsByEmail(registerRequestDto.getEmail())) {
       throw new UserAlreadyInUseException();
     }
@@ -34,6 +35,6 @@ public class OwnerService {
         bCryptPasswordEncoder.encode(registerRequestDto.getPassword()),
         registerRequestDto.getUsername());
 
-    return ownerRepository.save(owner);
+    return OwnerResponseDto.of(ownerRepository.save(owner));
   }
 }

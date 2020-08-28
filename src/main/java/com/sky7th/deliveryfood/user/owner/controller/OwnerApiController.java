@@ -5,8 +5,8 @@ import com.sky7th.deliveryfood.security.service.AuthService;
 import com.sky7th.deliveryfood.security.token.OwnerUsernamePasswordAuthenticationToken;
 import com.sky7th.deliveryfood.user.CustomUserDetails;
 import com.sky7th.deliveryfood.user.LoginRequestDto;
-import com.sky7th.deliveryfood.user.LoginResponseDto;
 import com.sky7th.deliveryfood.user.RegisterRequestDto;
+import com.sky7th.deliveryfood.user.owner.dto.OwnerResponseDto;
 import com.sky7th.deliveryfood.user.owner.service.OwnerService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -38,15 +38,11 @@ public class OwnerApiController {
 
     logger.info("Logged in User: {}", customUserDetails.getUsername());
 
-    String jwtAccessToken = jwtTokenProvider.generateAccessToken(customUserDetails);
-    String jwtRefreshToken = jwtTokenProvider.generateRefreshToken();
-    long expiryDuration = jwtTokenProvider.getExpiryDuration();
-
-    return ResponseEntity.ok(new LoginResponseDto(jwtAccessToken, jwtRefreshToken, expiryDuration));
+    return ResponseEntity.ok(authService.createJwtToken(customUserDetails));
   }
 
   @PostMapping("/register")
-  public ResponseEntity register(@RequestBody RegisterRequestDto registerRequestDto) {
+  public ResponseEntity<OwnerResponseDto> register(@RequestBody RegisterRequestDto registerRequestDto) {
     logger.info("Register Request: {}", registerRequestDto.toString());
 
     return ResponseEntity.ok(ownerService.save(registerRequestDto));

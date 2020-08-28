@@ -5,6 +5,7 @@ import com.sky7th.deliveryfood.security.exception.UserLoginException;
 import com.sky7th.deliveryfood.security.refreshtoken.RefreshToken;
 import com.sky7th.deliveryfood.security.refreshtoken.RefreshTokenService;
 import com.sky7th.deliveryfood.user.CustomUserDetails;
+import com.sky7th.deliveryfood.user.LoginResponseDto;
 import com.sky7th.deliveryfood.user.TokenRefreshRequestDto;
 import com.sky7th.deliveryfood.user.UserContext;
 import java.util.Optional;
@@ -34,10 +35,21 @@ public class AuthService {
     return (CustomUserDetails) authentication.getPrincipal();
   }
 
-  public String refreshJwtToken(TokenRefreshRequestDto tokenRefreshRequestDto, UserContext userContext) {
+  public LoginResponseDto createJwtToken(CustomUserDetails customUserDetails) {
+    String jwtAccessToken = jwtTokenProvider.generateAccessToken(customUserDetails);
+    String jwtRefreshToken = jwtTokenProvider.generateRefreshToken();
+    long expiryDuration = jwtTokenProvider.getExpiryDuration();
+
+    return new LoginResponseDto(jwtAccessToken, jwtRefreshToken, expiryDuration);
+  }
+
+  public LoginResponseDto refreshJwtToken(TokenRefreshRequestDto tokenRefreshRequestDto, UserContext userContext) {
     RefreshToken refreshToken = refreshTokenService.findById(tokenRefreshRequestDto.getRefreshToken());
     refreshToken.verifyExpiration();
 
-    return jwtTokenProvider.generateAccessToken(userContext);
+    String jwtAccessToken = jwtTokenProvider.generateAccessToken(userContext);
+    long expiryDuration = jwtTokenProvider.getExpiryDuration();
+
+    return new LoginResponseDto(jwtAccessToken, tokenRefreshRequestDto.getRefreshToken(), expiryDuration);
   }
 }
