@@ -1,7 +1,12 @@
 package com.sky7th.deliveryfood.security.service;
 
+import com.sky7th.deliveryfood.security.JwtTokenProvider;
 import com.sky7th.deliveryfood.security.exception.UserLoginException;
+import com.sky7th.deliveryfood.security.refreshtoken.RefreshToken;
+import com.sky7th.deliveryfood.security.refreshtoken.RefreshTokenService;
 import com.sky7th.deliveryfood.user.CustomUserDetails;
+import com.sky7th.deliveryfood.user.TokenRefreshRequestDto;
+import com.sky7th.deliveryfood.user.UserContext;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +20,8 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
   private final AuthenticationManager authenticationManager;
+  private final RefreshTokenService refreshTokenService;
+  private final JwtTokenProvider jwtTokenProvider;
 
   public CustomUserDetails authenticateUser(
       UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) {
@@ -25,5 +32,12 @@ public class AuthService {
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
     return (CustomUserDetails) authentication.getPrincipal();
+  }
+
+  public String refreshJwtToken(TokenRefreshRequestDto tokenRefreshRequestDto, UserContext userContext) {
+    RefreshToken refreshToken = refreshTokenService.findById(tokenRefreshRequestDto.getRefreshToken());
+    refreshToken.verifyExpiration();
+
+    return jwtTokenProvider.generateAccessToken(userContext);
   }
 }
