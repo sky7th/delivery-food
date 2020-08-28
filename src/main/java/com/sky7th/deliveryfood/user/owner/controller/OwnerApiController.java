@@ -30,7 +30,7 @@ public class OwnerApiController {
   private final OwnerService ownerService;
 
   @PostMapping("/login")
-  public ResponseEntity authenticateUser(LoginRequestDto loginRequestDto) {
+  public ResponseEntity authenticateUser(@RequestBody LoginRequestDto loginRequestDto) {
     CustomUserDetails customUserDetails = authService.authenticateUser(
         new OwnerUsernamePasswordAuthenticationToken(
             loginRequestDto.getEmail(),
@@ -39,7 +39,7 @@ public class OwnerApiController {
     logger.info("Logged in User: {}", customUserDetails.getUsername());
 
     String jwtAccessToken = jwtTokenProvider.generateAccessToken(customUserDetails);
-    String jwtRefreshToken = jwtTokenProvider.generateRefreshToken(customUserDetails);
+    String jwtRefreshToken = jwtTokenProvider.generateRefreshToken();
     long expiryDuration = jwtTokenProvider.getExpiryDuration();
 
     return ResponseEntity.ok(new LoginResponseDto(jwtAccessToken, jwtRefreshToken, expiryDuration));

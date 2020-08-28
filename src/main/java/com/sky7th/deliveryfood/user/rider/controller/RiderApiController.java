@@ -30,7 +30,7 @@ public class RiderApiController {
   private final RiderService riderService;
 
   @PostMapping("/login")
-  public ResponseEntity authenticateUser(LoginRequestDto loginRequestDto) {
+  public ResponseEntity authenticateUser(@RequestBody LoginRequestDto loginRequestDto) {
     CustomUserDetails customUserDetails = authService.authenticateUser(
         new RiderUsernamePasswordAuthenticationToken(
             loginRequestDto.getEmail(),
@@ -39,7 +39,7 @@ public class RiderApiController {
     logger.info("Logged in User: {}", customUserDetails.getUsername());
 
     String jwtAccessToken = jwtTokenProvider.generateAccessToken(customUserDetails);
-    String jwtRefreshToken = jwtTokenProvider.generateRefreshToken(customUserDetails);
+    String jwtRefreshToken = jwtTokenProvider.generateRefreshToken();
     long expiryDuration = jwtTokenProvider.getExpiryDuration();
 
     return ResponseEntity.ok(new LoginResponseDto(jwtAccessToken, jwtRefreshToken, expiryDuration));

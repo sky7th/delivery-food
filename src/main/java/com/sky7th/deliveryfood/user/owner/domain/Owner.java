@@ -14,7 +14,7 @@ import lombok.Getter;
 })
 public class Owner extends User {
 
-  @Column(name = "USERNAME", nullable = false, unique = true)
+  @Column(name = "USERNAME", nullable = false)
   private String username;
 
   public Owner() {

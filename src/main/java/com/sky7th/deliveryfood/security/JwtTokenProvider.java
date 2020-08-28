@@ -8,6 +8,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.time.Instant;
 import java.util.Date;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -24,8 +25,16 @@ public class JwtTokenProvider {
   private long jwtRefreshTokenExpirationInMs;
 
   public String generateAccessToken(CustomUserDetails customUserDetails) {
-    Claims claims = Jwts.claims().setId(Long.toString(customUserDetails.getId()));
-    claims.put("role", customUserDetails.getRole().getRoleName());
+    return generateAccessToken(customUserDetails.getId(), customUserDetails.getRole());
+  }
+
+  public String generateAccessToken(UserContext userContext) {
+    return generateAccessToken(userContext.getId(), userContext.getRole());
+  }
+
+  private String generateAccessToken(Long id, UserRole userRole) {
+    Claims claims = Jwts.claims().setId(Long.toString(id));
+    claims.put("role", userRole.getRoleName());
     Instant expiryDate = Instant.now().plusMillis(jwtAccessTokenExpirationInMs);
 
     return Jwts.builder()
@@ -36,16 +45,8 @@ public class JwtTokenProvider {
         .compact();
   }
 
-  public String generateRefreshToken(CustomUserDetails customUserDetails) {
-    Claims claims = Jwts.claims().setId(Long.toString(customUserDetails.getId()));
-    Instant expiryDate = Instant.now().plusMillis(jwtRefreshTokenExpirationInMs);
-
-    return Jwts.builder()
-        .setClaims(claims)
-        .setIssuedAt(Date.from(Instant.now()))
-        .setExpiration(Date.from(expiryDate))
-        .signWith(SignatureAlgorithm.HS512, jwtSecret)
-        .compact();
+  public String generateRefreshToken() {
+    return UUID.randomUUID().toString();
   }
 
   public UserContext getUserContextFromJwt(String token) {
