@@ -38,9 +38,10 @@ public class AuthService {
   public LoginResponseDto createJwtToken(CustomUserDetails customUserDetails) {
     String jwtAccessToken = jwtTokenProvider.generateAccessToken(customUserDetails);
     String jwtRefreshToken = jwtTokenProvider.generateRefreshToken();
-    long expiryDuration = jwtTokenProvider.getExpiryDuration();
+    refreshTokenService.save(new RefreshToken(jwtRefreshToken, jwtTokenProvider.getRefreshTokenExpiryDate()));
 
-    return new LoginResponseDto(jwtAccessToken, jwtRefreshToken, expiryDuration);
+    return new LoginResponseDto(jwtAccessToken, jwtRefreshToken,
+        jwtTokenProvider.getAccessTokenExpiryDuration());
   }
 
   public LoginResponseDto refreshJwtToken(TokenRefreshRequestDto tokenRefreshRequestDto, UserContext userContext) {
@@ -48,8 +49,8 @@ public class AuthService {
     refreshToken.verifyExpiration();
 
     String jwtAccessToken = jwtTokenProvider.generateAccessToken(userContext);
-    long expiryDuration = jwtTokenProvider.getExpiryDuration();
 
-    return new LoginResponseDto(jwtAccessToken, tokenRefreshRequestDto.getRefreshToken(), expiryDuration);
+    return new LoginResponseDto(jwtAccessToken, tokenRefreshRequestDto.getRefreshToken(),
+        jwtTokenProvider.getAccessTokenExpiryDuration());
   }
 }

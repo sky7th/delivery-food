@@ -12,11 +12,11 @@ import org.springframework.data.redis.core.RedisHash;
 public class RefreshToken implements Serializable {
 
   @Id
-  private String token;
+  private String id;
   private Instant expiryDate;
 
-  public RefreshToken(String token, Instant expiryDate) {
-    this.token = token;
+  public RefreshToken(String id, Instant expiryDate) {
+    this.id = id;
     this.expiryDate = expiryDate;
   }
 
