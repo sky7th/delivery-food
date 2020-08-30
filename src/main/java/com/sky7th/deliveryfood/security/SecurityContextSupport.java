@@ -14,15 +14,15 @@ public class SecurityContextSupport {
     if (isNotLogined()) {
       throw new NotLoginException();
     }
-    Authentication authentication = getSecurityContext().getAuthentication();
-    return (UserContext) authentication.getPrincipal();
+
+    return (UserContext) getSecurityContext().getAuthentication().getPrincipal();
   }
 
   private static SecurityContext getSecurityContext() {
     return SecurityContextHolder.getContext();
   }
 
-  public static boolean isNotLogined() {
+  private static boolean isNotLogined() {
     Authentication authentication = getSecurityContext().getAuthentication();
     return Objects
         .isNull(authentication) || (authentication instanceof AnonymousAuthenticationToken);

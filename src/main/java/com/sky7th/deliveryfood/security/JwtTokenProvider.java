@@ -9,11 +9,15 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+@RequiredArgsConstructor
 @Component
 public class JwtTokenProvider {
+
+  private static final String ROLE = "role";
 
   @Value("${app.jwt.secret}")
   private String jwtSecret;
@@ -23,6 +27,8 @@ public class JwtTokenProvider {
 
   @Value("${app.jwt.refreshTokenExpiration}")
   private long jwtRefreshTokenExpirationInMs;
+
+  private final JwtTokenValidator jwtTokenValidator;
 
   public String generateAccessToken(CustomUserDetails customUserDetails) {
     return generateAccessToken(customUserDetails.getId(), customUserDetails.getRole());
@@ -34,7 +40,7 @@ public class JwtTokenProvider {
 
   private String generateAccessToken(Long id, UserRole userRole) {
     Claims claims = Jwts.claims().setId(Long.toString(id));
-    claims.put("role", userRole.getRoleName());
+    claims.put(ROLE, userRole);
     Instant expiryDate = Instant.now().plusMillis(jwtAccessTokenExpirationInMs);
 
     return Jwts.builder()
@@ -50,17 +56,18 @@ public class JwtTokenProvider {
   }
 
   public UserContext getUserContextFromJwt(String token) {
-    Claims claims = Jwts.parser()
-        .setSigningKey(jwtSecret)
-        .parseClaimsJws(token)
-        .getBody();
+    Claims claims = jwtTokenValidator.validateToken(token);
+    Long userId = Long.parseLong(claims.getId());
+    UserRole role = UserRole.valueOf(claims.get(ROLE, String.class));
 
-    UserRole role = UserRole.valueOf((String) claims.get("role"));
-
-    return new UserContext(Long.parseLong(claims.getId()), role);
+    return new UserContext(userId, role);
   }
 
-  public long getExpiryDuration() {
+  public long getAccessTokenExpiryDuration() {
     return jwtAccessTokenExpirationInMs;
+  }
+
+  public Instant getRefreshTokenExpiryDate() {
+    return Instant.now().plusMillis(jwtRefreshTokenExpirationInMs);
   }
 }

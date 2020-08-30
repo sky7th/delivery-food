@@ -2,6 +2,7 @@ package com.sky7th.deliveryfood.security;
 
 
 import com.sky7th.deliveryfood.security.exception.InvalidTokenRequestException;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -20,9 +21,9 @@ public class JwtTokenValidator {
   @Value("${app.jwt.secret}")
   private String jwtSecret;
 
-  public boolean validateToken(String authToken) {
+  Claims validateToken(String authToken) {
     try {
-      Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+      return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken).getBody();
 
     } catch (SignatureException ex) {
       logger.error("JWT 서명 확인 불가");
@@ -44,6 +45,5 @@ public class JwtTokenValidator {
       logger.error("JWT claims string is empty.");
       throw new InvalidTokenRequestException("JWT", authToken, "Illegal argument token");
     }
-    return true;
   }
 }

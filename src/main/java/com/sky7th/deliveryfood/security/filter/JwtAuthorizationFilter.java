@@ -2,11 +2,9 @@ package com.sky7th.deliveryfood.security.filter;
 
 
 import com.sky7th.deliveryfood.security.JwtTokenProvider;
-import com.sky7th.deliveryfood.security.JwtTokenValidator;
-import com.sky7th.deliveryfood.user.UserService;
-import com.sky7th.deliveryfood.user.CustomUserDetails;
 import com.sky7th.deliveryfood.user.UserContext;
 import java.io.IOException;
+import java.util.Arrays;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -35,9 +34,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
   private String tokenRequestHeaderPrefix;
 
   private final JwtTokenProvider jwtTokenProvider;
-  private final JwtTokenValidator jwtTokenValidator;
-  private final UserService userService;
-
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -45,11 +41,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     try {
       String jwt = getJwtFromRequest(request);
 
-      if (StringUtils.hasText(jwt) && jwtTokenValidator.validateToken(jwt)) {
+      if (StringUtils.hasText(jwt)) {
         UserContext userContext = jwtTokenProvider.getUserContextFromJwt(jwt);
-        CustomUserDetails customUserDetails = userService.loadUserByIdAndRole(userContext);
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-            customUserDetails.getId(), null, customUserDetails.getAuthorities());
+            userContext, null, Arrays.asList(new SimpleGrantedAuthority(userContext.getRole().toString())));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
