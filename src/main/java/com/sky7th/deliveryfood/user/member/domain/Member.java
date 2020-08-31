@@ -17,6 +17,12 @@ public class Member extends User {
   @Column(name = "USERNAME", nullable = false)
   private String username;
 
+  @Column(name = "IMAGE_URL")
+  private String imageUrl;
+
+  @Column(nullable = false)
+  private Boolean emailVerified = false;
+
   public Member() {
     super();
   }
@@ -24,5 +30,9 @@ public class Member extends User {
   public Member(String email, String password, String username) {
     super(email, password);
     this.username = username;
+  }
+
+  public void emailVerify() {
+    this.emailVerified = true;
   }
 }

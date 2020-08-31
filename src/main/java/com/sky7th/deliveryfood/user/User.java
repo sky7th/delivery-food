@@ -25,9 +25,6 @@ public abstract class User extends BaseTimeEntity {
   @Column(name = "PASSWORD", nullable = false)
   private String password;
 
-  @Column(nullable = false)
-  private Boolean emailVerified = false;
-
   @Column(name = "IS_ACTIVE", nullable = false)
   private Boolean active;
 
@@ -38,7 +35,6 @@ public abstract class User extends BaseTimeEntity {
     this.id = user.id;
     this.email = user.getEmail();
     this.password = user.getPassword();
-    this.emailVerified = user.getEmailVerified();
     this.active = user.getActive();
     this.role = user.getRole();
   }
@@ -46,18 +42,13 @@ public abstract class User extends BaseTimeEntity {
   public User(String email, String password) {
     this.email = email;
     this.password = password;
-    this.emailVerified = false;
     this.active = true;
   }
 
   public User() {
   }
 
-  public void emailVerify() {
-    this.emailVerified = true;
-  }
-
-  public void inactice() {
+  public void inActice() {
     this.active = false;
   }
 }

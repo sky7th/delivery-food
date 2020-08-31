@@ -1,5 +1,6 @@
 package com.sky7th.deliveryfood.security.provider;
 
+import com.sky7th.deliveryfood.security.exception.EmailNotVerifiedException;
 import com.sky7th.deliveryfood.security.token.MemberUsernamePasswordAuthenticationToken;
 import com.sky7th.deliveryfood.user.CustomUserDetails;
 import com.sky7th.deliveryfood.user.UserRole;
@@ -16,6 +17,10 @@ public class MemberAuthenticationProvider extends AbstractAuthenticationProvider
 
   public CustomUserDetails getCustomUserDetails(String email) {
     Member member = memberService.findByEmail(email);
+
+    if (!member.getEmailVerified()) {
+      throw new EmailNotVerifiedException(email);
+    }
 
     return new CustomUserDetails(member, UserRole.ROLE_MEMBER);
   }
