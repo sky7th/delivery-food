@@ -8,20 +8,23 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
-import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-@AllArgsConstructor
 @Component
 public class JwtTokenValidator {
 
   private static final Logger logger = LoggerFactory.getLogger(JwtTokenValidator.class);
 
-  @Value("${app.jwt.secret}")
   private String jwtSecret;
+
+  @Autowired
+  public JwtTokenValidator(@Value("${app.jwt.secret}") String jwtSecret) {
+    this.jwtSecret = jwtSecret;
+  }
 
   Claims validateToken(String authToken) {
     try {
