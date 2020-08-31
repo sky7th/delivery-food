@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
@@ -33,7 +34,8 @@ public class OnGenerateEmailVerificationListener {
     sendEmailVerification(onGenerateEmailVerificationEvent);
   }
 
-  private void sendEmailVerification(OnGenerateEmailVerificationEvent event) {
+  @Transactional
+  public void sendEmailVerification(OnGenerateEmailVerificationEvent event) {
     User user = event.getUser();
     String toEmail = user.getEmail();
     String key = UUID.randomUUID().toString();
