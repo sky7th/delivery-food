@@ -1,12 +1,15 @@
 package com.sky7th.deliveryfood.user.member.service;
 
-import com.sky7th.deliveryfood.generic.mail.event.OnGenerateEmailVerificationEvent;
 import com.sky7th.deliveryfood.generic.mail.domain.token.EmailVerificationToken;
 import com.sky7th.deliveryfood.generic.mail.domain.token.EmailVerificationTokenService;
+import com.sky7th.deliveryfood.generic.mail.event.OnGenerateEmailVerificationEvent;
+import com.sky7th.deliveryfood.security.service.UserValidateService;
+import com.sky7th.deliveryfood.user.LoginRequestDto;
 import com.sky7th.deliveryfood.user.RegisterRequestDto;
 import com.sky7th.deliveryfood.user.member.domain.Member;
 import com.sky7th.deliveryfood.user.member.domain.MemberRepository;
 import com.sky7th.deliveryfood.user.member.dto.MemberResponseDto;
+import com.sky7th.deliveryfood.user.member.service.exception.AlreadyEmailVerifiedException;
 import com.sky7th.deliveryfood.user.member.service.exception.NotFoundMemberException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -26,6 +29,7 @@ public class MemberService {
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
   private final EmailVerificationTokenService emailVerificationTokenService;
   private final ApplicationEventPublisher applicationEventPublisher;
+  private final UserValidateService userValidateService;
 
   public Member findById(Long memberId) {
     return memberRepository.findById(memberId).orElseThrow(NotFoundMemberException::new);
@@ -52,18 +56,28 @@ public class MemberService {
     return memberRepository.save(member);
   }
 
-  public void sendVerificationEmail(Member member) {
+  private void sendVerificationEmail(Member member) {
     UriComponentsBuilder urlBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().path(MEMBER_REGISTER_CONFIRM_URL);
     OnGenerateEmailVerificationEvent onGenerateEmailVerificationEvent = new OnGenerateEmailVerificationEvent(member, urlBuilder);
     applicationEventPublisher.publishEvent(onGenerateEmailVerificationEvent);
   }
 
-  public MemberResponseDto emailVerify(String key) {
+  @Transactional
+  public void emailVerify(String key) {
     EmailVerificationToken token = emailVerificationTokenService.findById(key);
     token.verifyExpiration();
     Member member = findById(token.getUserId());
     member.emailVerify();
+  }
 
-    return MemberResponseDto.of(member);
+  public void resendVerificationEmail(LoginRequestDto loginRequestDto) {
+    Member member = findByEmail(loginRequestDto.getEmail());
+    userValidateService.validateUser(member, loginRequestDto.getPassword());
+
+    if (member.getEmailVerified()) {
+      throw new AlreadyEmailVerifiedException();
+    }
+
+    sendVerificationEmail(member);
   }
 }

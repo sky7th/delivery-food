@@ -8,7 +8,7 @@ import lombok.Getter;
 import org.springframework.data.redis.core.RedisHash;
 
 @Getter
-@RedisHash("email_verification_token")
+@RedisHash(value = "email_verification_token", timeToLive = 1800)
 public class EmailVerificationToken implements Serializable {
 
   @Id

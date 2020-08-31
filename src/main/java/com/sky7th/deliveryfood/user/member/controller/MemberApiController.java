@@ -60,7 +60,15 @@ public class MemberApiController {
 
   @GetMapping("/register/confirm")
   public ResponseEntity<MemberResponseDto> registerConfirm(@RequestParam("key") String key) {
+    memberService.emailVerify(key);
 
-    return ResponseEntity.ok(memberService.emailVerify(key));
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/resend/verificationEmail")
+  public ResponseEntity<MemberResponseDto> registerMailResend(@RequestBody LoginRequestDto loginRequestDto) {
+    memberService.resendVerificationEmail(loginRequestDto);
+
+    return ResponseEntity.ok().build();
   }
 }

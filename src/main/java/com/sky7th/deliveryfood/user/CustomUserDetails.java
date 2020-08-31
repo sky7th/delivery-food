@@ -14,6 +14,10 @@ public class CustomUserDetails extends User implements UserDetails {
         setRole(role);
     }
 
+    public CustomUserDetails(final User user) {
+        super(user);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.asList(new SimpleGrantedAuthority(getRole().toString()));

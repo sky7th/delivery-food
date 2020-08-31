@@ -1,7 +1,7 @@
 package com.sky7th.deliveryfood.security.provider;
 
 import com.sky7th.deliveryfood.security.exception.EmailNotVerifiedException;
-import com.sky7th.deliveryfood.security.service.AuthService;
+import com.sky7th.deliveryfood.security.service.UserValidateService;
 import com.sky7th.deliveryfood.security.token.MemberUsernamePasswordAuthenticationToken;
 import com.sky7th.deliveryfood.user.CustomUserDetails;
 import com.sky7th.deliveryfood.user.UserRole;
@@ -15,11 +15,11 @@ import org.springframework.stereotype.Component;
 public class MemberAuthenticationProvider extends AbstractAuthenticationProvider {
 
   private final MemberService memberService;
-  private final AuthService authService;
+  private final UserValidateService userValidateService;
 
   public CustomUserDetails getCustomUserDetails(String email, String password) {
     Member member = memberService.findByEmail(email);
-    authService.validateUser(member, password);
+    userValidateService.validateUser(member, password);
 
     if (!member.getEmailVerified()) {
       throw new EmailNotVerifiedException(member.getEmail());
