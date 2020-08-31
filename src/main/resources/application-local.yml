@@ -4,18 +4,49 @@ spring:
     include:
       - console-logging
       - file-logging
+
   datasource:
     platform: h2
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:test
     username: sa
     password:
+
   jpa:
     database-platform: H2
     hibernate:
       ddl-auto: create-drop
     properties:
-        format_sql: true
+      show_sql: true
+      format_sql: true
+
+  redis:
+    host: localhost
+    port: 6379
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 1095288292737-me0kh7om3afgbg9eea7m2ogjj9dlft2h.apps.googleusercontent.com
+            client-secret: SdAMzKonD9G2CCQKPG7uMS2T
+            # redirectUri: "{baseUrl}/login/oauth2/code/google"
+            scope: email, profile
+
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    username: xoghk0321@gmail.com
+    password: fnhfrojbuhcztllr
+    port: 587
+    protocol: smtp
+    debug: true
+    smtp:
+      auth: true
+      starttls:
+        enable: true
+    emailVerificationTokenExpiration: 1800000
 
 app:
   jwt:
@@ -25,6 +56,14 @@ app:
     header:
       name: Authorization
       prefix: Bearer
+
+  oauth2:
+    authorizedRedirectUris:
+      - http://localhost:3000/oauth2/redirect
+
+  velocity:
+    templates:
+      location: /templates/
 
 
 #
