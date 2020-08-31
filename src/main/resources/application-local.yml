@@ -4,18 +4,92 @@ spring:
     include:
       - console-logging
       - file-logging
+
   datasource:
     platform: h2
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:test
     username: sa
     password:
+
   jpa:
     database-platform: H2
     hibernate:
       ddl-auto: create-drop
     properties:
-        format_sql: true
+      show_sql: true
+      format_sql: true
+
+  redis:
+    host: localhost
+    port: 6379
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 1095288292737-me0kh7om3afgbg9eea7m2ogjj9dlft2h.apps.googleusercontent.com
+            client-secret: SdAMzKonD9G2CCQKPG7uMS2T
+            # redirectUri: "{baseUrl}/login/oauth2/code/google"
+            scope: email, profile
+
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    username: xoghk0321@gmail.com
+    password: fnhfrojbuhcztllr
+    port: 587
+    protocol: smtp
+    debug: true
+    smtp:
+      auth: true
+      starttls:
+        enable: true
+    emailVerificationTokenExpiration: 1800000
+
+  freemarker:
+    template-loader-path: classpath:/templates
+    suffix: .ftl
+
+app:
+  jwt:
+    secret: asdf
+    accessTokenExpiration: 900000 # 15분
+    refreshTokenExpiration: 2592000000 # 30일
+    header:
+      name: Authorization
+      prefix: Bearer
+
+  oauth2:
+    authorizedRedirectUris:
+      - http://localhost:3000/oauth2/redirect
+
+  velocity:
+    templates:
+      location: /templates/
+
+
+#
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          naver:
+#            client-id: 6LzqoD5To90UYPJDL6Td
+#            client-secret: knPHaZceBZ
+#            redirect-uri: {baseUrl}/{action}/oauth2/code/{registrationId}
+#            authorization-grant-type: authorization_code
+#            scope: name,email,profile_image
+#            client-name: Naver
+#        provider:
+#          naver:
+#            authorization-uri: https://nid.naver.com/oauth2.0/authorize
+#            token-uri: https://nid.naver.com/oauth2.0/token
+#            user-info-uri: https://openapi.naver.com/v1/nid/me
+#            name-attribute: response
+
+
 
 logging:
   level:
