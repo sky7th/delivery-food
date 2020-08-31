@@ -48,6 +48,10 @@ spring:
         enable: true
     emailVerificationTokenExpiration: 1800000
 
+  freemarker:
+    template-loader-path: classpath:/templates
+    suffix: .ftl
+
 app:
   jwt:
     secret: asdf

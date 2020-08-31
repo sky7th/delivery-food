@@ -17,7 +17,7 @@ public class EmailVerificationTokenService {
 
   public EmailVerificationToken findById(String id) {
     return emailVerificationTokenRepository.findById(id)
-        .orElseThrow(() -> new TokenRefreshException("해당 이메일 인증 토큰을 찾을 수 없습니다. 이메일 인증 요청을 다시 해주세요."));
+        .orElseThrow(() -> new TokenRefreshException("이메일 인증 시간이 만료되었습니다. 이메일 인증 요청을 다시 해주세요."));
   }
 
   public EmailVerificationToken save(EmailVerificationToken refreshToken) {

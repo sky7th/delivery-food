@@ -14,11 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -56,13 +54,6 @@ public class MemberApiController {
     logger.info("Refresh Token Request: {}", tokenRefreshRequestDto.getRefreshToken());
 
     return ResponseEntity.ok(authService.refreshJwtToken(tokenRefreshRequestDto, userContext));
-  }
-
-  @GetMapping("/register/confirm")
-  public ResponseEntity<MemberResponseDto> registerConfirm(@RequestParam("key") String key) {
-    memberService.emailVerify(key);
-
-    return ResponseEntity.ok().build();
   }
 
   @PostMapping("/resend/verificationEmail")
