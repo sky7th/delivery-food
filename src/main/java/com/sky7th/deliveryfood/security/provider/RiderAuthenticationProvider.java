@@ -1,5 +1,6 @@
 package com.sky7th.deliveryfood.security.provider;
 
+import com.sky7th.deliveryfood.security.service.AuthService;
 import com.sky7th.deliveryfood.security.token.RiderUsernamePasswordAuthenticationToken;
 import com.sky7th.deliveryfood.user.CustomUserDetails;
 import com.sky7th.deliveryfood.user.UserRole;
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Component;
 public class RiderAuthenticationProvider extends AbstractAuthenticationProvider {
 
   private final RiderService riderService;
+  private final AuthService authService;
 
-  public CustomUserDetails getCustomUserDetails(String email) {
+  public CustomUserDetails getCustomUserDetails(String email, String password) {
     Rider rider = riderService.findByEmail(email);
+    authService.validateUser(rider, password);
 
     return new CustomUserDetails(rider, UserRole.ROLE_RIDER);
   }
