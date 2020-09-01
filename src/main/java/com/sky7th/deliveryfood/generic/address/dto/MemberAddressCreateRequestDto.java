@@ -15,4 +15,7 @@ public class MemberAddressCreateRequestDto {
 
   @NotBlank
   private String detailedAddress;
+
+  private MemberAddressCreateRequestDto() {
+  }
 }
