@@ -1,6 +1,7 @@
 package com.sky7th.deliveryfood.user;
 
 import com.sky7th.deliveryfood.common.domain.BaseTimeEntity;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -50,5 +51,23 @@ public abstract class User extends BaseTimeEntity {
 
   public void inActice() {
     this.active = false;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    User user = (User) o;
+    return Objects.equals(id, user.id) &&
+        role == user.role;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, role);
   }
 }

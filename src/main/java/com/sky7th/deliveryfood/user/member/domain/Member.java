@@ -2,8 +2,10 @@ package com.sky7th.deliveryfood.user.member.domain;
 
 import com.sky7th.deliveryfood.generic.address.domain.MemberAddress;
 import com.sky7th.deliveryfood.user.User;
+import com.sky7th.deliveryfood.user.member.service.exception.MismatchMemberException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,5 +41,29 @@ public class Member extends User {
 
   public void emailVerify() {
     this.emailVerified = true;
+  }
+
+  public void same(Member member) {
+    if (!this.equals(member)) {
+      throw new MismatchMemberException();
+    }
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Member member = (Member) o;
+    return Objects.equals(this.getId(), member.getId()) &&
+        this.getRole() == member.getRole();
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.getId(), this.getRole());
   }
 }
