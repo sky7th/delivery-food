@@ -1,5 +1,7 @@
 package com.sky7th.deliveryfood.user.member.controller;
 
+import com.sky7th.deliveryfood.generic.address.dto.MemberAddressCreateRequestDto;
+import com.sky7th.deliveryfood.generic.address.dto.MemberAddressResponseDto;
 import com.sky7th.deliveryfood.security.service.AuthService;
 import com.sky7th.deliveryfood.security.token.MemberUsernamePasswordAuthenticationToken;
 import com.sky7th.deliveryfood.user.CustomUserDetails;
@@ -8,7 +10,6 @@ import com.sky7th.deliveryfood.user.LoginResponseDto;
 import com.sky7th.deliveryfood.user.RegisterRequestDto;
 import com.sky7th.deliveryfood.user.TokenRefreshRequestDto;
 import com.sky7th.deliveryfood.user.UserContext;
-import com.sky7th.deliveryfood.user.member.dto.MemberAddressCreateRequestDto;
 import com.sky7th.deliveryfood.user.member.dto.MemberResponseDto;
 import com.sky7th.deliveryfood.user.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -62,23 +63,18 @@ public class MemberApiController {
   @PostMapping("/resend/verificationEmail")
   public ResponseEntity<MemberResponseDto> registerMailResend(@RequestBody LoginRequestDto loginRequestDto) {
     memberService.resendVerificationEmail(loginRequestDto);
-
     return ResponseEntity.ok().build();
   }
 
   @PostMapping("/address")
-  public ResponseEntity<MemberResponseDto> createMemberAddress(
+  public ResponseEntity<MemberAddressResponseDto> createMemberAddress(
       @RequestBody MemberAddressCreateRequestDto requestDto, UserContext userContext) {
-    memberService.createMemberAddress(requestDto, userContext);
-
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok(memberService.createMemberAddress(requestDto, userContext));
   }
 
   @PutMapping("/address/{memberAddressId}")
-  public ResponseEntity<MemberResponseDto> updateMemberAddress(@PathVariable Long memberAddressId,
+  public ResponseEntity<MemberAddressResponseDto> updateMemberAddress(@PathVariable Long memberAddressId,
       @RequestBody MemberAddressCreateRequestDto requestDto, UserContext userContext) {
-    memberService.updateMemberAddress(memberAddressId, requestDto, userContext);
-
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok(memberService.updateMemberAddress(memberAddressId, requestDto, userContext));
   }
 }

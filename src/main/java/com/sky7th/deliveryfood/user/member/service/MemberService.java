@@ -1,5 +1,7 @@
 package com.sky7th.deliveryfood.user.member.service;
 
+import com.sky7th.deliveryfood.generic.address.dto.MemberAddressCreateRequestDto;
+import com.sky7th.deliveryfood.generic.address.dto.MemberAddressResponseDto;
 import com.sky7th.deliveryfood.generic.address.service.MemberAddressService;
 import com.sky7th.deliveryfood.generic.mail.domain.token.EmailVerificationToken;
 import com.sky7th.deliveryfood.generic.mail.domain.token.EmailVerificationTokenService;
@@ -10,7 +12,6 @@ import com.sky7th.deliveryfood.user.RegisterRequestDto;
 import com.sky7th.deliveryfood.user.UserContext;
 import com.sky7th.deliveryfood.user.member.domain.Member;
 import com.sky7th.deliveryfood.user.member.domain.MemberRepository;
-import com.sky7th.deliveryfood.user.member.dto.MemberAddressCreateRequestDto;
 import com.sky7th.deliveryfood.user.member.dto.MemberResponseDto;
 import com.sky7th.deliveryfood.user.member.service.exception.AlreadyEmailVerifiedException;
 import com.sky7th.deliveryfood.user.member.service.exception.NotFoundMemberException;
@@ -85,11 +86,11 @@ public class MemberService {
     sendVerificationEmail(member);
   }
 
-  public void createMemberAddress(MemberAddressCreateRequestDto requestDto, UserContext userContext) {
-    memberAddressService.save(requestDto, userContext);
+  public MemberAddressResponseDto createMemberAddress(MemberAddressCreateRequestDto requestDto, UserContext userContext) {
+    return MemberAddressResponseDto.of(memberAddressService.save(requestDto, userContext));
   }
 
-  public void updateMemberAddress(Long memberAddressId, MemberAddressCreateRequestDto requestDto, UserContext userContext) {
-    memberAddressService.update(memberAddressId, requestDto, userContext);
+  public MemberAddressResponseDto updateMemberAddress(Long memberAddressId, MemberAddressCreateRequestDto requestDto, UserContext userContext) {
+    return MemberAddressResponseDto.of(memberAddressService.update(memberAddressId, requestDto, userContext));
   }
 }

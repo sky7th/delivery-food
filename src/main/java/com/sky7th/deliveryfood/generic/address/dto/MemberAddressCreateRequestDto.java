@@ -1,4 +1,4 @@
-package com.sky7th.deliveryfood.user.member.dto;
+package com.sky7th.deliveryfood.generic.address.dto;
 
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
