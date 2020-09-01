@@ -57,7 +57,7 @@ public class Shop extends BaseTimeEntity {
     return amount.isGreaterThanOrEqual(minOrderAmount);
   }
 
-  public void setStatus(ShopStatus status) {
+  public void updateStatus(ShopStatus status) {
     this.status = status;
   }
 }

@@ -9,9 +9,7 @@ import lombok.Getter;
 
 @Getter
 @Entity
-@Table(name = "MEMBERS", uniqueConstraints = {
-    @UniqueConstraint(columnNames = "EMAIL")
-})
+@Table(name = "MEMBERS")
 public class Member extends User {
 
   @Column(name = "USERNAME", nullable = false)
