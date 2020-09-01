@@ -88,4 +88,8 @@ public class MemberService {
   public void createMemberAddress(MemberAddressCreateRequestDto requestDto, UserContext userContext) {
     memberAddressService.save(requestDto, userContext);
   }
+
+  public void updateMemberAddress(Long memberAddressId, MemberAddressCreateRequestDto requestDto, UserContext userContext) {
+    memberAddressService.update(memberAddressId, requestDto, userContext);
+  }
 }

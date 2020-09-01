@@ -40,4 +40,10 @@ public class MemberAddress {
 
   private MemberAddress() {
   }
+
+  public void update(Member member, Address address, String detailedAddress) {
+    this.member.same(member);
+    this.address = address;
+    this.detailedAddress = detailedAddress;
+  }
 }
