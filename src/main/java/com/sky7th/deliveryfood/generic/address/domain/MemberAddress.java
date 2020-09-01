@@ -29,6 +29,15 @@ public class MemberAddress {
   @JoinColumn(name = "BUILDING_MANAGEMENT_NUMBER")
   private Address address;
 
+  @Column(name = "DETAILED_ADDRESS")
+  private String detailedAddress;
+
+  public MemberAddress(Member member, Address address, String detailedAddress) {
+    this.member = member;
+    this.address = address;
+    this.detailedAddress = detailedAddress;
+  }
+
   private MemberAddress() {
   }
 }

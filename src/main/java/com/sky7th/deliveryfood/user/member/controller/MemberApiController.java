@@ -8,6 +8,7 @@ import com.sky7th.deliveryfood.user.LoginResponseDto;
 import com.sky7th.deliveryfood.user.RegisterRequestDto;
 import com.sky7th.deliveryfood.user.TokenRefreshRequestDto;
 import com.sky7th.deliveryfood.user.UserContext;
+import com.sky7th.deliveryfood.user.member.dto.MemberAddressCreateRequestDto;
 import com.sky7th.deliveryfood.user.member.dto.MemberResponseDto;
 import com.sky7th.deliveryfood.user.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -59,6 +60,14 @@ public class MemberApiController {
   @PostMapping("/resend/verificationEmail")
   public ResponseEntity<MemberResponseDto> registerMailResend(@RequestBody LoginRequestDto loginRequestDto) {
     memberService.resendVerificationEmail(loginRequestDto);
+
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/address")
+  public ResponseEntity<MemberResponseDto> createMemberAddress(
+      @RequestBody MemberAddressCreateRequestDto requestDto, UserContext userContext) {
+    memberService.createMemberAddress(requestDto, userContext);
 
     return ResponseEntity.ok().build();
   }
