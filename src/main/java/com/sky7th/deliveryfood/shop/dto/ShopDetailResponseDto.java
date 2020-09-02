@@ -6,6 +6,7 @@ import com.sky7th.deliveryfood.shop.domain.Shop;
 import com.sky7th.deliveryfood.shop.domain.Shop.DeliveryType;
 import com.sky7th.deliveryfood.shop.domain.Shop.ShopStatus;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,5 +44,9 @@ public class ShopDetailResponseDto {
         .address(AddressResponseDto.of(entity.getAddress()))
         .deliveryAreaTowns(TownAddressResponseDto.of(entity.getShopDeliveryAddresses()))
         .build();
+  }
+
+  public static List<ShopDetailResponseDto> of(List<Shop> entities) {
+    return entities.stream().map(ShopDetailResponseDto::of).collect(Collectors.toList());
   }
 }

@@ -113,7 +113,7 @@ public class Shop extends BaseTimeEntity {
     this.shopDeliveryAddresses.addAll(newShopDeliveryAddresses);
   }
 
-  private boolean isSameOwner(Long ownerId) {
+  public boolean isSameOwner(Long ownerId) {
     return this.ownerId.equals(ownerId);
   }
 
