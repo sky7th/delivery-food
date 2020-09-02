@@ -11,7 +11,6 @@ import com.sky7th.deliveryfood.shop.dto.ShopResponseDto;
 import com.sky7th.deliveryfood.shop.exception.NotFoundShopException;
 import com.sky7th.deliveryfood.user.UserContext;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,9 +35,7 @@ public class ShopService {
 
   public ShopResponseDto updateDeliveryArea(Long shopId, ShopDeliveryAddressRequestDto requestDto, UserContext userContext) {
     Shop shop = findById(shopId);
-    Set<ShopDeliveryAddress> shopDeliveryAddresses = requestDto.getTownCodes().stream()
-        .map(townCode -> ShopDeliveryAddressRequestDto.toEntity(townCode, shop))
-        .collect(Collectors.toSet());
+    Set<ShopDeliveryAddress> shopDeliveryAddresses = ShopDeliveryAddressRequestDto.toEntities(requestDto, shop);
     shop.updateDeliveryArea(shopDeliveryAddresses, userContext.getId());
 
     return ShopResponseDto.of(shop);
