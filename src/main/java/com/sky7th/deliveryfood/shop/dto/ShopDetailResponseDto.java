@@ -47,6 +47,8 @@ public class ShopDetailResponseDto {
   }
 
   public static List<ShopDetailResponseDto> of(List<Shop> entities) {
-    return entities.stream().map(ShopDetailResponseDto::of).collect(Collectors.toList());
+    return entities.stream()
+        .map(ShopDetailResponseDto::of)
+        .collect(Collectors.toList());
   }
 }

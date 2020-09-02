@@ -11,7 +11,6 @@ import com.sky7th.deliveryfood.shop.dto.ShopDetailResponseDto;
 import com.sky7th.deliveryfood.shop.dto.ShopDetailResponseDtos;
 import com.sky7th.deliveryfood.shop.exception.NotFoundShopException;
 import com.sky7th.deliveryfood.user.UserContext;
-import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,10 +36,8 @@ public class ShopService {
     return ShopDetailResponseDto.of(shop);
   }
 
-  public ShopDetailResponseDtos findAllByOwnerId(UserContext userContext) {
-    List<ShopDetailResponseDto> shopDetailResponseDtos =
-        ShopDetailResponseDto.of(shopRepository.findAllByOwnerId(userContext.getId()));
-    return new ShopDetailResponseDtos(shopDetailResponseDtos);
+  public ShopDetailResponseDtos findMyShops(UserContext userContext) {
+    return ShopDetailResponseDtos.of(shopRepository.findAllByOwnerId(userContext.getId()));
   }
 
   public void save(ShopApplyRequestDto requestDto, UserContext userContext) {

@@ -30,7 +30,7 @@ public class ShopController {
 
   @GetMapping
   public ResponseEntity<ShopDetailResponseDtos> list(UserContext userContext) {
-    return ResponseEntity.ok(shopService.findAllByOwnerId(userContext));
+    return ResponseEntity.ok(shopService.findMyShops(userContext));
   }
 
   @GetMapping("/{shopId}")
