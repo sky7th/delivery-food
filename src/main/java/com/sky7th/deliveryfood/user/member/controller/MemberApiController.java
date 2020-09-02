@@ -2,6 +2,7 @@ package com.sky7th.deliveryfood.user.member.controller;
 
 import com.sky7th.deliveryfood.generic.address.dto.MemberAddressCreateRequestDto;
 import com.sky7th.deliveryfood.generic.address.dto.MemberAddressResponseDto;
+import com.sky7th.deliveryfood.generic.address.service.MemberAddressService;
 import com.sky7th.deliveryfood.security.service.AuthService;
 import com.sky7th.deliveryfood.security.token.MemberUsernamePasswordAuthenticationToken;
 import com.sky7th.deliveryfood.user.CustomUserDetails;
@@ -32,6 +33,7 @@ public class MemberApiController {
 
   private final AuthService authService;
   private final MemberService memberService;
+  private final MemberAddressService memberAddressService;
 
   @PostMapping("/login")
   public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
@@ -69,12 +71,12 @@ public class MemberApiController {
   @PostMapping("/address")
   public ResponseEntity<MemberAddressResponseDto> createMemberAddress(
       @RequestBody MemberAddressCreateRequestDto requestDto, UserContext userContext) {
-    return ResponseEntity.ok(memberService.createMemberAddress(requestDto, userContext));
+    return ResponseEntity.ok(memberAddressService.save(requestDto, userContext));
   }
 
   @PutMapping("/address/{memberAddressId}")
   public ResponseEntity<MemberAddressResponseDto> updateMemberAddress(@PathVariable Long memberAddressId,
       @RequestBody MemberAddressCreateRequestDto requestDto, UserContext userContext) {
-    return ResponseEntity.ok(memberService.updateMemberAddress(memberAddressId, requestDto, userContext));
+    return ResponseEntity.ok(memberAddressService.update(memberAddressId, requestDto, userContext));
   }
 }

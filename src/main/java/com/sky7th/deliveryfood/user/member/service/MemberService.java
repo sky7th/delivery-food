@@ -1,15 +1,11 @@
 package com.sky7th.deliveryfood.user.member.service;
 
-import com.sky7th.deliveryfood.generic.address.dto.MemberAddressCreateRequestDto;
-import com.sky7th.deliveryfood.generic.address.dto.MemberAddressResponseDto;
-import com.sky7th.deliveryfood.generic.address.service.MemberAddressService;
 import com.sky7th.deliveryfood.generic.mail.domain.token.EmailVerificationToken;
 import com.sky7th.deliveryfood.generic.mail.domain.token.EmailVerificationTokenService;
 import com.sky7th.deliveryfood.generic.mail.event.OnGenerateEmailVerificationEvent;
 import com.sky7th.deliveryfood.security.service.UserValidateService;
 import com.sky7th.deliveryfood.user.LoginRequestDto;
 import com.sky7th.deliveryfood.user.RegisterRequestDto;
-import com.sky7th.deliveryfood.user.UserContext;
 import com.sky7th.deliveryfood.user.member.domain.Member;
 import com.sky7th.deliveryfood.user.member.domain.MemberRepository;
 import com.sky7th.deliveryfood.user.member.dto.MemberResponseDto;
@@ -34,7 +30,6 @@ public class MemberService {
   private final EmailVerificationTokenService emailVerificationTokenService;
   private final ApplicationEventPublisher applicationEventPublisher;
   private final UserValidateService userValidateService;
-  private final MemberAddressService memberAddressService;
 
   public Member findById(Long memberId) {
     return memberRepository.findById(memberId).orElseThrow(NotFoundMemberException::new);
@@ -84,13 +79,5 @@ public class MemberService {
     }
 
     sendVerificationEmail(member);
-  }
-
-  public MemberAddressResponseDto createMemberAddress(MemberAddressCreateRequestDto requestDto, UserContext userContext) {
-    return MemberAddressResponseDto.of(memberAddressService.save(requestDto, userContext));
-  }
-
-  public MemberAddressResponseDto updateMemberAddress(Long memberAddressId, MemberAddressCreateRequestDto requestDto, UserContext userContext) {
-    return MemberAddressResponseDto.of(memberAddressService.update(memberAddressId, requestDto, userContext));
   }
 }
