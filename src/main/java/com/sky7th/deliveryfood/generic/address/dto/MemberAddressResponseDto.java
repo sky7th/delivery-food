@@ -13,12 +13,14 @@ import lombok.ToString;
 public class MemberAddressResponseDto {
 
   private Long id;
-  private String addressCode;
+  private AddressResponseDto address;
   private String detailedAddress;
 
   public static MemberAddressResponseDto of(MemberAddress entity) {
     return new MemberAddressResponseDto(
-        entity.getId(), entity.getAddress().getBuildingManagementNumber(), entity.getDetailedAddress());
+        entity.getId(),
+        AddressResponseDto.of(entity.getAddress()),
+        entity.getDetailedAddress());
   }
 
   public static List<MemberAddressResponseDto> of(List<MemberAddress> entities) {
