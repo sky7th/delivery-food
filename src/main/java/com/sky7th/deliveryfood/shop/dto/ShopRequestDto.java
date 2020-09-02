@@ -5,7 +5,6 @@ import com.sky7th.deliveryfood.generic.money.domain.Money;
 import com.sky7th.deliveryfood.shop.domain.Shop;
 import com.sky7th.deliveryfood.shop.domain.Shop.DeliveryType;
 import com.sky7th.deliveryfood.shop.domain.Shop.ShopStatus;
-import com.sky7th.deliveryfood.user.owner.domain.Owner;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +29,7 @@ public class ShopRequestDto {
   @NotBlank
   private String addressCode;
 
-  public static Shop toEntity(ShopRequestDto requestDto, Address address, Owner owner) {
+  public static Shop toEntity(ShopRequestDto requestDto, Address address, Long ownerId) {
     return Shop.builder()
         .name(requestDto.getName())
         .operatingTime(requestDto.getOperatingTime())
@@ -40,7 +39,7 @@ public class ShopRequestDto {
         .introduction(requestDto.getIntroduction())
         .guide(requestDto.getGuide())
         .status(ShopStatus.NOT_APPROVAL)
-        .ownerId(owner.getId())
+        .ownerId(ownerId)
         .address(address)
         .build();
   }
