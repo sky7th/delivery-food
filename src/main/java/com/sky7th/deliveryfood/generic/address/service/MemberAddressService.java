@@ -9,14 +9,17 @@ import com.sky7th.deliveryfood.generic.address.service.exception.NotFoundMemberA
 import com.sky7th.deliveryfood.user.UserContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class MemberAddressService {
 
   private final MemberAddressRepository memberAddressRepository;
   private final AddressService addressService;
 
+  @Transactional(readOnly = true)
   public MemberAddress findById(Long memberAddressId) {
     return memberAddressRepository.findById(memberAddressId).orElseThrow(NotFoundMemberAddressException::new);
   }

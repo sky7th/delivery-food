@@ -9,18 +9,22 @@ import com.sky7th.deliveryfood.user.owner.service.exception.NotFoundOwnerExcepti
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class OwnerService {
 
   private final OwnerRepository ownerRepository;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+  @Transactional(readOnly = true)
   public Owner findById(Long memberId) {
     return ownerRepository.findById(memberId).orElseThrow(NotFoundOwnerException::new);
   }
 
+  @Transactional(readOnly = true)
   public Owner findByEmail(String email) {
     return ownerRepository.findByEmail(email).orElseThrow(NotFoundOwnerException::new);
   }

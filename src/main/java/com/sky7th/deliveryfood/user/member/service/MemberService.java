@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class MemberService {
@@ -33,14 +34,17 @@ public class MemberService {
   private final ApplicationEventPublisher applicationEventPublisher;
   private final UserValidateService userValidateService;
 
+  @Transactional(readOnly = true)
   public Member findById(Long memberId) {
     return memberRepository.findById(memberId).orElseThrow(NotFoundMemberException::new);
   }
 
+  @Transactional(readOnly = true)
   public Member findByEmail(String email) {
     return memberRepository.findByEmail(email).orElseThrow(NotFoundMemberException::new);
   }
 
+  @Transactional(readOnly = true)
   public MemberShowResponseDto findByIdWithMemberAddresses(Long memberId, UserContext userContext) {
     Member member = memberRepository.findByIdWithMemberAddresses(memberId).orElseThrow(NotFoundMemberException::new);
     member.same(userContext.toMember());

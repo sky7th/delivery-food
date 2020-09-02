@@ -14,7 +14,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class ShopService {
@@ -22,6 +24,7 @@ public class ShopService {
   private final ShopRepository shopRepository;
   private final AddressService addressService;
 
+  @Transactional(readOnly = true)
   public Shop findById(Long shopId) {
     return shopRepository.findById(shopId).orElseThrow(NotFoundShopException::new);
   }
@@ -36,7 +39,7 @@ public class ShopService {
     Set<ShopDeliveryAddress> shopDeliveryAddresses = requestDto.getTownCodes().stream()
         .map(townCode -> ShopDeliveryAddressRequestDto.toEntity(townCode, shop))
         .collect(Collectors.toSet());
-    shop.updateDeliveryArea(shopDeliveryAddresses, userContext);
+    shop.updateDeliveryArea(shopDeliveryAddresses, userContext.getId());
 
     return ShopResponseDto.of(shop);
   }
