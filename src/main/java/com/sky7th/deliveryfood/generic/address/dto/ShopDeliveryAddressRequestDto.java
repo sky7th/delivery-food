@@ -14,14 +14,14 @@ import lombok.ToString;
 @ToString
 public class ShopDeliveryAddressRequestDto {
 
-  private List<String> townCodes;
+  private List<TownAddressRequestDto> deliveryAreaTowns;
 
   private ShopDeliveryAddressRequestDto() {
   }
 
   public static Set<ShopDeliveryAddress> toEntities(ShopDeliveryAddressRequestDto requestDto, Shop shop) {
-    return requestDto.getTownCodes().stream()
-        .map(townCode -> new ShopDeliveryAddress(shop, townCode))
+    return requestDto.getDeliveryAreaTowns().stream()
+        .map(town -> new ShopDeliveryAddress(shop, town.getTownCode(), town.getTownName()))
         .collect(Collectors.toSet());
   }
 }

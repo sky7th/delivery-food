@@ -12,6 +12,7 @@ import lombok.ToString;
 @ToString
 public class AddressResponseDto {
 
+  private String buildingManagementNumber;
   private String cityName;
   private String countryName;
   private String townName;
@@ -25,6 +26,7 @@ public class AddressResponseDto {
 
   public static AddressResponseDto of(Address entity) {
     return AddressResponseDto.builder()
+        .buildingManagementNumber(entity.getBuildingManagementNumber())
         .cityName(entity.getCityName())
         .countryName(entity.getCountryName())
         .townName(entity.getTownName())
