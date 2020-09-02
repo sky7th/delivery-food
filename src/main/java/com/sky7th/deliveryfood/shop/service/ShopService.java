@@ -6,8 +6,8 @@ import com.sky7th.deliveryfood.generic.address.dto.ShopDeliveryAddressRequestDto
 import com.sky7th.deliveryfood.generic.address.service.AddressService;
 import com.sky7th.deliveryfood.shop.domain.Shop;
 import com.sky7th.deliveryfood.shop.domain.ShopRepository;
-import com.sky7th.deliveryfood.shop.dto.ShopRequestDto;
-import com.sky7th.deliveryfood.shop.dto.ShopResponseDto;
+import com.sky7th.deliveryfood.shop.dto.ShopApplyRequestDto;
+import com.sky7th.deliveryfood.shop.dto.ShopDetailResponseDto;
 import com.sky7th.deliveryfood.shop.exception.NotFoundShopException;
 import com.sky7th.deliveryfood.user.UserContext;
 import java.util.Set;
@@ -28,16 +28,16 @@ public class ShopService {
     return shopRepository.findById(shopId).orElseThrow(NotFoundShopException::new);
   }
 
-  public void save(ShopRequestDto requestDto, UserContext userContext) {
+  public void save(ShopApplyRequestDto requestDto, UserContext userContext) {
     Address address = addressService.findByAddressCode(requestDto.getAddressCode());
-    shopRepository.save(ShopRequestDto.toEntity(requestDto, address, userContext.getId()));
+    shopRepository.save(ShopApplyRequestDto.toEntity(requestDto, address, userContext.getId()));
   }
 
-  public ShopResponseDto updateDeliveryArea(Long shopId, ShopDeliveryAddressRequestDto requestDto, UserContext userContext) {
+  public ShopDetailResponseDto updateDeliveryArea(Long shopId, ShopDeliveryAddressRequestDto requestDto, UserContext userContext) {
     Shop shop = findById(shopId);
     Set<ShopDeliveryAddress> shopDeliveryAddresses = ShopDeliveryAddressRequestDto.toEntities(requestDto, shop);
     shop.updateDeliveryArea(shopDeliveryAddresses, userContext.getId());
 
-    return ShopResponseDto.of(shop);
+    return ShopDetailResponseDto.of(shop);
   }
 }

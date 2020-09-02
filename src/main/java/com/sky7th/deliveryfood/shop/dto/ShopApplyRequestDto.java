@@ -13,7 +13,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
-public class ShopRequestDto {
+public class ShopApplyRequestDto {
 
   @NotBlank
   private String name;
@@ -25,11 +25,12 @@ public class ShopRequestDto {
   @NotBlank
   private String businessNumber;
   private String introduction;
-  private String guide;
   @NotBlank
   private String addressCode;
+  @NotBlank
+  private String telNumber;
 
-  public static Shop toEntity(ShopRequestDto requestDto, Address address, Long ownerId) {
+  public static Shop toEntity(ShopApplyRequestDto requestDto, Address address, Long ownerId) {
     return Shop.builder()
         .name(requestDto.getName())
         .operatingTime(requestDto.getOperatingTime())
@@ -37,13 +38,13 @@ public class ShopRequestDto {
         .minOrderAmount(Money.wons(requestDto.getMinOrderAmount()))
         .businessNumber(requestDto.getBusinessNumber())
         .introduction(requestDto.getIntroduction())
-        .guide(requestDto.getGuide())
         .status(ShopStatus.NOT_APPROVAL)
         .ownerId(ownerId)
         .address(address)
+        .telNumber(requestDto.getTelNumber())
         .build();
   }
 
-  private ShopRequestDto() {
+  private ShopApplyRequestDto() {
   }
 }

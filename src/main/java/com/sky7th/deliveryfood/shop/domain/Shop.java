@@ -5,9 +5,10 @@ import com.sky7th.deliveryfood.generic.address.domain.Address;
 import com.sky7th.deliveryfood.generic.address.domain.ShopDeliveryAddress;
 import com.sky7th.deliveryfood.generic.money.domain.Money;
 import com.sky7th.deliveryfood.shop.exception.MismatchOwnerException;
-import com.sky7th.deliveryfood.user.UserContext;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +17,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -70,18 +70,20 @@ public class Shop extends BaseTimeEntity {
   @Column(name = "GUIDE")
   private String guide;
 
+  @Column(name = "TEL_NUMBER")
+  private String telNumber;
+
   @OneToOne(cascade = CascadeType.ALL)
   private Address address;
 
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "SHOP_ID")
+  @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<ShopDeliveryAddress> shopDeliveryAddresses = new LinkedHashSet<>();
 
   @Builder
   public Shop(String name, ShopStatus status,
       DeliveryType deliveryType, String operatingTime,
       Money minOrderAmount, String businessNumber, Long ownerId, String introduction,
-      String guide, Address address) {
+      String guide, Address address, String telNumber) {
     this.name = name;
     this.status = status;
     this.deliveryType = deliveryType;
@@ -92,6 +94,7 @@ public class Shop extends BaseTimeEntity {
     this.introduction = introduction;
     this.guide = guide;
     this.address = address;
+    this.telNumber = telNumber;
   }
 
   public boolean isValidOrderAmount(Money amount) {
@@ -102,14 +105,23 @@ public class Shop extends BaseTimeEntity {
     this.status = status;
   }
 
-  public void updateDeliveryArea(Set<ShopDeliveryAddress> shopDeliveryAddresses, UserContext userContext) {
-    if (!isSameOwner(userContext)) {
+  public void updateDeliveryArea(Set<ShopDeliveryAddress> newShopDeliveryAddresses, Long ownerId) {
+    if (!isSameOwner(ownerId)) {
       throw new MismatchOwnerException();
     }
-    this.shopDeliveryAddresses = shopDeliveryAddresses;
+    deleteShopDeliveryAddressNotContainedIn(newShopDeliveryAddresses);
+    this.shopDeliveryAddresses.addAll(newShopDeliveryAddresses);
   }
 
-  private boolean isSameOwner(UserContext userContext) {
-    return !this.ownerId.equals(userContext.getId());
+  private boolean isSameOwner(Long ownerId) {
+    return this.ownerId.equals(ownerId);
+  }
+
+  private void deleteShopDeliveryAddressNotContainedIn(Set<ShopDeliveryAddress> newShopDeliveryAddresses) {
+    List<ShopDeliveryAddress> toBeDeletedShopDeliveryAddress =
+        this.shopDeliveryAddresses.stream()
+            .filter(shopDeliveryAddress -> !newShopDeliveryAddresses.contains(shopDeliveryAddress))
+            .collect(Collectors.toList());
+    toBeDeletedShopDeliveryAddress.forEach(this.shopDeliveryAddresses::remove);
   }
 }
