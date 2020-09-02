@@ -4,6 +4,8 @@ import com.sky7th.deliveryfood.common.domain.BaseTimeEntity;
 import com.sky7th.deliveryfood.generic.address.domain.Address;
 import com.sky7th.deliveryfood.generic.address.domain.ShopDeliveryAddress;
 import com.sky7th.deliveryfood.generic.money.domain.Money;
+import com.sky7th.deliveryfood.shop.exception.MismatchOwnerException;
+import com.sky7th.deliveryfood.user.UserContext;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -14,6 +16,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -71,6 +74,7 @@ public class Shop extends BaseTimeEntity {
   private Address address;
 
   @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "SHOP_ID")
   private Set<ShopDeliveryAddress> shopDeliveryAddresses = new LinkedHashSet<>();
 
   @Builder
@@ -96,5 +100,16 @@ public class Shop extends BaseTimeEntity {
 
   public void updateStatus(ShopStatus status) {
     this.status = status;
+  }
+
+  public void updateDeliveryArea(Set<ShopDeliveryAddress> shopDeliveryAddresses, UserContext userContext) {
+    if (!isSameOwner(userContext)) {
+      throw new MismatchOwnerException();
+    }
+    this.shopDeliveryAddresses = shopDeliveryAddresses;
+  }
+
+  private boolean isSameOwner(UserContext userContext) {
+    return !this.ownerId.equals(userContext.getId());
   }
 }
