@@ -10,7 +10,7 @@ import com.sky7th.deliveryfood.user.UserContext;
 import com.sky7th.deliveryfood.user.member.domain.Member;
 import com.sky7th.deliveryfood.user.member.domain.MemberRepository;
 import com.sky7th.deliveryfood.user.member.dto.MemberResponseDto;
-import com.sky7th.deliveryfood.user.member.dto.MemberShowResponseDto;
+import com.sky7th.deliveryfood.user.member.dto.MemberDetailResponseDto;
 import com.sky7th.deliveryfood.user.member.service.exception.AlreadyEmailVerifiedException;
 import com.sky7th.deliveryfood.user.member.service.exception.NotFoundMemberException;
 import lombok.RequiredArgsConstructor;
@@ -45,11 +45,11 @@ public class MemberService {
   }
 
   @Transactional(readOnly = true)
-  public MemberShowResponseDto findByIdWithMemberAddresses(Long memberId, UserContext userContext) {
+  public MemberDetailResponseDto findByIdWithMemberAddresses(Long memberId, UserContext userContext) {
     Member member = memberRepository.findByIdWithMemberAddresses(memberId).orElseThrow(NotFoundMemberException::new);
     member.same(userContext.toMember());
 
-    return MemberShowResponseDto.of(member);
+    return MemberDetailResponseDto.of(member);
   }
 
   @Transactional

@@ -12,7 +12,7 @@ import com.sky7th.deliveryfood.user.RegisterRequestDto;
 import com.sky7th.deliveryfood.user.TokenRefreshRequestDto;
 import com.sky7th.deliveryfood.user.UserContext;
 import com.sky7th.deliveryfood.user.member.dto.MemberResponseDto;
-import com.sky7th.deliveryfood.user.member.dto.MemberShowResponseDto;
+import com.sky7th.deliveryfood.user.member.dto.MemberDetailResponseDto;
 import com.sky7th.deliveryfood.user.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -71,7 +71,7 @@ public class MemberApiController {
   }
 
   @GetMapping("/{memberId}")
-  public ResponseEntity<MemberShowResponseDto> show(
+  public ResponseEntity<MemberDetailResponseDto> show(
       @PathVariable Long memberId, UserContext userContext) {
     return ResponseEntity.ok(memberService.findByIdWithMemberAddresses(memberId, userContext));
   }

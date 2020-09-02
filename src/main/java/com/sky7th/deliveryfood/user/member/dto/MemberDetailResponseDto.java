@@ -10,7 +10,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
-public class MemberShowResponseDto {
+public class MemberDetailResponseDto {
 
   private Long id;
   private String email;
@@ -19,8 +19,8 @@ public class MemberShowResponseDto {
   private String imageUrl;
   private List<MemberAddressResponseDto> memberAddresses;
 
-  public static MemberShowResponseDto of(Member entity) {
-    return new MemberShowResponseDto(entity.getId(), entity.getEmail(), entity.getUsername(),
+  public static MemberDetailResponseDto of(Member entity) {
+    return new MemberDetailResponseDto(entity.getId(), entity.getEmail(), entity.getUsername(),
         entity.getEmailVerified(), entity.getImageUrl(), MemberAddressResponseDto.of(entity.getMemberAddresses()));
   }
 }
