@@ -12,11 +12,13 @@ import com.sky7th.deliveryfood.user.RegisterRequestDto;
 import com.sky7th.deliveryfood.user.TokenRefreshRequestDto;
 import com.sky7th.deliveryfood.user.UserContext;
 import com.sky7th.deliveryfood.user.member.dto.MemberResponseDto;
+import com.sky7th.deliveryfood.user.member.dto.MemberShowResponseDto;
 import com.sky7th.deliveryfood.user.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -66,6 +68,12 @@ public class MemberApiController {
   public ResponseEntity<MemberResponseDto> registerMailResend(@RequestBody LoginRequestDto loginRequestDto) {
     memberService.resendVerificationEmail(loginRequestDto);
     return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("/{memberId}")
+  public ResponseEntity<MemberShowResponseDto> show(
+      @PathVariable Long memberId, UserContext userContext) {
+    return ResponseEntity.ok(memberService.findByIdWithMemberAddresses(memberId, userContext));
   }
 
   @PostMapping("/address")

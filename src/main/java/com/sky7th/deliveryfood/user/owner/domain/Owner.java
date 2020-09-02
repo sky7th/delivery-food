@@ -19,6 +19,10 @@ public class Owner extends User {
     super();
   }
 
+  public Owner(Long id) {
+    super(id);
+  }
+
   public Owner(String email, String password, String username) {
     super(email, password);
     this.username = username;

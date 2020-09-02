@@ -46,6 +46,10 @@ public abstract class User extends BaseTimeEntity {
     this.active = true;
   }
 
+  public User(Long id) {
+    this.id = id;
+  }
+
   public User() {
   }
 

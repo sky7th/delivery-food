@@ -27,11 +27,15 @@ public class Member extends User {
   @Column(nullable = false)
   private Boolean emailVerified = false;
 
-  @OneToMany(cascade = CascadeType.ALL)
-  private List<MemberAddress> memberAddress = new ArrayList<>();
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "member")
+  private List<MemberAddress> memberAddresses = new ArrayList<>();
 
   public Member() {
     super();
+  }
+
+  public Member(Long id) {
+    super(id);
   }
 
   public Member(String email, String password, String username) {
