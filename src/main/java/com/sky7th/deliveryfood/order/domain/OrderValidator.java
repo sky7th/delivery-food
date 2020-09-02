@@ -7,6 +7,7 @@ import com.sky7th.deliveryfood.shop.domain.Menu;
 import com.sky7th.deliveryfood.shop.domain.MenuRepository;
 import com.sky7th.deliveryfood.shop.domain.OptionGroup;
 import com.sky7th.deliveryfood.shop.domain.Shop;
+import com.sky7th.deliveryfood.shop.domain.Shop.DeliveryType;
 import com.sky7th.deliveryfood.shop.domain.Shop.ShopStatus;
 import com.sky7th.deliveryfood.shop.domain.ShopRepository;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class OrderValidator {
       throw new IllegalArgumentException("가게가 영업중이 아닙니다.");
     }
 
-    if (shop.getStatus() == ShopStatus.NON_DELIVERABLE) {
+    if (shop.getDeliveryType() == DeliveryType.NON_DELIVERABLE) {
       throw new IllegalArgumentException("현재 배달이 불가능한 가게입니다.");
     }
 

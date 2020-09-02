@@ -9,18 +9,22 @@ import com.sky7th.deliveryfood.user.rider.service.exception.NotFoundRiderExcepti
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class RiderService {
 
   private final RiderRepository riderRepository;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+  @Transactional(readOnly = true)
   public Rider findById(Long memberId) {
     return riderRepository.findById(memberId).orElseThrow(NotFoundRiderException::new);
   }
 
+  @Transactional(readOnly = true)
   public Rider findByEmail(String email) {
     return riderRepository.findByEmail(email).orElseThrow(NotFoundRiderException::new);
   }
