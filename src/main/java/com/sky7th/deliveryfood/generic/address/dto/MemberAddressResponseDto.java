@@ -22,6 +22,8 @@ public class MemberAddressResponseDto {
   }
 
   public static List<MemberAddressResponseDto> of(List<MemberAddress> entities) {
-    return entities.stream().map(MemberAddressResponseDto::of).collect(Collectors.toList());
+    return entities.stream()
+        .map(MemberAddressResponseDto::of)
+        .collect(Collectors.toList());
   }
 }

@@ -2,6 +2,7 @@ package com.sky7th.deliveryfood.user.member.controller;
 
 import com.sky7th.deliveryfood.generic.address.dto.MemberAddressCreateRequestDto;
 import com.sky7th.deliveryfood.generic.address.dto.MemberAddressResponseDto;
+import com.sky7th.deliveryfood.generic.address.dto.MemberAddressResponseDtos;
 import com.sky7th.deliveryfood.generic.address.service.MemberAddressService;
 import com.sky7th.deliveryfood.security.service.AuthService;
 import com.sky7th.deliveryfood.security.token.MemberUsernamePasswordAuthenticationToken;
@@ -74,6 +75,11 @@ public class MemberApiController {
   public ResponseEntity<MemberDetailResponseDto> show(
       @PathVariable Long memberId, UserContext userContext) {
     return ResponseEntity.ok(memberService.findByIdWithMemberAddresses(memberId, userContext));
+  }
+
+  @GetMapping("/address")
+  public ResponseEntity<MemberAddressResponseDtos> list(UserContext userContext) {
+    return ResponseEntity.ok(memberAddressService.findMyAddresses(userContext));
   }
 
   @PostMapping("/address")

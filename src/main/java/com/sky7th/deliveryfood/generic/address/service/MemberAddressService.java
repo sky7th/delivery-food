@@ -5,6 +5,7 @@ import com.sky7th.deliveryfood.generic.address.domain.MemberAddress;
 import com.sky7th.deliveryfood.generic.address.domain.MemberAddressRepository;
 import com.sky7th.deliveryfood.generic.address.dto.MemberAddressCreateRequestDto;
 import com.sky7th.deliveryfood.generic.address.dto.MemberAddressResponseDto;
+import com.sky7th.deliveryfood.generic.address.dto.MemberAddressResponseDtos;
 import com.sky7th.deliveryfood.generic.address.service.exception.NotFoundMemberAddressException;
 import com.sky7th.deliveryfood.user.UserContext;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,10 @@ public class MemberAddressService {
   @Transactional(readOnly = true)
   public MemberAddress findById(Long memberAddressId) {
     return memberAddressRepository.findById(memberAddressId).orElseThrow(NotFoundMemberAddressException::new);
+  }
+
+  public MemberAddressResponseDtos findMyAddresses(UserContext userContext) {
+    return MemberAddressResponseDtos.of(memberAddressRepository.findAllByMemberId(userContext.getId()));
   }
 
   public MemberAddressResponseDto save(MemberAddressCreateRequestDto requestDto, UserContext userContext) {
