@@ -37,10 +37,10 @@ public class Address {
   private String isUnderground;
 
   @Column(columnDefinition = "INT(5)           NULL        COMMENT '건물본번'")
-  private String buildingNumber;
+  private Integer buildingNumber;
 
   @Column(columnDefinition = "INT(5)           NULL        COMMENT '건물부번'")
-  private String buildingSideNumber;
+  private Integer buildingSideNumber;
 
   @Column(columnDefinition = "VARCHAR(5)       NULL        COMMENT '우편번호'")
   private String zipCode;
@@ -58,16 +58,16 @@ public class Address {
   private String administrativeBuildingName;
 
   @Column(columnDefinition = "INT(3)           NULL        COMMENT '지상층수'")
-  private String groundFloorNumber;
+  private Integer groundFloorNumber;
 
   @Column(columnDefinition = "INT(3)           NULL        COMMENT '지하층수'")
-  private String undergroundFloorNumber;
+  private Integer undergroundFloorNumber;
 
   @Column(columnDefinition = "VARCHAR(1)       NULL        COMMENT '공동주택구분'")
   private String apartmentHouseSeparator;
 
   @Column(columnDefinition = "INT(10)          NULL        COMMENT '건물수'")
-  private String buildingCount;
+  private Integer buildingCount;
 
   @Column(columnDefinition = "VARCHAR(100)     NULL        COMMENT '상세건물명'")
   private String buildingDetailName;
@@ -82,16 +82,16 @@ public class Address {
   private String isLiving;
 
   @Column(columnDefinition = "DOUBLE(15,6)     NULL        COMMENT '건물중심점_x좌표'")
-  private String buildingCenterPointX;
+  private Double buildingCenterPointX;
 
   @Column(columnDefinition = "DOUBLE(15,6)     NULL        COMMENT '건물중심점_y좌표'")
-  private String buildingCenterPointY;
+  private Double buildingCenterPointY;
 
   @Column(columnDefinition = "DOUBLE(15,6)     NULL        COMMENT '출입구_x좌표'")
-  private String entrancePointX;
+  private Double entrancePointX;
 
   @Column(columnDefinition = "DOUBLE(15,6)     NULL        COMMENT '출입구_y좌표'")
-  private String entrancePointY;
+  private Double entrancePointY;
 
   @Column(columnDefinition = "VARCHAR(40)      NULL        COMMENT '시도명_영문'")
   private String cityEngName;
