@@ -1,6 +1,6 @@
 package com.sky7th.deliveryfood.shop.dto;
 
-import com.sky7th.deliveryfood.generic.address.domain.Address;
+import com.sky7th.deliveryfood.address.domain.Address;
 import com.sky7th.deliveryfood.generic.money.domain.Money;
 import com.sky7th.deliveryfood.shop.domain.Shop;
 import com.sky7th.deliveryfood.shop.domain.Shop.DeliveryType;

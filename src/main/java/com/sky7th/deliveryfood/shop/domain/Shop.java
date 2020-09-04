@@ -1,8 +1,8 @@
 package com.sky7th.deliveryfood.shop.domain;
 
 import com.sky7th.deliveryfood.common.domain.BaseTimeEntity;
-import com.sky7th.deliveryfood.generic.address.domain.Address;
-import com.sky7th.deliveryfood.generic.address.domain.ShopDeliveryAddress;
+import com.sky7th.deliveryfood.address.domain.Address;
+import com.sky7th.deliveryfood.address.domain.ShopDeliveryAddress;
 import com.sky7th.deliveryfood.generic.money.domain.Money;
 import com.sky7th.deliveryfood.shop.exception.MismatchOwnerException;
 import java.util.LinkedHashSet;

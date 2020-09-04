@@ -1,12 +1,12 @@
-package com.sky7th.deliveryfood.generic.address.service;
+package com.sky7th.deliveryfood.address.service;
 
-import com.sky7th.deliveryfood.generic.address.domain.Address;
-import com.sky7th.deliveryfood.generic.address.domain.MemberAddress;
-import com.sky7th.deliveryfood.generic.address.domain.MemberAddressRepository;
-import com.sky7th.deliveryfood.generic.address.dto.MemberAddressCreateRequestDto;
-import com.sky7th.deliveryfood.generic.address.dto.MemberAddressResponseDto;
-import com.sky7th.deliveryfood.generic.address.dto.MemberAddressResponseDtos;
-import com.sky7th.deliveryfood.generic.address.service.exception.NotFoundMemberAddressException;
+import com.sky7th.deliveryfood.address.domain.Address;
+import com.sky7th.deliveryfood.address.domain.MemberAddress;
+import com.sky7th.deliveryfood.address.domain.MemberAddressRepository;
+import com.sky7th.deliveryfood.address.dto.MemberAddressCreateRequestDto;
+import com.sky7th.deliveryfood.address.dto.MemberAddressResponseDto;
+import com.sky7th.deliveryfood.address.dto.MemberAddressResponseDtos;
+import com.sky7th.deliveryfood.address.service.exception.NotFoundMemberAddressException;
 import com.sky7th.deliveryfood.user.UserContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

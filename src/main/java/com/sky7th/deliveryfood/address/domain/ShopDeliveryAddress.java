@@ -1,4 +1,4 @@
-package com.sky7th.deliveryfood.generic.address.domain;
+package com.sky7th.deliveryfood.address.domain;
 
 import com.sky7th.deliveryfood.shop.domain.Shop;
 import java.util.Objects;

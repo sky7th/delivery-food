@@ -1,4 +1,4 @@
-package com.sky7th.deliveryfood.generic.address.dto;
+package com.sky7th.deliveryfood.address.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.sky7th.deliveryfood.shop.dto;
 
-import com.sky7th.deliveryfood.generic.address.dto.AddressResponseDto;
-import com.sky7th.deliveryfood.generic.address.dto.TownAddressResponseDto;
+import com.sky7th.deliveryfood.address.dto.AddressResponseDto;
+import com.sky7th.deliveryfood.address.dto.TownAddressResponseDto;
 import com.sky7th.deliveryfood.shop.domain.Shop;
 import com.sky7th.deliveryfood.shop.domain.Shop.DeliveryType;
 import com.sky7th.deliveryfood.shop.domain.Shop.ShopStatus;

@@ -1,6 +1,6 @@
-package com.sky7th.deliveryfood.generic.address.dto;
+package com.sky7th.deliveryfood.address.dto;
 
-import com.sky7th.deliveryfood.generic.address.domain.ShopDeliveryAddress;
+import com.sky7th.deliveryfood.address.domain.ShopDeliveryAddress;
 import com.sky7th.deliveryfood.shop.domain.Shop;
 import java.util.List;
 import java.util.Set;

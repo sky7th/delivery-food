@@ -1,6 +1,6 @@
 package com.sky7th.deliveryfood.user.member.domain;
 
-import com.sky7th.deliveryfood.generic.address.domain.MemberAddress;
+import com.sky7th.deliveryfood.address.domain.MemberAddress;
 import com.sky7th.deliveryfood.user.User;
 import com.sky7th.deliveryfood.user.member.service.exception.MismatchMemberException;
 import java.util.ArrayList;

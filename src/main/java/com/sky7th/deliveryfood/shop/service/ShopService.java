@@ -1,9 +1,9 @@
 package com.sky7th.deliveryfood.shop.service;
 
-import com.sky7th.deliveryfood.generic.address.domain.Address;
-import com.sky7th.deliveryfood.generic.address.domain.ShopDeliveryAddress;
-import com.sky7th.deliveryfood.generic.address.dto.ShopDeliveryAddressRequestDto;
-import com.sky7th.deliveryfood.generic.address.service.AddressService;
+import com.sky7th.deliveryfood.address.domain.Address;
+import com.sky7th.deliveryfood.address.domain.ShopDeliveryAddress;
+import com.sky7th.deliveryfood.address.dto.ShopDeliveryAddressRequestDto;
+import com.sky7th.deliveryfood.address.service.AddressService;
 import com.sky7th.deliveryfood.shop.domain.Shop;
 import com.sky7th.deliveryfood.shop.domain.ShopRepository;
 import com.sky7th.deliveryfood.shop.dto.ShopApplyRequestDto;

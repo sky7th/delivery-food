@@ -1,6 +1,6 @@
 package com.sky7th.deliveryfood.user.member.dto;
 
-import com.sky7th.deliveryfood.generic.address.dto.MemberAddressResponseDto;
+import com.sky7th.deliveryfood.address.dto.MemberAddressResponseDto;
 import com.sky7th.deliveryfood.user.member.domain.Member;
 import java.util.List;
 import lombok.AllArgsConstructor;

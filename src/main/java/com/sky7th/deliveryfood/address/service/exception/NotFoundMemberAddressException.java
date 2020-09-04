@@ -1,4 +1,4 @@
-package com.sky7th.deliveryfood.generic.address.service.exception;
+package com.sky7th.deliveryfood.address.service.exception;
 
 public class NotFoundMemberAddressException extends RuntimeException {
     public NotFoundMemberAddressException() {

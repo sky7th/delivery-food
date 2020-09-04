@@ -1,6 +1,6 @@
-package com.sky7th.deliveryfood.generic.address.dto;
+package com.sky7th.deliveryfood.address.dto;
 
-import com.sky7th.deliveryfood.generic.address.domain.Address;
+import com.sky7th.deliveryfood.address.domain.Address;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

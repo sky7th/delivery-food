@@ -1,6 +1,6 @@
 package com.sky7th.deliveryfood.shop.controller;
 
-import com.sky7th.deliveryfood.generic.address.dto.ShopDeliveryAddressRequestDto;
+import com.sky7th.deliveryfood.address.dto.ShopDeliveryAddressRequestDto;
 import com.sky7th.deliveryfood.shop.dto.ShopApplyRequestDto;
 import com.sky7th.deliveryfood.shop.dto.ShopDetailResponseDto;
 import com.sky7th.deliveryfood.shop.dto.ShopDetailResponseDtos;
