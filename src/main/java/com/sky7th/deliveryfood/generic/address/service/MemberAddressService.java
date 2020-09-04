@@ -43,4 +43,10 @@ public class MemberAddressService {
 
     return MemberAddressResponseDto.of(memberAddress);
   }
+
+  public void delete(Long memberAddressId, UserContext userContext) {
+    MemberAddress memberAddress = findById(memberAddressId);
+    memberAddress.checkMember(userContext.toMember());
+    memberAddressRepository.delete(memberAddress);
+  }
 }
