@@ -1,9 +1,9 @@
 package com.sky7th.deliveryfood.shop.service;
 
 import com.sky7th.deliveryfood.address.domain.Address;
-import com.sky7th.deliveryfood.address.domain.ShopDeliveryAddress;
-import com.sky7th.deliveryfood.address.dto.ShopDeliveryAddressRequestDtos;
-import com.sky7th.deliveryfood.address.dto.ShopDeliveryAddressResponseDtos;
+import com.sky7th.deliveryfood.address.domain.ShopDeliveryTown;
+import com.sky7th.deliveryfood.address.dto.ShopDeliveryTownRequestDtos;
+import com.sky7th.deliveryfood.address.dto.ShopDeliveryTownResponseDtos;
 import com.sky7th.deliveryfood.address.service.AddressService;
 import com.sky7th.deliveryfood.shop.domain.Shop;
 import com.sky7th.deliveryfood.shop.domain.ShopRepository;
@@ -46,11 +46,12 @@ public class ShopService {
     shopRepository.save(ShopApplyRequestDto.toEntity(requestDto, address, userContext.getId()));
   }
 
-  public ShopDeliveryAddressResponseDtos updateDeliveryArea(Long shopId, ShopDeliveryAddressRequestDtos requestDto, UserContext userContext) {
+  public ShopDeliveryTownResponseDtos updateDeliveryTowns(Long shopId, ShopDeliveryTownRequestDtos requestDto, UserContext userContext) {
     Shop shop = findById(shopId);
-    Set<ShopDeliveryAddress> shopDeliveryAddresses = ShopDeliveryAddressRequestDtos.toEntities(requestDto, shop);
-    shop.updateDeliveryArea(shopDeliveryAddresses, userContext.getId());
+    Set<ShopDeliveryTown> shopDeliveryTowns = ShopDeliveryTownRequestDtos
+        .toEntities(requestDto, shop);
+    shop.updateDeliveryTowns(shopDeliveryTowns, userContext.getId());
 
-    return ShopDeliveryAddressResponseDtos.of(shop.getShopDeliveryAddresses());
+    return ShopDeliveryTownResponseDtos.of(shop.getShopDeliveryTowns());
   }
 }

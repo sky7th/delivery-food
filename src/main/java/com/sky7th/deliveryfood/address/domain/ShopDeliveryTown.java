@@ -13,13 +13,13 @@ import javax.persistence.Table;
 import lombok.Getter;
 
 @Entity
-@Table(name = "SHOP_DELIVERY_ADDRESS")
+@Table(name = "SHOP_DELIVERY_TOWN")
 @Getter
-public class ShopDeliveryAddress {
+public class ShopDeliveryTown {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "SHOP_DELIVERY_ADDRESS_ID")
+  @Column(name = "SHOP_DELIVERY_TOWN_ID")
   private Long id;
 
   @ManyToOne
@@ -32,13 +32,13 @@ public class ShopDeliveryAddress {
   @Column(name = "TOWN_NAME")
   private String townName;
 
-  public ShopDeliveryAddress(Shop shop, String townCode, String townName) {
+  public ShopDeliveryTown(Shop shop, String townCode, String townName) {
     this.shop = shop;
     this.townCode = townCode;
     this.townName = townName;
   }
 
-  private ShopDeliveryAddress() {
+  private ShopDeliveryTown() {
   }
 
   @Override
@@ -49,7 +49,7 @@ public class ShopDeliveryAddress {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ShopDeliveryAddress that = (ShopDeliveryAddress) o;
+    ShopDeliveryTown that = (ShopDeliveryTown) o;
     return Objects.equals(shop, that.shop) &&
         Objects.equals(townCode, that.townCode) &&
         Objects.equals(townName, that.townName);

@@ -1,8 +1,8 @@
 package com.sky7th.deliveryfood.shop.domain;
 
+import com.sky7th.deliveryfood.address.domain.ShopDeliveryTown;
 import com.sky7th.deliveryfood.common.domain.BaseTimeEntity;
 import com.sky7th.deliveryfood.address.domain.Address;
-import com.sky7th.deliveryfood.address.domain.ShopDeliveryAddress;
 import com.sky7th.deliveryfood.generic.money.domain.Money;
 import com.sky7th.deliveryfood.shop.exception.MismatchOwnerException;
 import java.util.LinkedHashSet;
@@ -77,7 +77,7 @@ public class Shop extends BaseTimeEntity {
   private Address address;
 
   @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
-  private Set<ShopDeliveryAddress> shopDeliveryAddresses = new LinkedHashSet<>();
+  private Set<ShopDeliveryTown> shopDeliveryTowns = new LinkedHashSet<>();
 
   @Builder
   public Shop(String name, ShopStatus status,
@@ -111,17 +111,17 @@ public class Shop extends BaseTimeEntity {
     }
   }
 
-  public void updateDeliveryArea(Set<ShopDeliveryAddress> requestShopDeliveryAddresses, Long requestOwnerId) {
+  public void updateDeliveryTowns(Set<ShopDeliveryTown> requestShopDeliveryTowns, Long requestOwnerId) {
     same(requestOwnerId);
-    deleteShopDeliveryAddressNotContainedIn(requestShopDeliveryAddresses);
-    this.shopDeliveryAddresses.addAll(requestShopDeliveryAddresses);
+    deleteShopDeliveryTownNotContainedIn(requestShopDeliveryTowns);
+    this.shopDeliveryTowns.addAll(requestShopDeliveryTowns);
   }
 
-  private void deleteShopDeliveryAddressNotContainedIn(Set<ShopDeliveryAddress> requestShopDeliveryAddresses) {
-    List<ShopDeliveryAddress> toBeDeletedShopDeliveryAddress =
-        this.shopDeliveryAddresses.stream()
-            .filter(shopDeliveryAddress -> !requestShopDeliveryAddresses.contains(shopDeliveryAddress))
+  private void deleteShopDeliveryTownNotContainedIn(Set<ShopDeliveryTown> requestShopDeliveryTowns) {
+    List<ShopDeliveryTown> toBeDeletedShopDeliveryTowns =
+        this.shopDeliveryTowns.stream()
+            .filter(shopDeliveryTown -> !requestShopDeliveryTowns.contains(shopDeliveryTown))
             .collect(Collectors.toList());
-    toBeDeletedShopDeliveryAddress.forEach(this.shopDeliveryAddresses::remove);
+    toBeDeletedShopDeliveryTowns.forEach(this.shopDeliveryTowns::remove);
   }
 }

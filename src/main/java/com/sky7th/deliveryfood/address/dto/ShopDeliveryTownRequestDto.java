@@ -7,11 +7,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
-public class ShopDeliveryAddressRequestDto {
+public class ShopDeliveryTownRequestDto {
 
   private String townCode;
   private String townName;
 
-  private ShopDeliveryAddressRequestDto() {
+  private ShopDeliveryTownRequestDto() {
   }
 }
