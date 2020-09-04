@@ -11,18 +11,18 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
-public class TownAddressResponseDto {
+public class ShopDeliveryAddressResponseDto {
 
   private String townCode;
   private String townName;
 
-  private TownAddressResponseDto() {
+  private ShopDeliveryAddressResponseDto() {
   }
 
-  public static List<TownAddressResponseDto> of(Set<ShopDeliveryAddress> shopDeliveryAddresses) {
+  public static List<ShopDeliveryAddressResponseDto> of(Set<ShopDeliveryAddress> shopDeliveryAddresses) {
     return shopDeliveryAddresses.stream()
         .map(shopDeliveryAddress ->
-            new TownAddressResponseDto(shopDeliveryAddress.getTownCode(), shopDeliveryAddress.getTownName()))
+            new ShopDeliveryAddressResponseDto(shopDeliveryAddress.getTownCode(), shopDeliveryAddress.getTownName()))
         .collect(Collectors.toList());
   }
 }

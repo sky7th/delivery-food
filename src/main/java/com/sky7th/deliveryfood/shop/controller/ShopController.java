@@ -1,6 +1,7 @@
 package com.sky7th.deliveryfood.shop.controller;
 
-import com.sky7th.deliveryfood.address.dto.ShopDeliveryAddressRequestDto;
+import com.sky7th.deliveryfood.address.dto.ShopDeliveryAddressRequestDtos;
+import com.sky7th.deliveryfood.address.dto.ShopDeliveryAddressResponseDtos;
 import com.sky7th.deliveryfood.shop.dto.ShopApplyRequestDto;
 import com.sky7th.deliveryfood.shop.dto.ShopDetailResponseDto;
 import com.sky7th.deliveryfood.shop.dto.ShopDetailResponseDtos;
@@ -39,8 +40,8 @@ public class ShopController {
   }
 
   @PostMapping("/{shopId}/deliveryArea")
-  public ResponseEntity<ShopDetailResponseDto> updateDeliveryArea(
-      @PathVariable Long shopId, @RequestBody ShopDeliveryAddressRequestDto requestDto, UserContext userContext) {
+  public ResponseEntity<ShopDeliveryAddressResponseDtos> updateDeliveryArea(
+      @PathVariable Long shopId, @RequestBody ShopDeliveryAddressRequestDtos requestDto, UserContext userContext) {
     return ResponseEntity.ok(shopService.updateDeliveryArea(shopId, requestDto, userContext));
   }
 }

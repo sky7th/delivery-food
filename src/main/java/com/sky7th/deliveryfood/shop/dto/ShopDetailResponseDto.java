@@ -1,7 +1,6 @@
 package com.sky7th.deliveryfood.shop.dto;
 
 import com.sky7th.deliveryfood.address.dto.AddressResponseDto;
-import com.sky7th.deliveryfood.address.dto.TownAddressResponseDto;
 import com.sky7th.deliveryfood.shop.domain.Shop;
 import com.sky7th.deliveryfood.shop.domain.Shop.DeliveryType;
 import com.sky7th.deliveryfood.shop.domain.Shop.ShopStatus;
@@ -28,7 +27,6 @@ public class ShopDetailResponseDto {
   private String introduction;
   private String guide;
   private AddressResponseDto address;
-  private List<TownAddressResponseDto> deliveryAreaTowns;
 
   public static ShopDetailResponseDto of(Shop entity) {
     return ShopDetailResponseDto.builder()
@@ -42,7 +40,6 @@ public class ShopDetailResponseDto {
         .guide(entity.getGuide())
         .status(entity.getStatus())
         .address(AddressResponseDto.of(entity.getAddress()))
-        .deliveryAreaTowns(TownAddressResponseDto.of(entity.getShopDeliveryAddresses()))
         .build();
   }
 

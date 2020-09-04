@@ -105,22 +105,22 @@ public class Shop extends BaseTimeEntity {
     this.status = status;
   }
 
-  public void updateDeliveryArea(Set<ShopDeliveryAddress> newShopDeliveryAddresses, Long ownerId) {
-    if (!isSameOwner(ownerId)) {
+  public void same(Long ownerId) {
+    if (!this.ownerId.equals(ownerId)) {
       throw new MismatchOwnerException();
     }
-    deleteShopDeliveryAddressNotContainedIn(newShopDeliveryAddresses);
-    this.shopDeliveryAddresses.addAll(newShopDeliveryAddresses);
   }
 
-  public boolean isSameOwner(Long ownerId) {
-    return this.ownerId.equals(ownerId);
+  public void updateDeliveryArea(Set<ShopDeliveryAddress> requestShopDeliveryAddresses, Long requestOwnerId) {
+    same(requestOwnerId);
+    deleteShopDeliveryAddressNotContainedIn(requestShopDeliveryAddresses);
+    this.shopDeliveryAddresses.addAll(requestShopDeliveryAddresses);
   }
 
-  private void deleteShopDeliveryAddressNotContainedIn(Set<ShopDeliveryAddress> newShopDeliveryAddresses) {
+  private void deleteShopDeliveryAddressNotContainedIn(Set<ShopDeliveryAddress> requestShopDeliveryAddresses) {
     List<ShopDeliveryAddress> toBeDeletedShopDeliveryAddress =
         this.shopDeliveryAddresses.stream()
-            .filter(shopDeliveryAddress -> !newShopDeliveryAddresses.contains(shopDeliveryAddress))
+            .filter(shopDeliveryAddress -> !requestShopDeliveryAddresses.contains(shopDeliveryAddress))
             .collect(Collectors.toList());
     toBeDeletedShopDeliveryAddress.forEach(this.shopDeliveryAddresses::remove);
   }
