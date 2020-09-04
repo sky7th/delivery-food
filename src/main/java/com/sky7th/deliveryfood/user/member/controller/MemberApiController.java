@@ -1,6 +1,5 @@
 package com.sky7th.deliveryfood.user.member.controller;
 
-import com.sky7th.deliveryfood.address.service.MemberAddressService;
 import com.sky7th.deliveryfood.security.service.AuthService;
 import com.sky7th.deliveryfood.security.token.MemberUsernamePasswordAuthenticationToken;
 import com.sky7th.deliveryfood.user.CustomUserDetails;
@@ -32,7 +31,6 @@ public class MemberApiController {
 
   private final AuthService authService;
   private final MemberService memberService;
-  private final MemberAddressService memberAddressService;
 
   @PostMapping("/login")
   public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
@@ -70,6 +68,6 @@ public class MemberApiController {
   @GetMapping("/{memberId}")
   public ResponseEntity<MemberDetailResponseDto> show(
       @PathVariable Long memberId, UserContext userContext) {
-    return ResponseEntity.ok(memberService.findByIdWithMemberAddresses(memberId, userContext));
+    return ResponseEntity.ok(memberService.findById(memberId, userContext));
   }
 }

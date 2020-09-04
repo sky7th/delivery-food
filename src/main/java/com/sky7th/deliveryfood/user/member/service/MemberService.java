@@ -45,8 +45,8 @@ public class MemberService {
   }
 
   @Transactional(readOnly = true)
-  public MemberDetailResponseDto findByIdWithMemberAddresses(Long memberId, UserContext userContext) {
-    Member member = memberRepository.findByIdWithMemberAddresses(memberId).orElseThrow(NotFoundMemberException::new);
+  public MemberDetailResponseDto findById(Long memberId, UserContext userContext) {
+    Member member = memberRepository.findById(memberId).orElseThrow(NotFoundMemberException::new);
     member.same(userContext.toMember());
 
     return MemberDetailResponseDto.of(member);

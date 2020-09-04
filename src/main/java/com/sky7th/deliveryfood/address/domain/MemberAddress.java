@@ -1,6 +1,5 @@
 package com.sky7th.deliveryfood.address.domain;
 
-import com.sky7th.deliveryfood.user.member.domain.Member;
 import com.sky7th.deliveryfood.user.member.service.exception.MismatchMemberException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,9 +21,8 @@ public class MemberAddress {
   @Column(name = "MEMBER_ADDRESS_ID")
   private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "MEMBER_ID")
-  private Member member;
+  @Column(name = "MEMBER_ID")
+  private Long memberId;
 
   @ManyToOne
   @JoinColumn(name = "BUILDING_MANAGEMENT_NUMBER")
@@ -33,8 +31,8 @@ public class MemberAddress {
   @Column(name = "DETAILED_ADDRESS")
   private String detailedAddress;
 
-  public MemberAddress(Member member, Address address, String detailedAddress) {
-    this.member = member;
+  public MemberAddress(Long memberId, Address address, String detailedAddress) {
+    this.memberId  = memberId;
     this.address = address;
     this.detailedAddress = detailedAddress;
   }
@@ -42,14 +40,14 @@ public class MemberAddress {
   private MemberAddress() {
   }
 
-  public void update(Member member, Address address, String detailedAddress) {
-    this.member.same(member);
+  public void update(Long requestMemberId, Address address, String detailedAddress) {
+    checkMember(requestMemberId);
     this.address = address;
     this.detailedAddress = detailedAddress;
   }
 
-  public void checkMember(Member requestMember) {
-    if (!this.member.equals(requestMember)) {
+  public void checkMember(Long requestMemberId) {
+    if (!this.memberId.equals(requestMemberId)) {
       throw new MismatchMemberException();
     }
   }

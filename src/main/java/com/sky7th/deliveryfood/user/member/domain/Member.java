@@ -1,15 +1,10 @@
 package com.sky7th.deliveryfood.user.member.domain;
 
-import com.sky7th.deliveryfood.address.domain.MemberAddress;
 import com.sky7th.deliveryfood.user.User;
 import com.sky7th.deliveryfood.user.member.service.exception.MismatchMemberException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
 
@@ -26,9 +21,6 @@ public class Member extends User {
 
   @Column(nullable = false)
   private Boolean emailVerified = false;
-
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "member")
-  private List<MemberAddress> memberAddresses = new ArrayList<>();
 
   public Member() {
     super();

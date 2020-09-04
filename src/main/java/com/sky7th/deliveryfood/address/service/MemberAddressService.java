@@ -31,7 +31,7 @@ public class MemberAddressService {
 
   public MemberAddressResponseDto save(MemberAddressCreateRequestDto requestDto, UserContext userContext) {
     Address address = addressService.findByAddressCode(requestDto.getAddressCode());
-    MemberAddress memberAddress = memberAddressRepository.save(new MemberAddress(userContext.toMember(), address, requestDto.getDetailedAddress()));
+    MemberAddress memberAddress = memberAddressRepository.save(new MemberAddress(userContext.getId(), address, requestDto.getDetailedAddress()));
 
     return MemberAddressResponseDto.of(memberAddress);
   }
@@ -39,14 +39,14 @@ public class MemberAddressService {
   public MemberAddressResponseDto update(Long memberAddressId, MemberAddressCreateRequestDto requestDto, UserContext userContext) {
     Address address = addressService.findByAddressCode(requestDto.getAddressCode());
     MemberAddress memberAddress = findById(memberAddressId);
-    memberAddress.update(userContext.toMember(), address, requestDto.getDetailedAddress());
+    memberAddress.update(userContext.getId(), address, requestDto.getDetailedAddress());
 
     return MemberAddressResponseDto.of(memberAddress);
   }
 
   public void delete(Long memberAddressId, UserContext userContext) {
     MemberAddress memberAddress = findById(memberAddressId);
-    memberAddress.checkMember(userContext.toMember());
+    memberAddress.checkMember(userContext.getId());
     memberAddressRepository.delete(memberAddress);
   }
 }
