@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,24 +25,33 @@ public class Option {
   @Column(name = "OPTION_ID")
   private Long id;
 
+  @ManyToOne
+  @JoinColumn(name = "OPTION_GROUP_ID")
+  private OptionGroup optionGroup;
+
   @Column(name = "NAME")
   private String name;
 
   @Column(name = "PRICE")
   private Money price;
 
-  public Option(String name, Money price) {
-    this(null, name, price);
+  public Option(Long optionGroupId, String name, Money price) {
+    this(null, optionGroupId, name, price);
   }
 
   @Builder
-  public Option(Long id, String name, Money price) {
+  public Option(Long id, Long optionGroupId, String name, Money price) {
     this.id = id;
+    this.optionGroup = new OptionGroup(optionGroupId);
     this.name = name;
     this.price = price;
   }
 
   private Option() {
+  }
+
+  public void setOptionGroup(OptionGroup optionGroup) {
+    this.optionGroup = optionGroup;
   }
 
   @Override

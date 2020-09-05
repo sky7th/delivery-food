@@ -2,7 +2,10 @@ package com.sky7th.deliveryfood.shop.service;
 
 import com.sky7th.deliveryfood.shop.domain.MenuGroup;
 import com.sky7th.deliveryfood.shop.domain.MenuGroupRepository;
+import com.sky7th.deliveryfood.shop.dto.MenuGroupRequestDto;
+import com.sky7th.deliveryfood.shop.dto.MenuGroupResponseDto;
 import com.sky7th.deliveryfood.shop.dto.MenuGroupResponseDtos;
+import com.sky7th.deliveryfood.shop.exception.NotFoundMenuGroupException;
 import com.sky7th.deliveryfood.shop.exception.NotFoundShopException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,10 @@ public class MenuGroupService {
 
   private final MenuGroupRepository menuGroupRepository;
 
+  public MenuGroup findById(Long menuGroupId) {
+    return menuGroupRepository.findById(menuGroupId).orElseThrow(NotFoundMenuGroupException::new);
+  }
+
   @Transactional(readOnly = true)
   public MenuGroupResponseDtos findAllByShopId(Long shopId) {
     return MenuGroupResponseDtos.of(
@@ -24,5 +31,9 @@ public class MenuGroupService {
 
   void saveRepresentative(Long shopId) {
     menuGroupRepository.save(MenuGroup.representative(shopId));
+  }
+
+  public MenuGroupResponseDto save(Long shopId, MenuGroupRequestDto requestDto) {
+    return MenuGroupResponseDto.of(menuGroupRepository.save(MenuGroupRequestDto.toEntity(shopId, requestDto)));
   }
 }

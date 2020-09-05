@@ -52,8 +52,8 @@ public class MenuGroup {
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "menuGroup", fetch = FetchType.EAGER)
   private Set<Menu> menus = new LinkedHashSet<>();
 
-  public static MenuGroup representative(Long shopId, String description) {
-    return new MenuGroup(shopId, FIRST_OPTION_GROUP_NAME, description, true, Menu.FIRST_PRIORITY);
+  public static MenuGroup representative(Long shopId) {
+    return new MenuGroup(shopId, FIRST_OPTION_GROUP_NAME, "", true, Menu.FIRST_PRIORITY);
   }
 
   public static MenuGroup additive(Long shopId, String name, String description) {
@@ -66,9 +66,6 @@ public class MenuGroup {
     this.priority = representative ? 0 : Menu.LAST_PRIORITY;
   }
 
-  private MenuGroup() {
-  }
-
   @Builder
   public MenuGroup(Long id, Long shopId, String name, String description, boolean representative,
       Integer priority, MenuGroupStatus status) {
@@ -79,5 +76,12 @@ public class MenuGroup {
     this.representative = representative;
     this.priority = priority;
     this.status = status;
+  }
+
+  private MenuGroup() {
+  }
+
+  public MenuGroup(Long id) {
+    this.id = id;
   }
 }
