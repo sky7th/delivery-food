@@ -1,7 +1,7 @@
 package com.sky7th.deliveryfood.shop.domain;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,7 +50,7 @@ public class MenuGroup {
   private MenuGroupStatus status;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "menuGroup", fetch = FetchType.EAGER)
-  private Set<Menu> menus = new LinkedHashSet<>();
+  private List<Menu> menus = new ArrayList<>();
 
   public static MenuGroup representative(Long shopId) {
     return new MenuGroup(shopId, FIRST_OPTION_GROUP_NAME, "", true, Menu.FIRST_PRIORITY);

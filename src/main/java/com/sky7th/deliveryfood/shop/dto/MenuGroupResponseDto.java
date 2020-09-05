@@ -2,7 +2,6 @@ package com.sky7th.deliveryfood.shop.dto;
 
 import com.sky7th.deliveryfood.shop.domain.MenuGroup;
 import com.sky7th.deliveryfood.shop.domain.MenuGroup.MenuGroupStatus;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -23,7 +22,7 @@ public class MenuGroupResponseDto {
   private boolean representative;
   private int priority;
   private MenuGroupStatus status;
-  private List<MenuResponseDto> menus = new ArrayList<>();
+  private List<MenuResponseDto> menus;
 
   public static MenuGroupResponseDto of(MenuGroup entity) {
     return MenuGroupResponseDto.builder()
@@ -34,6 +33,7 @@ public class MenuGroupResponseDto {
         .priority(entity.getPriority())
         .representative(entity.isRepresentative())
         .status(entity.getStatus())
+        .menus(MenuResponseDto.of(entity.getMenus()))
         .build();
   }
 

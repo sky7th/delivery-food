@@ -24,16 +24,9 @@ public class ShopDummy {
         .name("menu")
         .description("menu description")
         .basic(OptionGroup.basic(
-            Option.builder().name("option 1-1").price(Money.wons(20000)).build(),
-            Option.builder().name("option 1-2").price(Money.wons(20000)).build()))
-        .additives(Arrays.asList(
-            OptionGroup.additive("option group 2", false,
-                Option.builder().name("option 2-1").price(Money.wons(0)).build(),
-                Option.builder().name("option 2-2").price(Money.wons(0)).build()),
-            OptionGroup.additive("option group 3", true,
-                Option.builder().name("option group 3-1").price(Money.wons(20000)).build(),
-                Option.builder().name("option group 3-2").price(Money.wons(20000)).build())
-        ));
+            Arrays.asList(
+                Option.builder().name("option 1-1").price(Money.wons(20000)).build(),
+                Option.builder().name("option 1-2").price(Money.wons(20000)).build())));
   }
 
   public static OptionGroupBuilder anOptionGroup() {

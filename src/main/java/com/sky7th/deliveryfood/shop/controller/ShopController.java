@@ -4,10 +4,13 @@ import com.sky7th.deliveryfood.address.dto.ShopDeliveryTownRequestDtos;
 import com.sky7th.deliveryfood.address.dto.ShopDeliveryTownResponseDtos;
 import com.sky7th.deliveryfood.shop.dto.MenuGroupRequestDto;
 import com.sky7th.deliveryfood.shop.dto.MenuGroupResponseDto;
+import com.sky7th.deliveryfood.shop.dto.MenuRequestDto;
+import com.sky7th.deliveryfood.shop.dto.MenuResponseDto;
 import com.sky7th.deliveryfood.shop.dto.ShopApplyRequestDto;
 import com.sky7th.deliveryfood.shop.dto.ShopDetailResponseDto;
 import com.sky7th.deliveryfood.shop.dto.ShopDetailResponseDtos;
 import com.sky7th.deliveryfood.shop.service.MenuGroupService;
+import com.sky7th.deliveryfood.shop.service.MenuService;
 import com.sky7th.deliveryfood.shop.service.ShopService;
 import com.sky7th.deliveryfood.user.UserContext;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,7 @@ public class ShopController {
 
   private final ShopService shopService;
   private final MenuGroupService menuGroupService;
+  private final MenuService menuService;
 
   @PostMapping("/apply")
   public ResponseEntity apply(@RequestBody ShopApplyRequestDto requestDto, UserContext userContext) {
@@ -68,5 +72,11 @@ public class ShopController {
       @PathVariable Long menuGroupId, UserContext userContext) {
     menuGroupService.delete(menuGroupId);
     return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/{shopId}/menu-groups/{menuGroupId}/menus")
+  public ResponseEntity<MenuResponseDto> createMenu(@PathVariable Long shopId,
+      @PathVariable Long menuGroupId, @RequestBody MenuRequestDto requestDto, UserContext userContext) {
+    return ResponseEntity.ok(menuService.save(menuGroupId, requestDto));
   }
 }

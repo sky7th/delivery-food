@@ -18,6 +18,7 @@ public class MenuGroupService {
 
   private final MenuGroupRepository menuGroupRepository;
 
+  @Transactional(readOnly = true)
   public MenuGroup findById(Long menuGroupId) {
     return menuGroupRepository.findById(menuGroupId).orElseThrow(NotFoundMenuGroupException::new);
   }
