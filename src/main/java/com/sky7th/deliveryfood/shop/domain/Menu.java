@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Builder;
@@ -32,6 +33,10 @@ public class Menu {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "MENU_ID")
   private Long id;
+
+  @ManyToOne
+  @JoinColumn(name = "MENU_GROUP_ID")
+  private MenuGroup menuGroup;
 
   @Column(name = "NAME")
   private String name;
@@ -53,9 +58,9 @@ public class Menu {
   @JoinColumn(name = "MENU_ID")
   private Set<OptionGroup> optionGroups = new LinkedHashSet<>();
 
-  public Menu(String name, String description, String imageUrl, OptionGroup basic,
+  public Menu(MenuGroup menuGroup, String name, String description, String imageUrl, OptionGroup basic,
       OptionGroup... groups) {
-    this(null, name, description, imageUrl, Menu.LAST_PRIORITY, MenuStatus.INACTIVE, basic,
+    this(null, menuGroup, name, description, imageUrl, Menu.LAST_PRIORITY, MenuStatus.INACTIVE, basic,
         Arrays.asList(groups));
   }
 
@@ -63,9 +68,10 @@ public class Menu {
   }
 
   @Builder
-  public Menu(Long id, String name, String description, String imageUrl, Integer priority,
+  public Menu(Long id, MenuGroup menuGroup, String name, String description, String imageUrl, Integer priority,
       MenuStatus status, OptionGroup basic, List<OptionGroup> additives) {
     this.id = id;
+    this.menuGroup = menuGroup;
     this.name = name;
     this.description = description;
     this.imageUrl = imageUrl;

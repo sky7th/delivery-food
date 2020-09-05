@@ -1,18 +1,16 @@
 package com.sky7th.deliveryfood.shop.domain;
 
-import java.util.Arrays;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Builder;
@@ -51,23 +49,20 @@ public class MenuGroup {
   @Enumerated(EnumType.STRING)
   private MenuGroupStatus status;
 
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "MENU_GROUP_ID")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "menuGroup", fetch = FetchType.EAGER)
   private Set<Menu> menus = new LinkedHashSet<>();
 
-  public static MenuGroup representative(Long shopId, String description, Menu... menus) {
-    return new MenuGroup(shopId, FIRST_OPTION_GROUP_NAME, description, true, Menu.FIRST_PRIORITY,
-        menus);
+  public static MenuGroup representative(Long shopId, String description) {
+    return new MenuGroup(shopId, FIRST_OPTION_GROUP_NAME, description, true, Menu.FIRST_PRIORITY);
   }
 
-  public static MenuGroup additive(Long shopId, String name, String description, Menu... menus) {
-    return new MenuGroup(shopId, name, description, false, Menu.LAST_PRIORITY, menus);
+  public static MenuGroup additive(Long shopId, String name, String description) {
+    return new MenuGroup(shopId, name, description, false, Menu.LAST_PRIORITY);
   }
 
   private MenuGroup(Long shopId, String name, String description, boolean representative,
-      Integer priority, Menu... groups) {
-    this(null, shopId, name, description, representative, priority, MenuGroupStatus.INACTIVE,
-        Arrays.asList(groups));
+      Integer priority) {
+    this(null, shopId, name, description, representative, priority, MenuGroupStatus.INACTIVE);
     this.priority = representative ? 0 : Menu.LAST_PRIORITY;
   }
 
@@ -76,7 +71,7 @@ public class MenuGroup {
 
   @Builder
   public MenuGroup(Long id, Long shopId, String name, String description, boolean representative,
-      Integer priority, MenuGroupStatus status, List<Menu> additives) {
+      Integer priority, MenuGroupStatus status) {
     this.id = id;
     this.shopId = shopId;
     this.name = name;
@@ -84,6 +79,5 @@ public class MenuGroup {
     this.representative = representative;
     this.priority = priority;
     this.status = status;
-    this.menus.addAll(additives);
   }
 }
