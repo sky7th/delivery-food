@@ -6,6 +6,7 @@ import com.sky7th.deliveryfood.address.dto.ShopDeliveryTownRequestDtos;
 import com.sky7th.deliveryfood.address.dto.ShopDeliveryTownResponseDtos;
 import com.sky7th.deliveryfood.address.service.AddressService;
 import com.sky7th.deliveryfood.shop.domain.Shop;
+import com.sky7th.deliveryfood.shop.domain.Shop.ShopStatus;
 import com.sky7th.deliveryfood.shop.domain.ShopRepository;
 import com.sky7th.deliveryfood.shop.dto.ShopApplyRequestDto;
 import com.sky7th.deliveryfood.shop.dto.ShopDetailResponseDto;
@@ -24,6 +25,7 @@ public class ShopService {
 
   private final ShopRepository shopRepository;
   private final AddressService addressService;
+  private final MenuGroupService menuGroupService;
 
   @Transactional(readOnly = true)
   public Shop findById(Long shopId) {
@@ -38,12 +40,13 @@ public class ShopService {
   }
 
   public ShopDetailResponseDtos findMyShops(UserContext userContext) {
-    return ShopDetailResponseDtos.of(shopRepository.findAllByOwnerId(userContext.getId()));
+    return ShopDetailResponseDtos.of(shopRepository.findAllByOwnerIdAndStatus(userContext.getId(), ShopStatus.ACTIVE));
   }
 
   public void save(ShopApplyRequestDto requestDto, UserContext userContext) {
     Address address = addressService.findByAddressCode(requestDto.getAddressCode());
-    shopRepository.save(ShopApplyRequestDto.toEntity(requestDto, address, userContext.getId()));
+    Shop savedShop = shopRepository.save(ShopApplyRequestDto.toEntity(requestDto, address, userContext.getId()));
+    menuGroupService.saveRepresentative(savedShop.getId());
   }
 
   public ShopDeliveryTownResponseDtos updateDeliveryTowns(Long shopId, ShopDeliveryTownRequestDtos requestDto, UserContext userContext) {
