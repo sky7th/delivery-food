@@ -84,4 +84,9 @@ public class MenuGroup {
   public MenuGroup(Long id) {
     this.id = id;
   }
+
+  public void update(String name, String description) {
+    this.name = name;
+    this.description = description;
+  }
 }

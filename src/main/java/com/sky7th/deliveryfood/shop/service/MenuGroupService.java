@@ -36,4 +36,16 @@ public class MenuGroupService {
   public MenuGroupResponseDto save(Long shopId, MenuGroupRequestDto requestDto) {
     return MenuGroupResponseDto.of(menuGroupRepository.save(MenuGroupRequestDto.toEntity(shopId, requestDto)));
   }
+
+  public MenuGroupResponseDto update(Long menuGroupId, MenuGroupRequestDto requestDto) {
+    MenuGroup menuGroup = findById(menuGroupId);
+    menuGroup.update(requestDto.getName(), requestDto.getDescription());
+
+    return MenuGroupResponseDto.of(menuGroup);
+  }
+
+  public void delete(Long menuGroupId) {
+    MenuGroup menuGroup = findById(menuGroupId);
+    menuGroupRepository.delete(menuGroup);
+  }
 }

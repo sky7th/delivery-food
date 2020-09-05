@@ -4,8 +4,8 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 
 import com.sky7th.deliveryfood.shop.domain.Menu;
+import com.sky7th.deliveryfood.shop.domain.MenuOptionGroup;
 import com.sky7th.deliveryfood.shop.domain.MenuRepository;
-import com.sky7th.deliveryfood.shop.domain.OptionGroup;
 import com.sky7th.deliveryfood.shop.domain.Shop;
 import com.sky7th.deliveryfood.shop.domain.Shop.DeliveryType;
 import com.sky7th.deliveryfood.shop.domain.Shop.ShopStatus;
@@ -63,8 +63,8 @@ public class OrderValidator {
   }
 
   private void validateOrderOptionGroup(OrderOptionGroup group, Menu menu) {
-    for (OptionGroup optionGroup : menu.getOptionGroups()) {
-      if (optionGroup.isSatisfiedBy(group.convertToOptionGroupValidation())) {
+    for (MenuOptionGroup menuOptionGroup : menu.getMenuOptionGroups()) {
+      if (menuOptionGroup.getOptionGroup().isSatisfiedBy(group.convertToOptionGroupValidation())) {
         return;
       }
     }

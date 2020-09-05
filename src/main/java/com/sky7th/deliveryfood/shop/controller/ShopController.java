@@ -12,9 +12,11 @@ import com.sky7th.deliveryfood.shop.service.ShopService;
 import com.sky7th.deliveryfood.user.UserContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,5 +55,18 @@ public class ShopController {
   public ResponseEntity<MenuGroupResponseDto> createMenuGroup(
       @PathVariable Long shopId, @RequestBody MenuGroupRequestDto requestDto, UserContext userContext) {
     return ResponseEntity.ok(menuGroupService.save(shopId, requestDto));
+  }
+
+  @PutMapping("/{shopId}/menu-groups/{menuGroupId}")
+  public ResponseEntity<MenuGroupResponseDto> updateMenuGroup(@PathVariable Long shopId,
+      @PathVariable Long menuGroupId, @RequestBody MenuGroupRequestDto requestDto, UserContext userContext) {
+    return ResponseEntity.ok(menuGroupService.update(menuGroupId, requestDto));
+  }
+
+  @DeleteMapping("/{shopId}/menu-groups/{menuGroupId}")
+  public ResponseEntity<MenuGroupResponseDto> deleteMenuGroup(@PathVariable Long shopId,
+      @PathVariable Long menuGroupId, UserContext userContext) {
+    menuGroupService.delete(menuGroupId);
+    return ResponseEntity.ok().build();
   }
 }
