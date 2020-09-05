@@ -2,7 +2,7 @@ package com.sky7th.deliveryfood.shop.domain;
 
 import static java.util.stream.Collectors.toList;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -11,10 +11,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Builder;
@@ -50,22 +50,17 @@ public class OptionGroup {
   @Enumerated(EnumType.STRING)
   private OptionGroupStatus status;
 
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "OPTION_GROUP_ID")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "optionGroup", fetch = FetchType.EAGER)
   private Set<Option> options = new LinkedHashSet<>();
 
-  public static OptionGroup basic(Option... options) {
-    return new OptionGroup(FIRST_OPTION_GROUP_NAME, true, false, Menu.FIRST_PRIORITY, options);
+  public static OptionGroup basic(List<Option> options) {
+    return new OptionGroup(null, FIRST_OPTION_GROUP_NAME, true, false, Menu.FIRST_PRIORITY,
+        OptionGroupStatus.INACTIVE, options);
   }
 
-  public static OptionGroup additive(String name, boolean selectable, Option... options) {
-    return new OptionGroup(name, false, selectable, Menu.LAST_PRIORITY, options);
-  }
-
-  private OptionGroup(String name, boolean basic, boolean selectable, Integer priority,
-      Option... options) {
-    this(null, name, selectable, basic, priority, OptionGroupStatus.INACTIVE,
-        Arrays.asList(options));
+  public static OptionGroup additive(String name, boolean selectable) {
+    return new OptionGroup(null, name, false, selectable, Menu.LAST_PRIORITY,
+        OptionGroupStatus.INACTIVE, Collections.emptyList());
   }
 
   @Builder
@@ -77,7 +72,18 @@ public class OptionGroup {
     this.selectable = selectable;
     this.priority = priority;
     this.status = status;
+    addOptions(options);
+  }
+
+  private void addOptions(List<Option> options) {
+    options.forEach(option -> {
+      option.setOptionGroup(this);
+    });
     this.options.addAll(options);
+  }
+
+  public OptionGroup(Long id) {
+    this.id = id;
   }
 
   private OptionGroup() {
@@ -92,8 +98,10 @@ public class OptionGroup {
       return false;
     }
 
-    List<OptionValidation> satisfiedOptionValidations = satisfied(optionGroupValidation.getOptionValidations());
-    if (satisfiedOptionValidations.isEmpty() || (satisfiedOptionValidations.size() != optionGroupValidation.getOptionValidations()
+    List<OptionValidation> satisfiedOptionValidations = satisfied(
+        optionGroupValidation.getOptionValidations());
+    if (satisfiedOptionValidations.isEmpty() || (satisfiedOptionValidations.size()
+        != optionGroupValidation.getOptionValidations()
         .size())) {
       return false;
     }

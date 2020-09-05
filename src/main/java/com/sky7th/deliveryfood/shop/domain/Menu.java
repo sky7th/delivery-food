@@ -1,9 +1,9 @@
 package com.sky7th.deliveryfood.shop.domain;
 
-import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -56,36 +56,49 @@ public class Menu {
 
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "MENU_ID")
-  private Set<OptionGroup> optionGroups = new LinkedHashSet<>();
+  private Set<MenuOptionGroup> menuOptionGroups = new LinkedHashSet<>();
 
-  public Menu(MenuGroup menuGroup, String name, String description, String imageUrl, OptionGroup basic,
-      OptionGroup... groups) {
-    this(null, menuGroup, name, description, imageUrl, Menu.LAST_PRIORITY, MenuStatus.INACTIVE, basic,
-        Arrays.asList(groups));
+  public Menu(Long menuGroupId, String name, String description, String imageUrl, OptionGroup basic) {
+    this(null, menuGroupId, name, description, imageUrl, Menu.LAST_PRIORITY, MenuStatus.INACTIVE, basic);
   }
 
   private Menu() {
   }
 
   @Builder
-  public Menu(Long id, MenuGroup menuGroup, String name, String description, String imageUrl, Integer priority,
-      MenuStatus status, OptionGroup basic, List<OptionGroup> additives) {
+  public Menu(Long id, Long menuGroupId, String name, String description, String imageUrl, Integer priority,
+      MenuStatus status, OptionGroup basic) {
     this.id = id;
-    this.menuGroup = menuGroup;
+    this.menuGroup = new MenuGroup(menuGroupId);
     this.name = name;
     this.description = description;
     this.imageUrl = imageUrl;
     this.priority = priority;
     this.status = status;
-    this.optionGroups.add(basic);
-    this.optionGroups.addAll(additives);
+    this.menuOptionGroups.add(new MenuOptionGroup(this, basic));
   }
 
-  private OptionGroup getBasicOptionGroup() {
-    return optionGroups
+  private MenuOptionGroup getBasicMenuOptionGroup() {
+    return menuOptionGroups
         .stream()
-        .filter(OptionGroup::isBasic)
+        .filter(menuOptionGroup -> menuOptionGroup.getOptionGroup().isBasic())
         .findFirst()
         .orElseThrow(IllegalStateException::new);
+  }
+
+  public void updateMenuOptionGroup(List<Long> requestOptionGroupIds, Long requestOwnerId) {
+    deleteMenuOptionGroupNotContainedIn(requestOptionGroupIds);
+    Set<MenuOptionGroup> requestOptionGroup = requestOptionGroupIds.stream()
+        .map(MenuOptionGroup::new)
+        .collect(Collectors.toSet());
+    this.menuOptionGroups.addAll(requestOptionGroup);
+  }
+
+  private void deleteMenuOptionGroupNotContainedIn(List<Long> requestOptionGroupIds) {
+    List<MenuOptionGroup> toBeDeletedMenuOptionGroup =
+        this.menuOptionGroups.stream()
+            .filter(menuOptionGroup -> !requestOptionGroupIds.contains(menuOptionGroup.getId()))
+            .collect(Collectors.toList());
+    toBeDeletedMenuOptionGroup.forEach(this.menuOptionGroups::remove);
   }
 }
