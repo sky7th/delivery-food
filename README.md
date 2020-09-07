@@ -1,4 +1,10 @@
 # delivery-food
+배달의 민족 REST API 서버를 개발해보는 프로젝트입니다. 
+
+> 사장님과 라이더의 어플은 이용가이드와 인터넷 검색을 통해 찾아보며 프로세스를 파악했습니다. [배달의 민족 사장님 이용가이드](https://ceo.baemin.com/guide/main)
+
+## [Wiki](https://github.com/sky7th/delivery-food/wiki)
+각 도메인마다 요구사항과 API 문서, 그리고 개발하며 고민한 내용들을 적어 놓았습니다.
 
 ## Environment
 - Java: JDK 11
@@ -6,13 +12,7 @@
 - MySQL: 8.0.17
 - Gradle
 
-## Service Architecture
-
-## DB ERD
-
-## 기능 요구사항
-
-## 프로젝트 중요 요소
+## 프로젝트 목표
 - 올바른 도메인 설계
     - 약한 의존성, 강한 응집도
 - 아래의 프로그래밍 요구사항을 지키며 코드 작성
@@ -43,18 +43,4 @@
 
 ## 브랜치 전략
 - [우아한 형제들 기술 블로그: 우린 Git-flow를 사용하고 있어요](http://woowabros.github.io/experience/2017/10/30/baemin-mobile-git-branch-strategy.html)
-
-## Test
-
-## 유저
-- Member: 일반 회원
-- Owner: 사장님 회원
-- Employee: 가게 직원 회원
-- Rider: 라이더 회원
-
-Owner -(1:N)- Employee -(N:1)- Shop: 다대다 연결
-
-Role
-- ROLE_USER: 유저 권한
-- ROLE_ADMIN: 어드민 권한
 
