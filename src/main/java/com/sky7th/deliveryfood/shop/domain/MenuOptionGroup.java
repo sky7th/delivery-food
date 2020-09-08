@@ -9,9 +9,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "MENU_OPTION_GROUPS")
+@Table(name = "MENU_OPTION_GROUP")
+@NoArgsConstructor
 @Getter
 public class MenuOptionGroup {
 
@@ -36,9 +38,4 @@ public class MenuOptionGroup {
   public MenuOptionGroup(Long id) {
     this.id = id;
   }
-
-  private MenuOptionGroup() {
-  }
-
-
 }

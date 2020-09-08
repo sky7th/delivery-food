@@ -21,9 +21,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "ORDERS")
+@NoArgsConstructor
 @Getter
 public class Order extends BaseTimeEntity {
 
@@ -64,9 +66,6 @@ public class Order extends BaseTimeEntity {
     this.orderedTime = orderedTime;
     this.status = status;
     this.orderMenuItems.addAll(items);
-  }
-
-  private Order() {
   }
 
   public List<Long> getMenuIds() {

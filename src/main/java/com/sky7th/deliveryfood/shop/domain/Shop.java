@@ -1,8 +1,8 @@
 package com.sky7th.deliveryfood.shop.domain;
 
+import com.sky7th.deliveryfood.address.domain.Address;
 import com.sky7th.deliveryfood.address.domain.ShopDeliveryTown;
 import com.sky7th.deliveryfood.common.domain.BaseTimeEntity;
-import com.sky7th.deliveryfood.address.domain.Address;
 import com.sky7th.deliveryfood.generic.money.domain.Money;
 import com.sky7th.deliveryfood.shop.exception.MismatchOwnerException;
 import java.util.LinkedHashSet;
@@ -14,12 +14,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
@@ -73,7 +75,8 @@ public class Shop extends BaseTimeEntity {
   @Column(name = "TEL_NUMBER")
   private String telNumber;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "BUILDING_MANAGEMENT_NUMBER")
   private Address address;
 
   @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -15,9 +15,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "MENU_GROUPS")
+@NoArgsConstructor
 @Getter
 public class MenuGroup {
 
@@ -76,9 +78,6 @@ public class MenuGroup {
     this.representative = representative;
     this.priority = priority;
     this.status = status;
-  }
-
-  private MenuGroup() {
   }
 
   public MenuGroup(Long id) {

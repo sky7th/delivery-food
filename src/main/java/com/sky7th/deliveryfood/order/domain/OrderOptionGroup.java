@@ -18,9 +18,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "ORDER_OPTION_GROUPS")
+@NoArgsConstructor
 @Getter
 public class OrderOptionGroup {
 
@@ -38,9 +40,6 @@ public class OrderOptionGroup {
 
   public OrderOptionGroup(String name, List<OrderOption> options) {
     this(null, name, options);
-  }
-
-  private OrderOptionGroup() {
   }
 
   @Builder

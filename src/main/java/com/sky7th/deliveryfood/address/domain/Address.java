@@ -5,9 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "ADDRESS")
+@NoArgsConstructor
 @Getter
 public class Address {
 
@@ -81,16 +83,16 @@ public class Address {
   @Column(columnDefinition = "VARCHAR(1)       NULL        COMMENT '거주여부'")
   private String isLiving;
 
-  @Column(columnDefinition = "DOUBLE(15,6)     NULL        COMMENT '건물중심점_x좌표'")
+  @Column(columnDefinition = "DOUBLE(15)     NULL        COMMENT '건물중심점_x좌표'")
   private Double buildingCenterPointX;
 
-  @Column(columnDefinition = "DOUBLE(15,6)     NULL        COMMENT '건물중심점_y좌표'")
+  @Column(columnDefinition = "DOUBLE(15)     NULL        COMMENT '건물중심점_y좌표'")
   private Double buildingCenterPointY;
 
-  @Column(columnDefinition = "DOUBLE(15,6)     NULL        COMMENT '출입구_x좌표'")
+  @Column(columnDefinition = "DOUBLE(15)     NULL        COMMENT '출입구_x좌표'")
   private Double entrancePointX;
 
-  @Column(columnDefinition = "DOUBLE(15,6)     NULL        COMMENT '출입구_y좌표'")
+  @Column(columnDefinition = "DOUBLE(15)     NULL        COMMENT '출입구_y좌표'")
   private Double entrancePointY;
 
   @Column(columnDefinition = "VARCHAR(40)      NULL        COMMENT '시도명_영문'")
@@ -110,7 +112,4 @@ public class Address {
 
   @Column(columnDefinition = "VARCHAR(2)       NULL        COMMENT '이동사유코드'")
   private String movingReasonCode;
-
-  private Address() {
-  }
 }

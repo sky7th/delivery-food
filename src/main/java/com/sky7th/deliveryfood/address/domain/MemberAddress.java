@@ -10,9 +10,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "MEMBER_ADDRESS")
+@NoArgsConstructor
 @Getter
 public class MemberAddress {
 
@@ -35,9 +37,6 @@ public class MemberAddress {
     this.memberId  = memberId;
     this.address = address;
     this.detailedAddress = detailedAddress;
-  }
-
-  private MemberAddress() {
   }
 
   public void update(Long requestMemberId, Address address, String detailedAddress) {
