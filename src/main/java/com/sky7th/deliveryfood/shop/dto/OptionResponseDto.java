@@ -14,11 +14,12 @@ import lombok.ToString;
 public class OptionResponseDto {
 
   private Long id;
+  private Long optionGroupId;
   private String name;
   private Long price;
 
   public static OptionResponseDto of(Option entity) {
-    return new OptionResponseDto(entity.getId(), entity.getName(),
+    return new OptionResponseDto(entity.getId(), entity.getOptionGroup().getId(), entity.getName(),
         entity.getPrice().getAmount().longValue());
   }
 

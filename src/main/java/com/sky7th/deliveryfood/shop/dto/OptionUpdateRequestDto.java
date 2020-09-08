@@ -11,21 +11,22 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
-public class OptionRequestDto {
+public class OptionUpdateRequestDto {
 
+  private Long id;
   private String name;
   private Long price;
 
-  private OptionRequestDto() {
+  private OptionUpdateRequestDto() {
   }
 
-  public static Option toEntity(OptionRequestDto requestDto) {
-    return new Option(null, requestDto.getName(), Money.wons(requestDto.getPrice()));
+  private static Option toEntity(OptionUpdateRequestDto requestDto) {
+    return new Option(requestDto.getId(), null, requestDto.getName(), Money.wons(requestDto.getPrice()));
   }
 
-  public static List<Option> toEntities(List<OptionRequestDto> requestDto) {
+  public static List<Option> toEntities(List<OptionUpdateRequestDto> requestDto) {
     return requestDto.stream()
-        .map(OptionRequestDto::toEntity)
+        .map(OptionUpdateRequestDto::toEntity)
         .collect(Collectors.toList());
   }
 }

@@ -19,9 +19,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "OPTION_GROUPS")
+@NoArgsConstructor
 @Getter
 public class OptionGroup {
 
@@ -82,15 +84,26 @@ public class OptionGroup {
     this.options.addAll(options);
   }
 
-  public OptionGroup(Long id) {
-    this.id = id;
+  public void updateBasicOptions(List<Option> requestOptions) {
+    this.options.removeIf(option -> !requestOptions.contains(option));
+
+    requestOptions.forEach(requestOption -> {
+      updatExistedOptions(requestOption);
+      addNewOptions(requestOption);
+    });
   }
 
-  private OptionGroup() {
+  private void updatExistedOptions(Option requestOption) {
+    this.options.stream()
+      .filter(option -> option.equals(requestOption))
+      .forEach(option -> option.update(requestOption.getName(), requestOption.getPrice()));
   }
 
-  public String getName() {
-    return name;
+  private void addNewOptions(Option requestOption) {
+    if (!this.options.contains(requestOption)) {
+      requestOption.setOptionGroup(this);
+      this.options.add(requestOption);
+    }
   }
 
   public boolean isSatisfiedBy(OptionGroupValidation optionGroupValidation) {
@@ -119,5 +132,9 @@ public class OptionGroup {
         .stream()
         .flatMap(option -> optionValidations.stream().filter(option::isSatisfiedBy))
         .collect(toList());
+  }
+
+  public OptionGroup(Long id) {
+    this.id = id;
   }
 }

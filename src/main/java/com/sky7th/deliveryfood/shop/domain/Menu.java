@@ -3,12 +3,12 @@ package com.sky7th.deliveryfood.shop.domain;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,9 +18,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "MENUS")
+@NoArgsConstructor
 @Getter
 public class Menu {
 
@@ -34,7 +36,7 @@ public class Menu {
   @Column(name = "MENU_ID")
   private Long id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "MENU_GROUP_ID")
   private MenuGroup menuGroup;
 
@@ -54,15 +56,11 @@ public class Menu {
   @Enumerated(EnumType.STRING)
   private MenuStatus status;
 
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "MENU_ID")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "menu")
   private Set<MenuOptionGroup> menuOptionGroups = new LinkedHashSet<>();
 
   public Menu(Long menuGroupId, String name, String description, String imageUrl, OptionGroup basic) {
     this(null, menuGroupId, name, description, imageUrl, Menu.LAST_PRIORITY, MenuStatus.INACTIVE, basic);
-  }
-
-  private Menu() {
   }
 
   @Builder
@@ -78,27 +76,19 @@ public class Menu {
     this.menuOptionGroups.add(new MenuOptionGroup(this, basic));
   }
 
-  private MenuOptionGroup getBasicMenuOptionGroup() {
+  public void update(String name, String description, String imageUrl, List<Option> requestOptions) {
+    this.name = name;
+    this.description = description;
+    this.imageUrl = imageUrl;
+    getBasicOptionGroup().updateBasicOptions(requestOptions);
+  }
+
+  private OptionGroup getBasicOptionGroup() {
     return menuOptionGroups
         .stream()
         .filter(menuOptionGroup -> menuOptionGroup.getOptionGroup().isBasic())
         .findFirst()
-        .orElseThrow(IllegalStateException::new);
-  }
-
-  public void updateMenuOptionGroup(List<Long> requestOptionGroupIds, Long requestOwnerId) {
-    deleteMenuOptionGroupNotContainedIn(requestOptionGroupIds);
-    Set<MenuOptionGroup> requestOptionGroup = requestOptionGroupIds.stream()
-        .map(MenuOptionGroup::new)
-        .collect(Collectors.toSet());
-    this.menuOptionGroups.addAll(requestOptionGroup);
-  }
-
-  private void deleteMenuOptionGroupNotContainedIn(List<Long> requestOptionGroupIds) {
-    List<MenuOptionGroup> toBeDeletedMenuOptionGroup =
-        this.menuOptionGroups.stream()
-            .filter(menuOptionGroup -> !requestOptionGroupIds.contains(menuOptionGroup.getId()))
-            .collect(Collectors.toList());
-    toBeDeletedMenuOptionGroup.forEach(this.menuOptionGroups::remove);
+        .orElseThrow(IllegalStateException::new)
+        .getOptionGroup();
   }
 }

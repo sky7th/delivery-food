@@ -4,6 +4,7 @@ import com.sky7th.deliveryfood.generic.money.domain.Money;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,9 +13,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "OPTIONS")
+@NoArgsConstructor
 @Getter
 public class Option {
 
@@ -25,7 +28,7 @@ public class Option {
   @Column(name = "OPTION_ID")
   private Long id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "OPTION_GROUP_ID")
   private OptionGroup optionGroup;
 
@@ -47,7 +50,13 @@ public class Option {
     this.price = price;
   }
 
-  private Option() {
+  public void update(String name, Money price) {
+    this.name = name;
+    this.price = price;
+  }
+
+  public boolean isSatisfiedBy(OptionValidation optionValidation) {
+    return Objects.equals(name, optionValidation.getName()) && Objects.equals(price, optionValidation.getPrice());
   }
 
   public void setOptionGroup(OptionGroup optionGroup) {
@@ -55,25 +64,19 @@ public class Option {
   }
 
   @Override
-  public boolean equals(Object object) {
-    if (object == null) {
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
       return false;
     }
-
-    if (!(object instanceof Option)) {
-      return false;
-    }
-
-    Option other = (Option) object;
-    return Objects.equals(name, other.getName()) && Objects.equals(price, other.getPrice());
+    Option option = (Option) o;
+    return Objects.equals(id, option.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, price);
-  }
-
-  public boolean isSatisfiedBy(OptionValidation optionValidation) {
-    return Objects.equals(name, optionValidation.getName()) && Objects.equals(price, optionValidation.getPrice());
+    return Objects.hash(id);
   }
 }

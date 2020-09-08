@@ -79,4 +79,10 @@ public class ShopController {
       @PathVariable Long menuGroupId, @RequestBody MenuRequestDto requestDto, UserContext userContext) {
     return ResponseEntity.ok(menuService.save(menuGroupId, requestDto));
   }
+
+  @PutMapping("/{shopId}/menu-groups/{menuGroupId}/menus/{menuId}")
+  public ResponseEntity<MenuResponseDto> updateMenu(@PathVariable Long shopId,
+      @PathVariable Long menuId, @RequestBody MenuRequestDto requestDto, UserContext userContext) {
+    return ResponseEntity.ok(menuService.save(menuId, requestDto));
+  }
 }

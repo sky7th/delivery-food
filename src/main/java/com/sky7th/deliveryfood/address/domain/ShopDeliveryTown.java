@@ -11,9 +11,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "SHOP_DELIVERY_TOWN")
+@NoArgsConstructor
 @Getter
 public class ShopDeliveryTown {
 
@@ -36,9 +38,6 @@ public class ShopDeliveryTown {
     this.shop = shop;
     this.townCode = townCode;
     this.townName = townName;
-  }
-
-  private ShopDeliveryTown() {
   }
 
   @Override
