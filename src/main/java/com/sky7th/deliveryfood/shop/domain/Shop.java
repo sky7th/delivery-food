@@ -108,14 +108,13 @@ public class Shop extends BaseTimeEntity {
     this.status = status;
   }
 
-  public void same(Long ownerId) {
+  public void checkOwner(Long ownerId) {
     if (!this.ownerId.equals(ownerId)) {
       throw new MismatchOwnerException();
     }
   }
 
-  public void updateDeliveryTowns(Set<ShopDeliveryTown> requestShopDeliveryTowns, Long requestOwnerId) {
-    same(requestOwnerId);
+  public void updateDeliveryTowns(Set<ShopDeliveryTown> requestShopDeliveryTowns) {
     deleteShopDeliveryTownNotContainedIn(requestShopDeliveryTowns);
     this.shopDeliveryTowns.addAll(requestShopDeliveryTowns);
   }

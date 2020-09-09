@@ -7,7 +7,9 @@ import com.sky7th.deliveryfood.shop.dto.MenuGroupResponseDto;
 import com.sky7th.deliveryfood.shop.dto.MenuGroupResponseDtos;
 import com.sky7th.deliveryfood.shop.exception.NotFoundMenuGroupException;
 import com.sky7th.deliveryfood.shop.exception.NotFoundShopException;
+import com.sky7th.deliveryfood.user.UserContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,18 +36,21 @@ public class MenuGroupService {
     menuGroupRepository.save(MenuGroup.representative(shopId));
   }
 
-  public MenuGroupResponseDto save(Long shopId, MenuGroupRequestDto requestDto) {
+  @PreAuthorize("@shopService.isOwner(#shopId, #userContext)")
+  public MenuGroupResponseDto save(Long shopId, MenuGroupRequestDto requestDto, UserContext userContext) {
     return MenuGroupResponseDto.of(menuGroupRepository.save(MenuGroupRequestDto.toEntity(shopId, requestDto)));
   }
 
-  public MenuGroupResponseDto update(Long menuGroupId, MenuGroupRequestDto requestDto) {
+  @PreAuthorize("@shopService.isOwner(#shopId, #userContext)")
+  public MenuGroupResponseDto update(Long shopId, Long menuGroupId, MenuGroupRequestDto requestDto, UserContext userContext) {
     MenuGroup menuGroup = findById(menuGroupId);
     menuGroup.update(requestDto.getName(), requestDto.getDescription());
 
     return MenuGroupResponseDto.of(menuGroup);
   }
 
-  public void delete(Long menuGroupId) {
+  @PreAuthorize("@shopService.isOwner(#shopId, #userContext)")
+  public void delete(Long shopId, Long menuGroupId, UserContext userContext) {
     MenuGroup menuGroup = findById(menuGroupId);
     menuGroupRepository.delete(menuGroup);
   }

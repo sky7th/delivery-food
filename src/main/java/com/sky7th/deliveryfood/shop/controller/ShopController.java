@@ -58,19 +58,19 @@ public class ShopController {
   @PostMapping("/{shopId}/menu-groups")
   public ResponseEntity<MenuGroupResponseDto> createMenuGroup(
       @PathVariable Long shopId, @RequestBody MenuGroupRequestDto requestDto, UserContext userContext) {
-    return ResponseEntity.ok(menuGroupService.save(shopId, requestDto));
+    return ResponseEntity.ok(menuGroupService.save(shopId, requestDto, userContext));
   }
 
   @PutMapping("/{shopId}/menu-groups/{menuGroupId}")
   public ResponseEntity<MenuGroupResponseDto> updateMenuGroup(@PathVariable Long shopId,
       @PathVariable Long menuGroupId, @RequestBody MenuGroupRequestDto requestDto, UserContext userContext) {
-    return ResponseEntity.ok(menuGroupService.update(menuGroupId, requestDto));
+    return ResponseEntity.ok(menuGroupService.update(shopId, menuGroupId, requestDto, userContext));
   }
 
   @DeleteMapping("/{shopId}/menu-groups/{menuGroupId}")
   public ResponseEntity<MenuGroupResponseDto> deleteMenuGroup(@PathVariable Long shopId,
       @PathVariable Long menuGroupId, UserContext userContext) {
-    menuGroupService.delete(menuGroupId);
+    menuGroupService.delete(shopId, menuGroupId, userContext);
     return ResponseEntity.ok().build();
   }
 
@@ -80,7 +80,7 @@ public class ShopController {
     return ResponseEntity.ok(menuService.save(menuGroupId, requestDto));
   }
 
-  @PutMapping("/{shopId}/menu-groups/{menuGroupId}/menus/{menuId}")
+  @PutMapping("/{shopId}/menus/{menuId}")
   public ResponseEntity<MenuResponseDto> updateMenu(@PathVariable Long shopId,
       @PathVariable Long menuId, @RequestBody MenuRequestDto requestDto, UserContext userContext) {
     return ResponseEntity.ok(menuService.save(menuId, requestDto));

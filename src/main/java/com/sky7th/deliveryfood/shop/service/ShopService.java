@@ -1,7 +1,6 @@
 package com.sky7th.deliveryfood.shop.service;
 
 import com.sky7th.deliveryfood.address.domain.Address;
-import com.sky7th.deliveryfood.address.domain.ShopDeliveryTown;
 import com.sky7th.deliveryfood.address.dto.ShopDeliveryTownRequestDtos;
 import com.sky7th.deliveryfood.address.dto.ShopDeliveryTownResponseDtos;
 import com.sky7th.deliveryfood.address.service.AddressService;
@@ -13,8 +12,8 @@ import com.sky7th.deliveryfood.shop.dto.ShopDetailResponseDto;
 import com.sky7th.deliveryfood.shop.dto.ShopDetailResponseDtos;
 import com.sky7th.deliveryfood.shop.exception.NotFoundShopException;
 import com.sky7th.deliveryfood.user.UserContext;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,9 +31,10 @@ public class ShopService {
     return shopRepository.findById(shopId).orElseThrow(NotFoundShopException::new);
   }
 
+  @PreAuthorize("@shopService.isOwner(#shopId, #userContext)")
   public ShopDetailResponseDto findById(Long shopId, UserContext userContext) {
     Shop shop = findById(shopId);
-    shop.same(userContext.getId());
+    shop.checkOwner(userContext.getId());
 
     return ShopDetailResponseDto.of(shop);
   }
@@ -49,12 +49,17 @@ public class ShopService {
     menuGroupService.saveRepresentative(savedShop.getId());
   }
 
+  @PreAuthorize("@shopService.isOwner(#shopId, #userContext)")
   public ShopDeliveryTownResponseDtos updateDeliveryTowns(Long shopId, ShopDeliveryTownRequestDtos requestDto, UserContext userContext) {
     Shop shop = findById(shopId);
-    Set<ShopDeliveryTown> shopDeliveryTowns = ShopDeliveryTownRequestDtos
-        .toEntities(requestDto, shop);
-    shop.updateDeliveryTowns(shopDeliveryTowns, userContext.getId());
+    shop.updateDeliveryTowns(ShopDeliveryTownRequestDtos.toEntities(requestDto, shop));
 
     return ShopDeliveryTownResponseDtos.of(shop.getShopDeliveryTowns());
+  }
+
+  public boolean isOwner(Long shopId, UserContext userContext) {
+    Shop shop = findById(shopId);
+    shop.checkOwner(userContext.getId());
+    return true;
   }
 }
