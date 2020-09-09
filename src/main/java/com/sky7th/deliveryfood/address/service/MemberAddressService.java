@@ -9,6 +9,7 @@ import com.sky7th.deliveryfood.address.dto.MemberAddressResponseDtos;
 import com.sky7th.deliveryfood.address.service.exception.NotFoundMemberAddressException;
 import com.sky7th.deliveryfood.user.UserContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,28 +26,30 @@ public class MemberAddressService {
     return memberAddressRepository.findById(memberAddressId).orElseThrow(NotFoundMemberAddressException::new);
   }
 
-  public MemberAddressResponseDtos findMyAddresses(UserContext userContext) {
+  @PreAuthorize("@memberService.isMyself(#memberId, #userContext)")
+  public MemberAddressResponseDtos findMyAddresses(Long memberId, UserContext userContext) {
     return MemberAddressResponseDtos.of(memberAddressRepository.findAllByMemberId(userContext.getId()));
   }
 
-  public MemberAddressResponseDto save(MemberAddressCreateRequestDto requestDto, UserContext userContext) {
+  @PreAuthorize("@memberService.isMyself(#memberId, #userContext)")
+  public MemberAddressResponseDto save(Long memberId, MemberAddressCreateRequestDto requestDto, UserContext userContext) {
     Address address = addressService.findByAddressCode(requestDto.getAddressCode());
     MemberAddress memberAddress = memberAddressRepository.save(new MemberAddress(userContext.getId(), address, requestDto.getDetailedAddress()));
 
     return MemberAddressResponseDto.of(memberAddress);
   }
 
-  public MemberAddressResponseDto update(Long memberAddressId, MemberAddressCreateRequestDto requestDto, UserContext userContext) {
+  @PreAuthorize("@memberService.isMyself(#memberId, #userContext)")
+  public MemberAddressResponseDto update(Long memberId, Long memberAddressId, MemberAddressCreateRequestDto requestDto, UserContext userContext) {
     Address address = addressService.findByAddressCode(requestDto.getAddressCode());
     MemberAddress memberAddress = findById(memberAddressId);
-    memberAddress.update(userContext.getId(), address, requestDto.getDetailedAddress());
+    memberAddress.update(address, requestDto.getDetailedAddress());
 
     return MemberAddressResponseDto.of(memberAddress);
   }
 
-  public void delete(Long memberAddressId, UserContext userContext) {
-    MemberAddress memberAddress = findById(memberAddressId);
-    memberAddress.checkMember(userContext.getId());
-    memberAddressRepository.delete(memberAddress);
+  @PreAuthorize("@memberService.isMyself(#memberId, #userContext)")
+  public void delete(Long memberId, Long memberAddressId, UserContext userContext) {
+    memberAddressRepository.delete(findById(memberAddressId));
   }
 }

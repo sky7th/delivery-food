@@ -12,9 +12,11 @@ import com.sky7th.deliveryfood.user.member.domain.MemberRepository;
 import com.sky7th.deliveryfood.user.member.dto.MemberResponseDto;
 import com.sky7th.deliveryfood.user.member.dto.MemberDetailResponseDto;
 import com.sky7th.deliveryfood.user.member.service.exception.AlreadyEmailVerifiedException;
+import com.sky7th.deliveryfood.user.member.service.exception.MismatchMemberException;
 import com.sky7th.deliveryfood.user.member.service.exception.NotFoundMemberException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,12 +46,15 @@ public class MemberService {
     return memberRepository.findByEmail(email).orElseThrow(NotFoundMemberException::new);
   }
 
-  @Transactional(readOnly = true)
-  public MemberDetailResponseDto findById(Long memberId, UserContext userContext) {
-    Member member = memberRepository.findById(memberId).orElseThrow(NotFoundMemberException::new);
-    member.same(userContext.toMember());
+  public void isMyself(Long memberId, UserContext userContext) {
+    if (!memberId.equals(userContext.getId())) {
+      throw new MismatchMemberException();
+    }
+  }
 
-    return MemberDetailResponseDto.of(member);
+  @PreAuthorize("@memberService.isMyself(#memberId, #userContext)")
+  public MemberDetailResponseDto findById(Long memberId, UserContext userContext) {
+    return MemberDetailResponseDto.of(findById(memberId));
   }
 
   @Transactional

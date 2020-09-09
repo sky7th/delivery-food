@@ -39,8 +39,7 @@ public class MemberAddress {
     this.detailedAddress = detailedAddress;
   }
 
-  public void update(Long requestMemberId, Address address, String detailedAddress) {
-    checkMember(requestMemberId);
+  public void update(Address address, String detailedAddress) {
     this.address = address;
     this.detailedAddress = detailedAddress;
   }

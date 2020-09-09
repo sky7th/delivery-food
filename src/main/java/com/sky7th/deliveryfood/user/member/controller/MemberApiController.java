@@ -78,27 +78,27 @@ public class MemberApiController {
     return ResponseEntity.ok(memberService.findById(memberId, userContext));
   }
 
-  @GetMapping("/members/address")
-  public ResponseEntity<MemberAddressResponseDtos> list(UserContext userContext) {
-    return ResponseEntity.ok(memberAddressService.findMyAddresses(userContext));
+  @GetMapping("/members/{memberId}/address")
+  public ResponseEntity<MemberAddressResponseDtos> list(@PathVariable Long memberId, UserContext userContext) {
+    return ResponseEntity.ok(memberAddressService.findMyAddresses(memberId, userContext));
   }
 
-  @PostMapping("/members/address")
-  public ResponseEntity<MemberAddressResponseDto> createMemberAddress(
+  @PostMapping("/members/{memberId}/address")
+  public ResponseEntity<MemberAddressResponseDto> createMemberAddress(@PathVariable Long memberId,
       @RequestBody MemberAddressCreateRequestDto requestDto, UserContext userContext) {
-    return ResponseEntity.ok(memberAddressService.save(requestDto, userContext));
+    return ResponseEntity.ok(memberAddressService.save(memberId, requestDto, userContext));
   }
 
-  @PutMapping("/members/address/{memberAddressId}")
-  public ResponseEntity<MemberAddressResponseDto> updateMemberAddress(@PathVariable Long memberAddressId,
-      @RequestBody MemberAddressCreateRequestDto requestDto, UserContext userContext) {
-    return ResponseEntity.ok(memberAddressService.update(memberAddressId, requestDto, userContext));
+  @PutMapping("/members/{memberId}/address/{memberAddressId}")
+  public ResponseEntity<MemberAddressResponseDto> updateMemberAddress(@PathVariable Long memberId,
+      @PathVariable Long memberAddressId, @RequestBody MemberAddressCreateRequestDto requestDto, UserContext userContext) {
+    return ResponseEntity.ok(memberAddressService.update(memberId, memberAddressId, requestDto, userContext));
   }
 
-  @DeleteMapping("/members/address/{memberAddressId}")
-  public ResponseEntity<MemberAddressResponseDto> deleteMemberAddress(
+  @DeleteMapping("/members/{memberId}/address/{memberAddressId}")
+  public ResponseEntity<MemberAddressResponseDto> deleteMemberAddress(@PathVariable Long memberId,
       @PathVariable Long memberAddressId, UserContext userContext) {
-    memberAddressService.delete(memberAddressId, userContext);
+    memberAddressService.delete(memberId, memberAddressId, userContext);
     return ResponseEntity.ok().build();
   }
 }

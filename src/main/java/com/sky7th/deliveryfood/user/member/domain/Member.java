@@ -39,8 +39,8 @@ public class Member extends User {
     this.emailVerified = true;
   }
 
-  public void same(Member member) {
-    if (!this.equals(member)) {
+  public void same(Long requestMemberId) {
+    if (!this.getId().equals(requestMemberId)) {
       throw new MismatchMemberException();
     }
   }
