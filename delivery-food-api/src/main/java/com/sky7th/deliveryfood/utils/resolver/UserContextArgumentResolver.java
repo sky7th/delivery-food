@@ -1,7 +1,7 @@
 package com.sky7th.deliveryfood.utils.resolver;
 
 import com.sky7th.deliveryfood.security.SecurityContextSupport;
-import com.sky7th.deliveryfood.user.UserContext;
+import com.sky7th.deliveryfood.user.dto.UserContext;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;

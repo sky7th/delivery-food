@@ -1,11 +1,11 @@
 package com.sky7th.deliveryfood.user.owner.controller;
 
-import com.sky7th.deliveryfood.security.JwtTokenProvider;
 import com.sky7th.deliveryfood.security.service.AuthService;
 import com.sky7th.deliveryfood.security.token.OwnerUsernamePasswordAuthenticationToken;
 import com.sky7th.deliveryfood.user.CustomUserDetails;
-import com.sky7th.deliveryfood.user.LoginRequestDto;
-import com.sky7th.deliveryfood.user.RegisterRequestDto;
+import com.sky7th.deliveryfood.user.dto.LoginRequestDto;
+import com.sky7th.deliveryfood.user.dto.LoginResponseDto;
+import com.sky7th.deliveryfood.user.owner.dto.OwnerRegisterRequestDto;
 import com.sky7th.deliveryfood.user.owner.dto.OwnerResponseDto;
 import com.sky7th.deliveryfood.user.owner.service.OwnerService;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +26,10 @@ public class OwnerApiController {
       OwnerApiController.class);
 
   private final AuthService authService;
-  private final JwtTokenProvider jwtTokenProvider;
   private final OwnerService ownerService;
 
   @PostMapping("/login")
-  public ResponseEntity authenticateUser(@RequestBody LoginRequestDto loginRequestDto) {
+  public ResponseEntity<LoginResponseDto> authenticateUser(@RequestBody LoginRequestDto loginRequestDto) {
     CustomUserDetails customUserDetails = authService.authenticateUser(
         new OwnerUsernamePasswordAuthenticationToken(
             loginRequestDto.getEmail(),
@@ -42,9 +41,9 @@ public class OwnerApiController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<OwnerResponseDto> register(@RequestBody RegisterRequestDto registerRequestDto) {
+  public ResponseEntity<OwnerResponseDto> register(@RequestBody OwnerRegisterRequestDto registerRequestDto) {
     logger.info("Register Request: {}", registerRequestDto.toString());
 
-    return ResponseEntity.ok(ownerService.save(registerRequestDto));
+    return ResponseEntity.ok(ownerService.register(registerRequestDto));
   }
 }

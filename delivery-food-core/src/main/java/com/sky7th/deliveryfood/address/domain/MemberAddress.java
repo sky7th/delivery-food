@@ -1,6 +1,6 @@
 package com.sky7th.deliveryfood.address.domain;
 
-import com.sky7th.deliveryfood.user.member.exception.MismatchMemberException;
+import com.sky7th.deliveryfood.user.exception.MismatchUserException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -46,7 +46,7 @@ public class MemberAddress {
 
   public void checkMember(Long requestMemberId) {
     if (!this.memberId.equals(requestMemberId)) {
-      throw new MismatchMemberException();
+      throw new MismatchUserException();
     }
   }
 }

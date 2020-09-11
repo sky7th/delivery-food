@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ShopRepository extends JpaRepository<Shop, Long> {
 
-  List<Shop> findAllByOwnerIdAndStatus(Long ownerId, ShopStatus status);
+  List<Shop> findAllByOwnerIdAndStatusIsNot(Long ownerId, ShopStatus status);
 }

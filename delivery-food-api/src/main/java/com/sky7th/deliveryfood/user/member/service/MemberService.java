@@ -4,16 +4,13 @@ import com.sky7th.deliveryfood.generic.mail.domain.token.EmailVerificationToken;
 import com.sky7th.deliveryfood.generic.mail.domain.token.EmailVerificationTokenService;
 import com.sky7th.deliveryfood.generic.mail.event.OnGenerateEmailVerificationEvent;
 import com.sky7th.deliveryfood.security.service.UserValidateService;
-import com.sky7th.deliveryfood.user.LoginRequestDto;
-import com.sky7th.deliveryfood.user.RegisterRequestDto;
-import com.sky7th.deliveryfood.user.UserContext;
+import com.sky7th.deliveryfood.user.dto.LoginRequestDto;
+import com.sky7th.deliveryfood.user.dto.UserContext;
 import com.sky7th.deliveryfood.user.member.domain.Member;
-import com.sky7th.deliveryfood.user.member.domain.MemberRepository;
-import com.sky7th.deliveryfood.user.member.dto.MemberResponseDto;
 import com.sky7th.deliveryfood.user.member.dto.MemberDetailResponseDto;
+import com.sky7th.deliveryfood.user.member.dto.MemberRegisterRequestDto;
+import com.sky7th.deliveryfood.user.member.dto.MemberResponseDto;
 import com.sky7th.deliveryfood.user.member.exception.AlreadyEmailVerifiedException;
-import com.sky7th.deliveryfood.user.member.exception.MismatchMemberException;
-import com.sky7th.deliveryfood.user.member.exception.NotFoundMemberException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,48 +27,23 @@ public class MemberService {
 
   private static final String MEMBER_REGISTER_CONFIRM_URL = "/members/register/confirm";
 
-  private final MemberRepository memberRepository;
+  private final MemberInternalService memberInternalService;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
   private final EmailVerificationTokenService emailVerificationTokenService;
   private final ApplicationEventPublisher applicationEventPublisher;
   private final UserValidateService userValidateService;
 
-  @Transactional(readOnly = true)
-  public Member findById(Long memberId) {
-    return memberRepository.findById(memberId).orElseThrow(NotFoundMemberException::new);
-  }
-
-  @Transactional(readOnly = true)
-  public Member findByEmail(String email) {
-    return memberRepository.findByEmail(email).orElseThrow(NotFoundMemberException::new);
-  }
-
-  public void isMyself(Long memberId, UserContext userContext) {
-    if (!memberId.equals(userContext.getId())) {
-      throw new MismatchMemberException();
-    }
-  }
-
-  @PreAuthorize("@memberService.isMyself(#memberId, #userContext)")
+  @PreAuthorize("@memberInternalService.isMyself(#memberId, #userContext)")
   public MemberDetailResponseDto findById(Long memberId, UserContext userContext) {
-    return MemberDetailResponseDto.of(findById(memberId));
+    return MemberDetailResponseDto.of(memberInternalService.findById(memberId));
   }
 
-  @Transactional
-  public MemberResponseDto register(RegisterRequestDto registerRequestDto) {
-    Member member = save(registerRequestDto);
+  public MemberResponseDto register(MemberRegisterRequestDto requestDto) {
+    String encodedPassword = bCryptPasswordEncoder.encode(requestDto.getPassword());
+    Member member = memberInternalService.save(requestDto, encodedPassword);
     sendVerificationEmail(member);
 
     return MemberResponseDto.of(member);
-  }
-
-  public Member save(RegisterRequestDto registerRequestDto) {
-    Member member = new Member(
-        registerRequestDto.getEmail(),
-        bCryptPasswordEncoder.encode(registerRequestDto.getPassword()),
-        registerRequestDto.getUsername());
-
-    return memberRepository.save(member);
   }
 
   private void sendVerificationEmail(Member member) {
@@ -80,16 +52,15 @@ public class MemberService {
     applicationEventPublisher.publishEvent(onGenerateEmailVerificationEvent);
   }
 
-  @Transactional
   public void emailVerify(String key) {
     EmailVerificationToken token = emailVerificationTokenService.findById(key);
     token.verifyExpiration();
-    Member member = findById(token.getUserId());
+    Member member = memberInternalService.findById(token.getUserId());
     member.emailVerify();
   }
 
   public void resendVerificationEmail(LoginRequestDto loginRequestDto) {
-    Member member = findByEmail(loginRequestDto.getEmail());
+    Member member = memberInternalService.findByEmail(loginRequestDto.getEmail());
     userValidateService.validateUser(member, loginRequestDto.getPassword());
 
     if (member.getEmailVerified()) {

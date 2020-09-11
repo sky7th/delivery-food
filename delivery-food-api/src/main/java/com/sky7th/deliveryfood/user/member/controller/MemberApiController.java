@@ -1,18 +1,18 @@
 package com.sky7th.deliveryfood.user.member.controller;
 
-import com.sky7th.deliveryfood.address.dto.MemberAddressCreateRequestDto;
-import com.sky7th.deliveryfood.address.dto.MemberAddressResponseDto;
-import com.sky7th.deliveryfood.address.dto.MemberAddressResponseDtos;
+import com.sky7th.deliveryfood.address.dto.memberaddress.MemberAddressCreateRequestDto;
+import com.sky7th.deliveryfood.address.dto.memberaddress.MemberAddressResponseDto;
+import com.sky7th.deliveryfood.address.dto.memberaddress.MemberAddressResponseDtos;
 import com.sky7th.deliveryfood.address.service.MemberAddressService;
 import com.sky7th.deliveryfood.security.service.AuthService;
 import com.sky7th.deliveryfood.security.token.MemberUsernamePasswordAuthenticationToken;
 import com.sky7th.deliveryfood.user.CustomUserDetails;
-import com.sky7th.deliveryfood.user.LoginRequestDto;
-import com.sky7th.deliveryfood.user.LoginResponseDto;
-import com.sky7th.deliveryfood.user.RegisterRequestDto;
-import com.sky7th.deliveryfood.user.TokenRefreshRequestDto;
-import com.sky7th.deliveryfood.user.UserContext;
+import com.sky7th.deliveryfood.user.dto.LoginRequestDto;
+import com.sky7th.deliveryfood.user.dto.LoginResponseDto;
+import com.sky7th.deliveryfood.user.dto.TokenRefreshRequestDto;
+import com.sky7th.deliveryfood.user.dto.UserContext;
 import com.sky7th.deliveryfood.user.member.dto.MemberDetailResponseDto;
+import com.sky7th.deliveryfood.user.member.dto.MemberRegisterRequestDto;
 import com.sky7th.deliveryfood.user.member.dto.MemberResponseDto;
 import com.sky7th.deliveryfood.user.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +52,7 @@ public class MemberApiController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<MemberResponseDto> register(@RequestBody RegisterRequestDto registerRequestDto) {
+  public ResponseEntity<MemberResponseDto> register(@RequestBody MemberRegisterRequestDto registerRequestDto) {
     logger.info("Register Request: {}", registerRequestDto.toString());
 
     return ResponseEntity.ok(memberService.register(registerRequestDto));
@@ -80,7 +80,7 @@ public class MemberApiController {
 
   @GetMapping("/members/{memberId}/address")
   public ResponseEntity<MemberAddressResponseDtos> list(@PathVariable Long memberId, UserContext userContext) {
-    return ResponseEntity.ok(memberAddressService.findMyAddresses(memberId, userContext));
+    return ResponseEntity.ok(memberAddressService.findAllByMemberId(memberId, userContext));
   }
 
   @PostMapping("/members/{memberId}/address")

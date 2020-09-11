@@ -5,7 +5,7 @@ import com.sky7th.deliveryfood.security.token.OwnerUsernamePasswordAuthenticatio
 import com.sky7th.deliveryfood.user.CustomUserDetails;
 import com.sky7th.deliveryfood.user.UserRole;
 import com.sky7th.deliveryfood.user.owner.domain.Owner;
-import com.sky7th.deliveryfood.user.owner.service.OwnerService;
+import com.sky7th.deliveryfood.user.owner.service.OwnerInternalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class OwnerAuthenticationProvider extends AbstractAuthenticationProvider {
 
-  private final OwnerService ownerService;
+  private final OwnerInternalService ownerInternalService;
   private final UserValidateService userValidateService;
 
   public CustomUserDetails getCustomUserDetails(String email, String password) {
-    Owner owner = ownerService.findByEmail(email);
+    Owner owner = ownerInternalService.findByEmail(email);
     userValidateService.validateUser(owner, password);
 
     return new CustomUserDetails(owner, UserRole.ROLE_OWNER);

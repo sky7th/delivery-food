@@ -3,9 +3,9 @@ package com.sky7th.deliveryfood.user.rider.controller;
 import com.sky7th.deliveryfood.security.service.AuthService;
 import com.sky7th.deliveryfood.security.token.RiderUsernamePasswordAuthenticationToken;
 import com.sky7th.deliveryfood.user.CustomUserDetails;
-import com.sky7th.deliveryfood.user.LoginRequestDto;
-import com.sky7th.deliveryfood.user.LoginResponseDto;
-import com.sky7th.deliveryfood.user.RegisterRequestDto;
+import com.sky7th.deliveryfood.user.dto.LoginRequestDto;
+import com.sky7th.deliveryfood.user.dto.LoginResponseDto;
+import com.sky7th.deliveryfood.user.rider.dto.RiderRegisterRequestDto;
 import com.sky7th.deliveryfood.user.rider.dto.RiderResponseDto;
 import com.sky7th.deliveryfood.user.rider.service.RiderService;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +29,11 @@ public class RiderApiController {
   private final RiderService riderService;
 
   @PostMapping("/login")
-  public ResponseEntity<LoginResponseDto> authenticateUser(@RequestBody LoginRequestDto loginRequestDto) {
+  public ResponseEntity<LoginResponseDto> authenticateUser(@RequestBody LoginRequestDto requestDto) {
     CustomUserDetails customUserDetails = authService.authenticateUser(
         new RiderUsernamePasswordAuthenticationToken(
-            loginRequestDto.getEmail(),
-            loginRequestDto.getPassword()));
+            requestDto.getEmail(),
+            requestDto.getPassword()));
 
     logger.info("Logged in User: {}", customUserDetails.getUsername());
 
@@ -41,9 +41,9 @@ public class RiderApiController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<RiderResponseDto> register(@RequestBody RegisterRequestDto registerRequestDto) {
-    logger.info("Register Request: {}", registerRequestDto.toString());
+  public ResponseEntity<RiderResponseDto> register(@RequestBody RiderRegisterRequestDto requestDto) {
+    logger.info("Register Request: {}", requestDto.toString());
 
-    return ResponseEntity.ok(riderService.save(registerRequestDto));
+    return ResponseEntity.ok(riderService.register(requestDto));
   }
 }

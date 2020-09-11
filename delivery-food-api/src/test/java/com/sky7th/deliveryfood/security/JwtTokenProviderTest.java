@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import com.sky7th.deliveryfood.user.UserContext;
+import com.sky7th.deliveryfood.user.dto.UserContext;
 import com.sky7th.deliveryfood.user.UserRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -1,3 +1,5 @@
+rootProject.name = 'delivery-food'
+
 include 'delivery-food-core'
 include 'delivery-food-api'
 

@@ -2,7 +2,7 @@ package com.sky7th.deliveryfood.security.filter;
 
 
 import com.sky7th.deliveryfood.security.JwtTokenProvider;
-import com.sky7th.deliveryfood.user.UserContext;
+import com.sky7th.deliveryfood.user.dto.UserContext;
 import java.io.IOException;
 import java.util.Arrays;
 import javax.servlet.FilterChain;

@@ -6,7 +6,7 @@ import com.sky7th.deliveryfood.security.token.MemberUsernamePasswordAuthenticati
 import com.sky7th.deliveryfood.user.CustomUserDetails;
 import com.sky7th.deliveryfood.user.UserRole;
 import com.sky7th.deliveryfood.user.member.domain.Member;
-import com.sky7th.deliveryfood.user.member.service.MemberService;
+import com.sky7th.deliveryfood.user.member.service.MemberInternalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,11 +14,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class MemberAuthenticationProvider extends AbstractAuthenticationProvider {
 
-  private final MemberService memberService;
+  private final MemberInternalService memberInternalService;
   private final UserValidateService userValidateService;
 
   public CustomUserDetails getCustomUserDetails(String email, String password) {
-    Member member = memberService.findByEmail(email);
+    Member member = memberInternalService.findByEmail(email);
     userValidateService.validateUser(member, password);
 
     if (!member.getEmailVerified()) {

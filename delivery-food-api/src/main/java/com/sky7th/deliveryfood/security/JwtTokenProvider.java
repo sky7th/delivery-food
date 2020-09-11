@@ -1,7 +1,7 @@
 package com.sky7th.deliveryfood.security;
 
 import com.sky7th.deliveryfood.user.CustomUserDetails;
-import com.sky7th.deliveryfood.user.UserContext;
+import com.sky7th.deliveryfood.user.dto.UserContext;
 import com.sky7th.deliveryfood.user.UserRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

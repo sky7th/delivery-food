@@ -1,7 +1,7 @@
 package com.sky7th.deliveryfood.user.member.domain;
 
 import com.sky7th.deliveryfood.user.User;
-import com.sky7th.deliveryfood.user.member.exception.MismatchMemberException;
+import com.sky7th.deliveryfood.user.exception.MismatchUserException;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,7 +41,7 @@ public class Member extends User {
 
   public void same(Long requestMemberId) {
     if (!this.getId().equals(requestMemberId)) {
-      throw new MismatchMemberException();
+      throw new MismatchUserException();
     }
   }
 

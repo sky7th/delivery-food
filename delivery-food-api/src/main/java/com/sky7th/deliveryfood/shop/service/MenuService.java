@@ -1,37 +1,26 @@
 package com.sky7th.deliveryfood.shop.service;
 
-import com.sky7th.deliveryfood.shop.domain.Menu;
-import com.sky7th.deliveryfood.shop.domain.MenuRepository;
-import com.sky7th.deliveryfood.shop.dto.MenuRequestDto;
-import com.sky7th.deliveryfood.shop.dto.MenuResponseDto;
-import com.sky7th.deliveryfood.shop.dto.MenuUpdateRequestDto;
-import com.sky7th.deliveryfood.shop.dto.OptionUpdateRequestDto;
-import com.sky7th.deliveryfood.shop.exception.NotFoundMenuException;
+import com.sky7th.deliveryfood.shop.dto.Menu.MenuRequestDto;
+import com.sky7th.deliveryfood.shop.dto.Menu.MenuResponseDto;
+import com.sky7th.deliveryfood.shop.dto.Menu.MenuUpdateRequestDto;
+import com.sky7th.deliveryfood.user.dto.UserContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 @RequiredArgsConstructor
 @Service
 public class MenuService {
 
-  private final MenuRepository menuRepository;
+  private final MenuInternalService menuInternalService;
 
-  @Transactional(readOnly = true)
-  public Menu findById(Long menuGroupId) {
-    return menuRepository.findById(menuGroupId).orElseThrow(NotFoundMenuException::new);
+  @PreAuthorize("@shopInternalService.isOwner(#shopId, #userContext)")
+  public MenuResponseDto save(Long shopId, Long menuGroupId, MenuRequestDto requestDto, UserContext userContext) {
+    return MenuResponseDto.of(menuInternalService.save(menuGroupId, requestDto));
   }
 
-  public MenuResponseDto save(Long menuGroupId, MenuRequestDto requestDto) {
-    return MenuResponseDto.of(menuRepository.save(MenuRequestDto.toEntity(menuGroupId, requestDto)));
-  }
-
-  public MenuResponseDto update(Long menuId, MenuUpdateRequestDto requestDto) {
-    Menu menu = findById(menuId);
-    menu.update(requestDto.getName(), requestDto.getDescription(), requestDto.getImageUrl(),
-        OptionUpdateRequestDto.toEntities(requestDto.getBasicOptions()));
-
-    return MenuResponseDto.of(menu);
+  @PreAuthorize("@shopInternalService.isOwner(#shopId, #userContext)")
+  public MenuResponseDto update(Long shopId, Long menuId, MenuUpdateRequestDto requestDto, UserContext userContext) {
+    return MenuResponseDto.of(menuInternalService.update(menuId, requestDto));
   }
 }
