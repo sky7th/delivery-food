@@ -9,7 +9,6 @@ import com.sky7th.deliveryfood.user.dto.UserContext;
 import com.sky7th.deliveryfood.user.member.domain.Member;
 import com.sky7th.deliveryfood.user.member.dto.MemberDetailResponseDto;
 import com.sky7th.deliveryfood.user.member.dto.MemberRegisterRequestDto;
-import com.sky7th.deliveryfood.user.member.dto.MemberResponseDto;
 import com.sky7th.deliveryfood.user.member.exception.AlreadyEmailVerifiedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -38,12 +37,12 @@ public class MemberService {
     return MemberDetailResponseDto.of(memberInternalService.findById(memberId));
   }
 
-  public MemberResponseDto register(MemberRegisterRequestDto requestDto) {
+  public MemberDetailResponseDto register(MemberRegisterRequestDto requestDto) {
     String encodedPassword = bCryptPasswordEncoder.encode(requestDto.getPassword());
     Member member = memberInternalService.save(requestDto, encodedPassword);
     sendVerificationEmail(member);
 
-    return MemberResponseDto.of(member);
+    return MemberDetailResponseDto.of(member);
   }
 
   private void sendVerificationEmail(Member member) {

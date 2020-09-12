@@ -40,8 +40,7 @@ public class AuthService {
     String jwtRefreshToken = jwtTokenProvider.generateRefreshToken();
     refreshTokenService.save(new RefreshToken(jwtRefreshToken, jwtTokenProvider.getRefreshTokenExpiryDate()));
 
-    return new LoginResponseDto(jwtAccessToken, jwtRefreshToken,
-        jwtTokenProvider.getAccessTokenExpiryDuration());
+    return new LoginResponseDto(jwtAccessToken, jwtRefreshToken, jwtTokenProvider.getAccessTokenExpiryDuration());
   }
 
   public LoginResponseDto refreshJwtToken(TokenRefreshRequestDto tokenRefreshRequestDto, UserContext userContext) {

@@ -3,7 +3,6 @@ package com.sky7th.deliveryfood.user.owner.service;
 import com.sky7th.deliveryfood.user.dto.UserContext;
 import com.sky7th.deliveryfood.user.owner.dto.OwnerDetailResponseDto;
 import com.sky7th.deliveryfood.user.owner.dto.OwnerRegisterRequestDto;
-import com.sky7th.deliveryfood.user.owner.dto.OwnerResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,9 +20,9 @@ public class OwnerService {
     return OwnerDetailResponseDto.of(ownerInternalService.findById(ownerId));
   }
 
-  public OwnerResponseDto register(OwnerRegisterRequestDto requestDto) {
+  public OwnerDetailResponseDto register(OwnerRegisterRequestDto requestDto) {
     String encodedPassword = bCryptPasswordEncoder.encode(requestDto.getPassword());
 
-    return OwnerResponseDto.of(ownerInternalService.save(requestDto, encodedPassword));
+    return OwnerDetailResponseDto.of(ownerInternalService.save(requestDto, encodedPassword));
   }
 }

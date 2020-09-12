@@ -5,13 +5,15 @@ import com.sky7th.deliveryfood.security.token.OwnerUsernamePasswordAuthenticatio
 import com.sky7th.deliveryfood.user.CustomUserDetails;
 import com.sky7th.deliveryfood.user.dto.LoginRequestDto;
 import com.sky7th.deliveryfood.user.dto.LoginResponseDto;
+import com.sky7th.deliveryfood.user.dto.TokenRefreshRequestDto;
+import com.sky7th.deliveryfood.user.dto.UserContext;
+import com.sky7th.deliveryfood.user.owner.dto.OwnerDetailResponseDto;
 import com.sky7th.deliveryfood.user.owner.dto.OwnerRegisterRequestDto;
-import com.sky7th.deliveryfood.user.owner.dto.OwnerResponseDto;
 import com.sky7th.deliveryfood.user.owner.service.OwnerService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,9 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/owners")
 public class OwnerApiController {
-
-  private static final Logger logger = LoggerFactory.getLogger(
-      OwnerApiController.class);
 
   private final AuthService authService;
   private final OwnerService ownerService;
@@ -35,15 +34,23 @@ public class OwnerApiController {
             loginRequestDto.getEmail(),
             loginRequestDto.getPassword()));
 
-    logger.info("Logged in User: {}", customUserDetails.getUsername());
-
     return ResponseEntity.ok(authService.createJwtToken(customUserDetails));
   }
 
   @PostMapping("/register")
-  public ResponseEntity<OwnerResponseDto> register(@RequestBody OwnerRegisterRequestDto registerRequestDto) {
-    logger.info("Register Request: {}", registerRequestDto.toString());
-
+  public ResponseEntity<OwnerDetailResponseDto> register(@RequestBody OwnerRegisterRequestDto registerRequestDto) {
     return ResponseEntity.ok(ownerService.register(registerRequestDto));
+  }
+
+  @PostMapping("/refresh")
+  public ResponseEntity<LoginResponseDto> refreshJwtToken(
+      @RequestBody TokenRefreshRequestDto tokenRefreshRequestDto, UserContext userContext) {
+    return ResponseEntity.ok(authService.refreshJwtToken(tokenRefreshRequestDto, userContext));
+  }
+
+  @GetMapping("/{ownerId}")
+  public ResponseEntity<OwnerDetailResponseDto> show(
+      @PathVariable Long ownerId, UserContext userContext) {
+    return ResponseEntity.ok(ownerService.findById(ownerId, userContext));
   }
 }

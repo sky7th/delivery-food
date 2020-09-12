@@ -13,11 +13,8 @@ import com.sky7th.deliveryfood.user.dto.TokenRefreshRequestDto;
 import com.sky7th.deliveryfood.user.dto.UserContext;
 import com.sky7th.deliveryfood.user.member.dto.MemberDetailResponseDto;
 import com.sky7th.deliveryfood.user.member.dto.MemberRegisterRequestDto;
-import com.sky7th.deliveryfood.user.member.dto.MemberResponseDto;
 import com.sky7th.deliveryfood.user.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,8 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/members")
 public class MemberApiController {
 
-  private static final Logger logger = LoggerFactory.getLogger(MemberApiController.class);
-
   private final AuthService authService;
   private final MemberService memberService;
   private final MemberAddressService memberAddressService;
@@ -46,27 +41,21 @@ public class MemberApiController {
             loginRequestDto.getEmail(),
             loginRequestDto.getPassword()));
 
-    logger.info("Logged in User: {}", customUserDetails.getUsername());
-
     return ResponseEntity.ok(authService.createJwtToken(customUserDetails));
   }
 
   @PostMapping("/register")
-  public ResponseEntity<MemberResponseDto> register(@RequestBody MemberRegisterRequestDto registerRequestDto) {
-    logger.info("Register Request: {}", registerRequestDto.toString());
-
+  public ResponseEntity<MemberDetailResponseDto> register(@RequestBody MemberRegisterRequestDto registerRequestDto) {
     return ResponseEntity.ok(memberService.register(registerRequestDto));
   }
 
   @PostMapping("/refresh")
   public ResponseEntity<LoginResponseDto> refreshJwtToken(
       @RequestBody TokenRefreshRequestDto tokenRefreshRequestDto, UserContext userContext) {
-    logger.info("Refresh Token Request: {}", tokenRefreshRequestDto.getRefreshToken());
-
     return ResponseEntity.ok(authService.refreshJwtToken(tokenRefreshRequestDto, userContext));
   }
 
-  @PostMapping("/resend/verificationEmail")
+  @PostMapping("/resend/verification-email")
   public ResponseEntity<Void> registerMailResend(@RequestBody LoginRequestDto loginRequestDto) {
     memberService.resendVerificationEmail(loginRequestDto);
     return ResponseEntity.ok().build();
@@ -79,7 +68,7 @@ public class MemberApiController {
   }
 
   @GetMapping("/members/{memberId}/address")
-  public ResponseEntity<MemberAddressResponseDtos> list(@PathVariable Long memberId, UserContext userContext) {
+  public ResponseEntity<MemberAddressResponseDtos> memberAddressList(@PathVariable Long memberId, UserContext userContext) {
     return ResponseEntity.ok(memberAddressService.findAllByMemberId(memberId, userContext));
   }
 

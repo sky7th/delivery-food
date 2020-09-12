@@ -13,9 +13,9 @@ public class MemberResponseDto {
   private Long id;
   private String email;
   private String username;
-  private boolean emailVerified;
+  private String imageUrl;
 
   public static MemberResponseDto of(Member entity) {
-    return new MemberResponseDto(entity.getId(), entity.getEmail(), entity.getUsername(), entity.getEmailVerified());
+    return new MemberResponseDto(entity.getId(), entity.getEmail(), entity.getUsername(), entity.getImageUrl());
   }
 }
