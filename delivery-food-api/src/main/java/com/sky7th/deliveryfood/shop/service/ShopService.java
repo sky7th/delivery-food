@@ -26,12 +26,27 @@ public class ShopService {
     return ShopResponseDtos.of(shopInternalService.findAllIsNotDeletedByOwnerId(userContext));
   }
 
-  public ShopResponseDto save(ShopApplyRequestDto requestDto, UserContext userContext) {
-    return ShopResponseDto.of(shopInternalService.save(requestDto, userContext));
+  public ShopDetailResponseDto save(ShopApplyRequestDto requestDto, UserContext userContext) {
+    return ShopDetailResponseDto.of(shopInternalService.save(requestDto, userContext));
   }
 
   @PreAuthorize("@shopInternalService.isOwner(#shopId, #userContext)")
   public ShopDeliveryTownResponseDtos updateDeliveryTowns(Long shopId, ShopDeliveryTownRequestDtos requestDto, UserContext userContext) {
     return ShopDeliveryTownResponseDtos.of(shopInternalService.updateDeliveryTowns(shopId, requestDto));
+  }
+
+  @PreAuthorize("@shopInternalService.isOwner(#shopId, #userContext)")
+  public void delete(Long shopId, UserContext userContext) {
+    shopInternalService.delete(shopId);
+  }
+
+  @PreAuthorize("@shopInternalService.isOwner(#shopId, #userContext)")
+  public ShopResponseDto close(Long shopId, UserContext userContext) {
+    return ShopResponseDto.of(shopInternalService.close(shopId));
+  }
+
+  @PreAuthorize("@shopInternalService.isOwner(#shopId, #userContext)")
+  public ShopResponseDto open(Long shopId, UserContext userContext) {
+    return ShopResponseDto.of(shopInternalService.open(shopId));
   }
 }

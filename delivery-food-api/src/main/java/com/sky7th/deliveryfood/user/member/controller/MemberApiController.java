@@ -67,7 +67,7 @@ public class MemberApiController {
   }
 
   @PostMapping("/resend/verificationEmail")
-  public ResponseEntity<MemberResponseDto> registerMailResend(@RequestBody LoginRequestDto loginRequestDto) {
+  public ResponseEntity<Void> registerMailResend(@RequestBody LoginRequestDto loginRequestDto) {
     memberService.resendVerificationEmail(loginRequestDto);
     return ResponseEntity.ok().build();
   }
@@ -96,7 +96,7 @@ public class MemberApiController {
   }
 
   @DeleteMapping("/members/{memberId}/address/{memberAddressId}")
-  public ResponseEntity<MemberAddressResponseDto> deleteMemberAddress(@PathVariable Long memberId,
+  public ResponseEntity<Void> deleteMemberAddress(@PathVariable Long memberId,
       @PathVariable Long memberAddressId, UserContext userContext) {
     memberAddressService.delete(memberId, memberAddressId, userContext);
     return ResponseEntity.ok().build();

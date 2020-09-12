@@ -1,10 +1,10 @@
 package com.sky7th.deliveryfood.shop.domain;
 
-import com.sky7th.deliveryfood.generic.money.domain.Money;
-import org.junit.jupiter.api.Test;
-
 import static com.sky7th.deliveryfood.shop.domain.ShopDummy.aShop;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import com.sky7th.deliveryfood.generic.money.domain.Money;
+import org.junit.jupiter.api.Test;
 
 class ShopTest {
 

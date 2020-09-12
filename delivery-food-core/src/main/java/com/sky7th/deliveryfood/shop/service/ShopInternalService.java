@@ -43,6 +43,23 @@ public class ShopInternalService {
     return savedShop;
   }
 
+  public void delete(Long shopId) {
+    Shop shop = findById(shopId);
+    shop.delete();
+  }
+
+  public Shop close(Long shopId) {
+    Shop shop = findById(shopId);
+    shop.close();
+    return shop;
+  }
+
+  public Shop open(Long shopId) {
+    Shop shop = findById(shopId);
+    shop.open();
+    return shop;
+  }
+
   public Set<ShopDeliveryTown> updateDeliveryTowns(Long shopId, ShopDeliveryTownRequestDtos requestDto) {
     Shop shop = findById(shopId);
     shop.updateDeliveryTowns(ShopDeliveryTownRequestDtos.toEntities(requestDto, shop));

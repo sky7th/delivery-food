@@ -104,8 +104,16 @@ public class Shop extends BaseTimeEntity {
     return amount.isGreaterThanOrEqual(minOrderAmount);
   }
 
-  public void updateStatus(ShopStatus status) {
-    this.status = status;
+  public void delete() {
+    this.status = ShopStatus.DELETED;
+  }
+
+  public void open() {
+    this.status = ShopStatus.ACTIVE;
+  }
+
+  public void close() {
+    this.status = ShopStatus.INACTIVE;
   }
 
   public void checkOwner(Long ownerId) {

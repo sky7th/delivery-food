@@ -1,7 +1,5 @@
 package com.sky7th.deliveryfood.order.domain;
 
-import static com.sky7th.deliveryfood.shop.domain.ShopDummy.*;
-
 import com.sky7th.deliveryfood.generic.money.domain.Money;
 import com.sky7th.deliveryfood.order.domain.Order.OrderBuilder;
 import com.sky7th.deliveryfood.order.domain.Order.OrderStatus;
@@ -9,6 +7,7 @@ import com.sky7th.deliveryfood.order.domain.OrderMenuItem.OrderMenuItemBuilder;
 import com.sky7th.deliveryfood.order.domain.OrderOption.OrderOptionBuilder;
 import com.sky7th.deliveryfood.order.domain.OrderOptionGroup.OrderOptionGroupBuilder;
 import com.sky7th.deliveryfood.shop.domain.OptionGroup;
+import com.sky7th.deliveryfood.shop.domain.ShopDummy;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -17,7 +16,7 @@ public class OrderDummy {
   public static OrderBuilder anOrder() {
     return Order.builder()
         .userId(1L)
-        .shopId(aShop().build().getId())
+        .shopId(ShopDummy.aShop().build().getId())
         .status(OrderStatus.BEFORE_PAYMENT)
         .orderedTime(LocalDateTime.of(2020, 1, 1, 0, 0))
         .items(Arrays.asList(anOrderMenuItem().build()));

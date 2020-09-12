@@ -1,8 +1,8 @@
 package com.sky7th.deliveryfood.shop.dto.Shop;
 
-import com.sky7th.deliveryfood.address.dto.address.AddressResponseDto;
 import com.sky7th.deliveryfood.shop.domain.Shop;
 import com.sky7th.deliveryfood.shop.domain.Shop.DeliveryType;
+import com.sky7th.deliveryfood.shop.domain.Shop.ShopStatus;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -19,22 +19,22 @@ public class ShopResponseDto {
   private Long id;
   private String name;
   private String operatingTime;
+  private ShopStatus status;
   private DeliveryType deliveryType;
   private Long minOrderAmount;
   private String introduction;
   private String guide;
-  private AddressResponseDto address;
 
   public static ShopResponseDto of(Shop entity) {
     return ShopResponseDto.builder()
         .id(entity.getId())
         .name(entity.getName())
         .operatingTime(entity.getOperatingTime())
+        .status(entity.getStatus())
         .deliveryType(entity.getDeliveryType())
         .minOrderAmount(entity.getMinOrderAmount().getAmount().longValue())
         .introduction(entity.getIntroduction())
         .guide(entity.getGuide())
-        .address(AddressResponseDto.of(entity.getAddress()))
         .build();
   }
 

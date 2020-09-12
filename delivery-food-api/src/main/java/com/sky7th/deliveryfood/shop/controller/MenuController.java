@@ -39,7 +39,7 @@ public class MenuController {
   }
 
   @DeleteMapping("/{shopId}/menu-groups/{menuGroupId}")
-  public ResponseEntity<MenuGroupResponseDto> deleteMenuGroup(@PathVariable Long shopId,
+  public ResponseEntity<Void> deleteMenuGroup(@PathVariable Long shopId,
       @PathVariable Long menuGroupId, UserContext userContext) {
     menuGroupService.delete(shopId, menuGroupId, userContext);
     return ResponseEntity.ok().build();
