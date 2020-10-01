@@ -30,14 +30,14 @@ public class MemberAddressInternalService {
   }
 
   public MemberAddress save(MemberAddressCreateRequestDto requestDto, UserContext userContext) {
-    Address address = addressInternalService.findByAddressCode(requestDto.getAddressCode());
+    Address address = addressInternalService.findById(requestDto.getAddressId());
     MemberAddress memberAddress = new MemberAddress(userContext.getId(), address, requestDto.getDetailedAddress());
 
     return memberAddressRepository.save(memberAddress);
   }
 
   public MemberAddress update(Long memberAddressId, MemberAddressCreateRequestDto requestDto) {
-    Address address = addressInternalService.findByAddressCode(requestDto.getAddressCode());
+    Address address = addressInternalService.findById(requestDto.getAddressId());
     MemberAddress memberAddress = findById(memberAddressId);
     memberAddress.update(address, requestDto.getDetailedAddress());
 

@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class AddressInternalService {
 
-  private final AddressRepository memberAddressRepository;
+  private final AddressRepository addressRepository;
 
-  public Address findByAddressCode(String addressId) {
-    return memberAddressRepository.findByBuildingManagementNumber(addressId)
+  public Address findById(String addressId) {
+    return addressRepository.findByBuildingManagementNumber(addressId)
         .orElseThrow(NotFoundAddressException::new);
   }
 }

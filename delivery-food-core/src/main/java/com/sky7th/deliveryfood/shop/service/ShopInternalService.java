@@ -36,7 +36,7 @@ public class ShopInternalService {
   }
 
   public Shop save(ShopApplyRequestDto requestDto, UserContext userContext) {
-    Address address = addressInternalService.findByAddressCode(requestDto.getAddressCode());
+    Address address = addressInternalService.findById(requestDto.getAddressId());
     Shop savedShop = shopRepository.save(ShopApplyRequestDto.toEntity(requestDto, address, userContext.getId()));
     menuGroupInternalService.saveRepresentative(savedShop.getId());
 
