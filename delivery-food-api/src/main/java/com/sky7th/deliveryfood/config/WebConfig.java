@@ -4,6 +4,7 @@ import com.sky7th.deliveryfood.utils.resolver.UserContextArgumentResolver;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mobile.device.LiteDeviceResolver;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -31,5 +32,10 @@ public class WebConfig implements WebMvcConfigurer {
   @Bean
   public BCryptPasswordEncoder bCryptPasswordEncoder() {
     return new BCryptPasswordEncoder();
+  }
+
+  @Bean
+  public LiteDeviceResolver liteDeviceResolver() {
+    return new LiteDeviceResolver();
   }
 }

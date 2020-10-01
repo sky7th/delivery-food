@@ -11,6 +11,8 @@ dependencies {
     implementation 'com.querydsl:querydsl-jpa'
     implementation 'com.google.code.gson:gson:2.8.2'
 
+    compile 'org.springframework.mobile:spring-mobile-starter:2.0.0.M2'
+
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
@@ -23,4 +25,8 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker'
+}
+
+repositories {
+    maven { url "https://repo.spring.io/milestone" }
 }

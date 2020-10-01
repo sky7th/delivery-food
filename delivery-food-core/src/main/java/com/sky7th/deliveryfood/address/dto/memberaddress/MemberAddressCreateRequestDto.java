@@ -11,7 +11,7 @@ import lombok.ToString;
 public class MemberAddressCreateRequestDto {
 
   @NotBlank
-  private String addressCode;
+  private String addressId;
 
   @NotBlank
   private String detailedAddress;

@@ -26,7 +26,7 @@ public class ShopApplyRequestDto {
   private String businessNumber;
   private String introduction;
   @NotBlank
-  private String addressCode;
+  private String addressId;
   @NotBlank
   private String telNumber;
 

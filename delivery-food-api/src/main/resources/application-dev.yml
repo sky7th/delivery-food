@@ -53,8 +53,8 @@ spring:
 
 app:
   jwt:
-    secret: asdf
-    accessTokenExpiration: 900000 # 15분
+    secret: ei987dbfiowee09f
+    accessTokenExpiration: 25920000000 # 300일
     refreshTokenExpiration: 2592000000 # 30일
     header:
       name: Authorization
