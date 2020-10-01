@@ -36,9 +36,10 @@ public class OwnerInternalService {
     return ownerRepository.save(new Owner(requestDto.getEmail(), encodedPassword, requestDto.getUsername()));
   }
 
-  public void isMyself(Long ownerId, UserContext userContext) {
+  public boolean isMyself(Long ownerId, UserContext userContext) {
     if (!ownerId.equals(userContext.getId())) {
       throw new MismatchUserException();
     }
+    return true;
   }
 }

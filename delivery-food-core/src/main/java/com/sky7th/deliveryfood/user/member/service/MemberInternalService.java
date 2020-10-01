@@ -36,9 +36,10 @@ public class MemberInternalService {
     return memberRepository.save(new Member(requestDto.getEmail(), encodedPassword, requestDto.getUsername()));
   }
 
-  public void isMyself(Long memberId, UserContext userContext) {
+  public boolean isMyself(Long memberId, UserContext userContext) {
     if (!memberId.equals(userContext.getId())) {
       throw new MismatchUserException();
     }
+    return true;
   }
 }

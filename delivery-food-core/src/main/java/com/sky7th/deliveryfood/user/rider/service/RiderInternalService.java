@@ -36,9 +36,10 @@ public class RiderInternalService {
     return riderRepository.save(new Rider(requestDto.getEmail(), encodedPassword, requestDto.getUsername()));
   }
 
-  public void isMyself(Long riderId, UserContext userContext) {
+  public boolean isMyself(Long riderId, UserContext userContext) {
     if (!riderId.equals(userContext.getId())) {
       throw new MismatchUserException();
     }
+    return true;
   }
 }
